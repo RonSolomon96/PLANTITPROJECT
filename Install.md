@@ -1,4 +1,4 @@
-For the server :
+### For the server :
 1) For Flask library run on cmd - "pip install flask"
 2) For pyrebase library run - "pip install pyrebase4"
    if "import pyrebase" doesn't work, try to change the name of crypto module from lowercase - "crypto" - to uppercase - "Crypto".
