@@ -86,15 +86,15 @@ class _SignupScreenState extends State<SignupScreen> {
       return;
     }
     //send data to server in order to create user
-    http.post(
-      Uri.parse(url),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'title': title,
-      }),
-    );
+    // http.post(
+    //   Uri.parse(url),
+    //   headers: <String, String>{
+    //     'Content-Type': 'application/json; charset=UTF-8',
+    //   },
+    //   body: jsonEncode(<String, String>{
+    //     'title': title,
+    //   }),
+    // );
   }
 
 
