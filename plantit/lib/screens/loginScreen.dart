@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:plantit/screens/signupScreen.dart';
-import '../reusableWidgets/reusableWidget.dart';
+import '../reusable/reusableWidget.dart';
+import '../reusable/reusableFuncs.dart';
 
 
 class LoginScreen extends StatefulWidget {

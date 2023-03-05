@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
-import '../reusableWidgets/reusableWidget.dart';
+import 'package:plantit/reusable/reusableFuncs.dart';
+import '../reusable/reusableWidget.dart';
+import 'dart:convert';
 import 'homeScreen.dart';
+import 'package:http/http.dart' as http;
+
+String url = "http://127.0.0.1:5000";
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -10,6 +15,7 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
+
 
   TextEditingController emailTextController = TextEditingController();
   TextEditingController passwordTextController = TextEditingController();
@@ -45,9 +51,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 const SizedBox(height: 20),
                 reusableTextField("Confirm Password", Icons.lock_outline, true, password2TextController),
                 const SizedBox(height: 20),
-                loginSignupButton(context, false, () {
-                  Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => HomeScreen()));}),
+                loginSignupButton(context, false, (){signUp(context);}),
                 loginSignupOption(context, true, "Already have account ? ", "Log In"),
               ],
             ),
@@ -56,4 +60,46 @@ class _SignupScreenState extends State<SignupScreen> {
       ),
     );
   }
+
+  //the sign up function
+  void signUp(BuildContext context) {
+    //check that all fields are not empty
+    if(emailTextController.text == "" || userNameTextController.text == "" ||
+        passwordTextController.text == "" || password2TextController.text == "") {
+      showSnackbar(context, "Please fill all fields.");
+      return;
+    }
+    //check password and it's confirmation are the same
+    if(passwordTextController.text != password2TextController.text) {
+      showSnackbar(context, "The password confirmation does not match.");
+      return;
+    }
+
+    //check if its a strong password
+    //one that contains uppercase letters, lowercase letters, and numbers,
+    // and is more than 6 characters
+    String password = passwordTextController.text;
+    bool isStrongPass = RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$').hasMatch(password);
+    if (!isStrongPass) {
+      showSnackbar(context, "password must be more than 6 characters and contain"
+          " at least one numeric digit, one uppercase and one lowercase letter");
+      return;
+    }
+    //send data to server in order to create user
+    http.post(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'title': title,
+      }),
+    );
+  }
+
+
 }
+
+
+//Navigator.push(context,
+//                     MaterialPageRoute(builder: (context) => HomeScreen()));

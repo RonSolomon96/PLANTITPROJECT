@@ -1,19 +1,86 @@
+import pyrebase
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 from flask import Flask, request, jsonify
 
+# Initialize pyrebase with user credentials
+config = {
+  'apiKey': "AIzaSyCRaKSS_ANuUa1QibLkWuntJ135EYK9CXY",
+  'authDomain': "plantitdb1.firebaseapp.com",
+  'projectId': "plantitdb1",
+  'storageBucket': "plantitdb1.appspot.com",
+  'messagingSenderId': "959335294179",
+  'appId': "1:959335294179:web:21f768d3aab7a7c5b191d6",
+  'measurementId': "G-JNXM9WXHXZ",
+  'databaseURL': ''}
 
-# Use a service account.
+firebase = pyrebase.initialize_app(config)
+# Use pyrebase to authenticate users
+auth = firebase.auth()
+
+# Initialize firebase_admin with service account credentials
 cred = credentials.Certificate("plantitdb1-firebase-adminsdk-y2grh-c4930ddb02.json")
-
 firebase_admin.initialize_app(cred)
 
+# Use firebase_admin to perform administrative tasks, such as managing user accounts or accessing the Cloud Firestore
+# database
 db = firestore.client()
 
 
 # Initialize Flask app
 app = Flask(__name__)
+
+
+# Firebase Authentication
+@app.route('/register', methods=['POST'])
+def register():
+    """
+    Register a new user with the given email and password.
+    """
+    data = request.get_json()
+    email = data['email']
+    password = data['password']
+    username = data['username']
+    try:
+        user = auth.create_user_with_email_and_password(email=email, password=password)
+        print(user)
+        auth.update_profile(
+            user['idToken'],
+            display_name=username
+        )
+        return jsonify({"message": "User created successfully."}), 201
+    except:
+        return jsonify({"message": "Unable to create user."}), 400
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    """
+    Log in a user with the given email and password.
+    """
+    data = request.get_json()
+    email = data['email']
+    password = data['password']
+    try:
+        user = auth.sign_in_with_email_and_password(email, password)
+        return jsonify({"message": "Login successful."}), 200
+    except:
+        return jsonify({"message": "Invalid email or password."}), 400
+
+
+# @app.route('/logout', methods=['POST'])
+# def logout():
+#     """
+#     Log out the current user.
+#     """
+#     data = request.get_json()
+#     id_token = data['id_token']
+#     try:
+#         auth.revoke_refresh_tokens(id_token)
+#         return jsonify({"message": "Logout successful."}), 200
+#     except:
+#         return jsonify({"message": "Unable to logout."}), 400
 
 
 # Define routes for CRUD operations
@@ -23,7 +90,7 @@ def create_user():
     Create a new user with the given data.
     """
     data = request.get_json()
-    user_ref = db.collection('Plants').document(data['Common_name'])
+    user_ref = db.collection('users').document(data['email'])
     user_ref.set(data)
     return jsonify({"message": "User created successfully."}), 201
 
