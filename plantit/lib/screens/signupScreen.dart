@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'homeScreen.dart';
 import 'package:http/http.dart' as http;
 
-String url = "http://127.0.0.1:5000";
+String url = "http://192.168.1.166:5000";
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -52,7 +52,12 @@ class _SignupScreenState extends State<SignupScreen> {
                 reusableTextField("Confirm Password", Icons.lock_outline, true, password2TextController),
                 const SizedBox(height: 20),
                 loginSignupButton(context, false, (){signUp(context);}),
-                loginSignupOption(context, true, "Already have account ? ", "Log In"),
+                loginSignupOption(context, true, "Already have account ? ", "Log In", () {
+                  emailTextController.clear();
+                  userNameTextController.clear();
+                  passwordTextController.clear();
+                  password2TextController.clear();
+                }),
               ],
             ),
           ),
@@ -62,7 +67,7 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   //the sign up function
-  void signUp(BuildContext context) {
+  void signUp(BuildContext context) async {
     //check that all fields are not empty
     if(emailTextController.text == "" || userNameTextController.text == "" ||
         passwordTextController.text == "" || password2TextController.text == "") {
@@ -86,20 +91,32 @@ class _SignupScreenState extends State<SignupScreen> {
       return;
     }
     //send data to server in order to create user
-    // http.post(
-    //   Uri.parse(url),
-    //   headers: <String, String>{
-    //     'Content-Type': 'application/json; charset=UTF-8',
-    //   },
-    //   body: jsonEncode(<String, String>{
-    //     'title': title,
-    //   }),
-    // );
+    await http.post(
+      Uri.parse("$url/register" ),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        "email" : emailTextController.text,
+        "password" : passwordTextController.text,
+        "username" : userNameTextController.text
+      })).then((value) => {
+      if(value.statusCode == 201) {
+        emailTextController.clear(),
+        userNameTextController.clear(),
+        passwordTextController.clear(),
+        password2TextController.clear(),
+        // If the server did return a 201 CREATED response,
+        //then move to home screen
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const HomeScreen()))
+      } else {
+        // If the server did not return a 201 CREATED response,
+        // then show snackbar.
+        showSnackbar(context, "Email already taken or invalid.")
+      }
+    });
   }
-
-
 }
 
 
-//Navigator.push(context,
-//                     MaterialPageRoute(builder: (context) => HomeScreen()));

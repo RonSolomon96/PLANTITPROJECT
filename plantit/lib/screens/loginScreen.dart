@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:plantit/screens/signupScreen.dart';
 import '../reusable/reusableWidget.dart';
 import '../reusable/reusableFuncs.dart';
+import 'dart:convert';
+import 'homeScreen.dart';
+import 'package:http/http.dart' as http;
+
+String url = "http://192.168.1.166:5000";
 
 
 class LoginScreen extends StatefulWidget {
@@ -42,14 +47,49 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 20),
                 reusableTextField("Enter Password", Icons.lock_outline, true, passwordTextController),
                 const SizedBox(height: 20),
-                loginSignupButton(context, true, (){}),
-                loginSignupOption(context, false, "New to PlantIt ? ", "Sign Up"),
+                loginSignupButton(context, true,  (){signIn(context);}),
+                loginSignupOption(context, false, "New to PlantIt ? ", "Sign Up", () {
+                  emailTextController.clear();
+                  passwordTextController.clear();
+                }),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  //the sign in function
+  void signIn(BuildContext context) async {
+    //check that all fields are not empty
+    if(emailTextController.text == "" || passwordTextController.text == "" ) {
+      showSnackbar(context, "Please fill all fields.");
+      return;
+    }
+    //send data to server in order to login
+    await http.post(
+        Uri.parse("$url/login" ),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          "email" : emailTextController.text,
+          "password" : passwordTextController.text,
+        })).then((value) => {
+      if(value.statusCode == 200) {
+        emailTextController.clear(),
+        passwordTextController.clear(),
+        // If the server did return a 200 response,
+        //then move to home screen
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const HomeScreen()))
+      } else {
+        // If the server did not return a 200 response,
+        // then show snackbar.
+        showSnackbar(context, "Email or password are incorrect.")
+      }
+    });
   }
 }
 

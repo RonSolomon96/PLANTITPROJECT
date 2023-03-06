@@ -83,13 +83,14 @@ Container loginSignupButton(BuildContext context, bool isLogin, Function onPress
   );
 }
 
-Row loginSignupOption(BuildContext context,bool forLogin, String first, String second) {
+Row loginSignupOption(BuildContext context,bool forLogin, String first, String second, Function cleanFields) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       Text(first , style: const TextStyle(color: Colors.white70, fontSize: 15),),
       GestureDetector(
         onTap: () {
+          cleanFields();
           forLogin?
           Navigator.pop(context)
           : Navigator.push(context,

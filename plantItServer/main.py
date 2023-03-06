@@ -50,8 +50,10 @@ def register():
             display_name=username
         )
         return jsonify({"message": "User created successfully."}), 201
-    except:
-        return jsonify({"message": "Unable to create user."}), 400
+    except Exception as e:
+        error_message = str(e)
+        print(error_message)
+        return jsonify({"message": f"Unable to create user. Reason: {error_message}"}), 400
 
 
 @app.route('/login', methods=['POST'])
@@ -139,6 +141,6 @@ def delete_user(user_id):
 
 # Run Flask app
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')
 
 
