@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:plantit/screens/resetPssword.dart';
 import 'package:plantit/screens/signupScreen.dart';
 import '../reusable/reusableWidget.dart';
 import '../reusable/reusableFuncs.dart';
@@ -36,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).size.height * 0.2, 20, 0),
+            padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).size.height * 0.15, 20, 0),
             child: Column(
               children: <Widget>[
                 titleWidget("Sign In"),
@@ -46,8 +47,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 reusableTextField("Enter Email", Icons.email_outlined, false, emailTextController),
                 const SizedBox(height: 20),
                 reusableTextField("Enter Password", Icons.lock_outline, true, passwordTextController),
-                const SizedBox(height: 20),
-                loginSignupButton(context, true,  (){signIn(context);}),
+                const SizedBox(height: 5),
+                forgotPassword(context),
+                senToServerButton(context, "LOG IN",  (){signIn(context);}),
                 loginSignupOption(context, false, "New to PlantIt ? ", "Sign Up", () {
                   emailTextController.clear();
                   passwordTextController.clear();
@@ -90,6 +92,27 @@ class _LoginScreenState extends State<LoginScreen> {
         showSnackbar(context, "Email or password are incorrect.")
       }
     });
+  }
+
+  Widget forgotPassword(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: 35,
+      alignment: Alignment.bottomRight,
+      child: TextButton(
+        child: const Text(
+          "Forgot password?",
+          style: TextStyle(color: Colors.white70),
+          textAlign: TextAlign.right,
+        ),
+        onPressed: () {
+          emailTextController.clear();
+          passwordTextController.clear();
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => ResetPassword()));
+        },
+      ),
+    );
   }
 }
 

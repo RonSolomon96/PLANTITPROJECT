@@ -51,7 +51,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 const SizedBox(height: 20),
                 reusableTextField("Confirm Password", Icons.lock_outline, true, password2TextController),
                 const SizedBox(height: 20),
-                loginSignupButton(context, false, (){signUp(context);}),
+                senToServerButton(context, "SIGN UP", (){signUp(context);}),
                 loginSignupOption(context, true, "Already have account ? ", "Log In", () {
                   emailTextController.clear();
                   userNameTextController.clear();

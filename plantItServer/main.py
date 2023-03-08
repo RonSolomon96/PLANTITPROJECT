@@ -84,6 +84,18 @@ def login():
 #     except:
 #         return jsonify({"message": "Unable to logout."}), 400
 
+@app.route('/resetPass', methods=['POST'])
+def reset():
+    """
+    Reset password of user.
+    """
+    data = request.get_json()
+    email = data['email']
+    try:
+        auth.send_password_reset_email(email)
+        return jsonify({"message": "reset successful."}), 201
+    except:
+        return jsonify({"message": "Invalid email."}), 400
 
 # Define routes for CRUD operations
 @app.route('/users', methods=['POST'])
