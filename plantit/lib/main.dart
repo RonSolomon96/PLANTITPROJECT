@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:plantit/screens/homeScreen.dart';
 import 'package:plantit/screens/loginScreen.dart';
 
 void main() {
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LoginScreen(),
+      home: const HomeScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
