@@ -7,7 +7,7 @@ import 'dart:convert';
 import 'homeScreen.dart';
 import 'package:http/http.dart' as http;
 
-String url = "http://192.168.1.166:5000";
+String url = "http://10.100.102.4:5000";
 
 
 class LoginScreen extends StatefulWidget {

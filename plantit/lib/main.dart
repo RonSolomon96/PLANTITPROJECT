@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:plantit/screens/homeScreen.dart';
 import 'package:plantit/screens/loginScreen.dart';
+import 'package:plantit/screens/sensorScreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomeScreen(),
+      home: const SensorScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
