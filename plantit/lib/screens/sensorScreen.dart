@@ -109,11 +109,12 @@ class _SensorScreenState extends State<SensorScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           var p = await fetchPlants();
+
           Navigator.push(context,
               MaterialPageRoute(builder: (context) =>  ChoosePlantScreen(
-                light: "100",
-                moisture: "50",
-                temperature: "25", plantCollection: p)));
+                light: _light,
+                moisture:_moisture ,
+                temperature: _temperature, plantCollection: p)));
         },
         backgroundColor: Colors.green.shade900, // call _setupSocket when the button is pressed
         child: const Text("Send"),
