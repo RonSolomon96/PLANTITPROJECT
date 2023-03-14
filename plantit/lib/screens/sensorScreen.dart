@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
-
+import 'package:http/http.dart' as http;
 import 'choosePlantScreen.dart';
 import 'homeScreen.dart';
 
@@ -54,7 +54,20 @@ class _SensorScreenState extends State<SensorScreen> {
       }
     });
   }
+  //send data to server in order to login
+  Future<List<dynamic>> fetchPlants() async {
+    final response = await http.get(Uri.parse('http://172.18.66.75:5000/plants'));
 
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON response
+      return jsonDecode(response.body);
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load plants');
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,12 +107,13 @@ class _SensorScreenState extends State<SensorScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
+        onPressed: () async {
+          var p = await fetchPlants();
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const ChoosePlantScreen(
-                light: 100,
-                moisture: 50,
-                temperature: 25,)));
+              MaterialPageRoute(builder: (context) =>  ChoosePlantScreen(
+                light: "100",
+                moisture: "50",
+                temperature: "25", plantCollection: p)));
         },
         backgroundColor: Colors.green.shade900, // call _setupSocket when the button is pressed
         child: const Text("Send"),
@@ -107,6 +121,7 @@ class _SensorScreenState extends State<SensorScreen> {
     );
 
   }
+
 
   @override
   void dispose() {
