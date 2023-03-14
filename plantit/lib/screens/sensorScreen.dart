@@ -15,9 +15,9 @@ class SensorScreen extends StatefulWidget {
 
 
 class _SensorScreenState extends State<SensorScreen> {
-  String _light = '';
-  String _temperature = '';
-  String _moisture = '';
+  String _light = '2';
+  String _temperature = '2';
+  String _moisture = '2';
 
   late RawDatagramSocket _socket;
 
@@ -56,7 +56,7 @@ class _SensorScreenState extends State<SensorScreen> {
   }
   //send data to server in order to login
   Future<List<dynamic>> fetchPlants() async {
-    final response = await http.get(Uri.parse('http://172.18.66.75:5000/plants'));
+    final response = await http.get(Uri.parse('http://10.100.102.4:5000/plants'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -68,6 +68,31 @@ class _SensorScreenState extends State<SensorScreen> {
       throw Exception('Failed to load plants');
     }
   }
+
+
+
+
+
+
+
+
+  //send data to server in order to login
+  Future<List<dynamic>> fetchPlants2(String l,String t,String m) async {
+    final response = await http.get(Uri.parse('http://10.100.102.4:5000/plants'
+        '/$l/$t/$m'));
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON response
+      return jsonDecode(response.body);
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load plants');
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,8 +132,15 @@ class _SensorScreenState extends State<SensorScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+
         onPressed: () async {
-          var p = await fetchPlants();
+          var p;
+          if (_light != '') {
+             p = await fetchPlants2(_light, _temperature, _moisture);
+          }
+          else{
+             p = await fetchPlants();
+          }
 
           Navigator.push(context,
               MaterialPageRoute(builder: (context) =>  ChoosePlantScreen(
