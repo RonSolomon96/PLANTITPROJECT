@@ -118,6 +118,15 @@ def read_users():
     return jsonify(users), 200
 
 
+@app.route('/plants', methods=['GET'])
+def read_plants():
+    """
+    Retrieve all users from Firestore DB.
+    """
+    p = [doc.to_dict() for doc in db.collection('Plants').stream()]
+    return jsonify(p), 200
+
+
 @app.route('/users/<user_id>', methods=['GET'])
 def read_user(user_id):
     """
