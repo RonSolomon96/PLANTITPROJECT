@@ -126,6 +126,18 @@ def read_plants():
     p = [doc.to_dict() for doc in db.collection('Plants').stream()]
     return jsonify(p), 200
 
+@app.route('/plants/<light>/<temp>/<moist>', methods=['GET'])
+def read_plant(light,temp,moist):
+    """
+    Retrieve a specific user by ID from Firestore DB.
+    """
+    plant = [doc.to_dict() for doc in db.collection('Plants').where("Light","==", light).
+        where("Temperature","==", temp).where("Humidity","==", moist).stream()]
+    # if plant.exists:
+    return jsonify(plant), 200
+   # else:
+     #   return jsonify({"message": "User not found."}), 404
+
 
 @app.route('/users/<user_id>', methods=['GET'])
 def read_user(user_id):
