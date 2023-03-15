@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:plantit/screens/homeScreen.dart';
+import 'package:plantit/screens/choosePlantScreen.dart';
+import 'package:plantit/screens/rootScreen.dart';
 import 'package:plantit/screens/loginScreen.dart';
 import 'package:plantit/screens/sensorScreen.dart';
 
@@ -16,9 +17,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'PLANTIT',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
       ),
-      home: const SensorScreen(),
+      home: const RootScreen(),
       debugShowCheckedModeBanner: false,
     );
   }

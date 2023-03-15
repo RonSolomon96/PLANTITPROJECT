@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'choosePlantScreen.dart';
-import 'homeScreen.dart';
+import 'rootScreen.dart';
 
 
 class SensorScreen extends StatefulWidget {
@@ -56,7 +56,7 @@ class _SensorScreenState extends State<SensorScreen> {
   }
   //send data to server in order to login
   Future<List<dynamic>> fetchPlants() async {
-    final response = await http.get(Uri.parse('http://10.100.102.4:5000/plants'));
+    final response = await http.get(Uri.parse('http://192.168.1.166:5000/plants'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -78,7 +78,7 @@ class _SensorScreenState extends State<SensorScreen> {
 
   //send data to server in order to login
   Future<List<dynamic>> fetchPlants2(String l,String t,String m) async {
-    final response = await http.get(Uri.parse('http://10.100.102.4:5000/plants'
+    final response = await http.get(Uri.parse('http://192.168.1.166:5000/plants'
         '/$l/$t/$m'));
 
     if (response.statusCode == 200) {
@@ -101,7 +101,6 @@ class _SensorScreenState extends State<SensorScreen> {
         backgroundColor: Colors.green,
       ),
       body: Container(
-        color: Colors.green.shade800,
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

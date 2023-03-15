@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:plantit/screens/sensorScreen.dart';
 
 import 'loginScreen.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class RootScreen extends StatefulWidget {
+  const RootScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<RootScreen> createState() => _RootScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _RootScreenState extends State<RootScreen> {
   int _selectedIndex = 0;
 
   final List<Widget> _widgetOptions = <Widget>[
     const HomePage(), // create a separate screen for each navigation item
-    const SearchPage(),
+    const SensorScreen(),
     const FavoritesPage(),
     const ProfilePage(),
   ];
@@ -28,9 +29,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Plant App'),
-      ),
       body: IndexedStack(
         index: _selectedIndex,
         children: _widgetOptions,
@@ -44,8 +42,8 @@ class _HomeScreenState extends State<HomeScreen> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
+            icon: Icon(Icons.sensors_outlined),
+            label: 'Sensors',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite),

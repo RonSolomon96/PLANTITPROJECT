@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:plantit/reusable/reusableFuncs.dart';
 import '../reusable/reusableWidget.dart';
 import 'dart:convert';
-import 'homeScreen.dart';
+import 'rootScreen.dart';
 import 'package:http/http.dart' as http;
 
-String url = "http://10.100.102.4:5000";
+String url = "http://192.168.1.166:5000";
+
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -109,7 +110,7 @@ class _SignupScreenState extends State<SignupScreen> {
         // If the server did return a 201 CREATED response,
         //then move to home screen
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const HomeScreen()))
+            MaterialPageRoute(builder: (context) => const RootScreen()))
       } else {
         // If the server did not return a 201 CREATED response,
         // then show snackbar.

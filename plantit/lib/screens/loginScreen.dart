@@ -4,10 +4,10 @@ import 'package:plantit/screens/signupScreen.dart';
 import '../reusable/reusableWidget.dart';
 import '../reusable/reusableFuncs.dart';
 import 'dart:convert';
-import 'homeScreen.dart';
+import 'rootScreen.dart';
 import 'package:http/http.dart' as http;
 
-String url = "http://10.100.102.4:5000";
+String url = "http://192.168.1.166:5000";
 
 
 class LoginScreen extends StatefulWidget {
@@ -85,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
         // If the server did return a 200 response,
         //then move to home screen
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const HomeScreen()))
+            MaterialPageRoute(builder: (context) => const RootScreen()))
       } else {
         // If the server did not return a 200 response,
         // then show snackbar.

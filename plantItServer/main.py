@@ -6,14 +6,14 @@ from flask import Flask, request, jsonify
 
 # Initialize pyrebase with user credentials
 config = {
-  'apiKey': "AIzaSyCRaKSS_ANuUa1QibLkWuntJ135EYK9CXY",
-  'authDomain': "plantitdb1.firebaseapp.com",
-  'projectId': "plantitdb1",
-  'storageBucket': "plantitdb1.appspot.com",
-  'messagingSenderId': "959335294179",
-  'appId': "1:959335294179:web:21f768d3aab7a7c5b191d6",
-  'measurementId': "G-JNXM9WXHXZ",
-  'databaseURL': ''}
+    'apiKey': "AIzaSyCRaKSS_ANuUa1QibLkWuntJ135EYK9CXY",
+    'authDomain': "plantitdb1.firebaseapp.com",
+    'projectId': "plantitdb1",
+    'storageBucket': "plantitdb1.appspot.com",
+    'messagingSenderId': "959335294179",
+    'appId': "1:959335294179:web:21f768d3aab7a7c5b191d6",
+    'measurementId': "G-JNXM9WXHXZ",
+    'databaseURL': ''}
 
 firebase = pyrebase.initialize_app(config)
 # Use pyrebase to authenticate users
@@ -26,7 +26,6 @@ firebase_admin.initialize_app(cred)
 # Use firebase_admin to perform administrative tasks, such as managing user accounts or accessing the Cloud Firestore
 # database
 db = firestore.client()
-
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -97,6 +96,7 @@ def reset():
     except:
         return jsonify({"message": "Invalid email."}), 400
 
+
 # Define routes for CRUD operations
 @app.route('/users', methods=['POST'])
 def create_user():
@@ -126,17 +126,20 @@ def read_plants():
     p = [doc.to_dict() for doc in db.collection('Plants').stream()]
     return jsonify(p), 200
 
+
 @app.route('/plants/<light>/<temp>/<moist>', methods=['GET'])
-def read_plant(light,temp,moist):
+def read_plant(light, temp, moist):
     """
     Retrieve a specific user by ID from Firestore DB.
     """
-    plant = [doc.to_dict() for doc in db.collection('Plants').where("Light","==", light).
-        where("Temperature","==", temp).where("Humidity","==", moist).stream()]
+    plant = [doc.to_dict() for doc in db.collection('Plants').where("Light", "==", light).
+        where("Temperature", "==", temp).where("Humidity", "==", moist).stream()]
     # if plant.exists:
     return jsonify(plant), 200
-   # else:
-     #   return jsonify({"message": "User not found."}), 404
+
+
+# else:
+#   return jsonify({"message": "User not found."}), 404
 
 
 @app.route('/users/<user_id>', methods=['GET'])
@@ -175,5 +178,3 @@ def delete_user(user_id):
 # Run Flask app
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
-
-
