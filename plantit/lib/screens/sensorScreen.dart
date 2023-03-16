@@ -37,26 +37,29 @@ class _SensorScreenState extends State<SensorScreen> {
           final message = utf8.decode(datagram.data);
           final messageParts = message.split(':');
 
-          if (messageParts[0] == 'light') {
+          if (messageParts[0] == 'lightRead') {
             setState(() {
               _light = messageParts[1];
             });
-          } else if (messageParts[0] == 'temperature') {
+          }
+          if (messageParts[2] == 'humidity') {
             setState(() {
-              _temperature = messageParts[1];
+              _temperature = messageParts[3];
             });
-          } else if (messageParts[0] == 'moisture') {
+          }
+          if (messageParts[4] == 'temperature') {
             setState(() {
-              _moisture = messageParts[1];
+              _moisture = messageParts[5];
             });
           }
         }
       }
     });
+
   }
   //send data to server in order to login
   Future<List<dynamic>> fetchPlants() async {
-    final response = await http.get(Uri.parse('http://192.168.1.166:5000/plants'));
+    final response = await http.get(Uri.parse('http://172.20.10.2:5000/plants'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -78,7 +81,7 @@ class _SensorScreenState extends State<SensorScreen> {
 
   //send data to server in order to login
   Future<List<dynamic>> fetchPlants2(String l,String t,String m) async {
-    final response = await http.get(Uri.parse('http://192.168.1.166:5000/plants'
+    final response = await http.get(Uri.parse('http://172.20.10.2:5000/plants'
         '/$l/$t/$m'));
 
     if (response.statusCode == 200) {
