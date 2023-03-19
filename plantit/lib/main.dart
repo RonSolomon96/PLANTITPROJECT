@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:plantit/screens/choosePlantScreen.dart';
-import 'package:plantit/screens/rootScreen.dart';
+import 'package:plantit/constants.dart';
 import 'package:plantit/screens/loginScreen.dart';
-import 'package:plantit/screens/sensorScreen.dart';
+
+String serverUrl = 'http://192.168.1.166:5000';
 
 void main() {
   runApp(const MyApp());
@@ -17,9 +17,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'PLANTIT',
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        scaffoldBackgroundColor: kBackgroundColor,
+        primarySwatch: kPrimaryColor,
+        textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextColor),
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const RootScreen(),
+      home: const LoginScreen(),
       debugShowCheckedModeBanner: false,
     );
   }

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:plantit/main.dart';
 import 'package:plantit/reusable/reusableFuncs.dart';
 import '../reusable/reusableWidget.dart';
 import 'dart:convert';
 import 'rootScreen.dart';
 import 'package:http/http.dart' as http;
 
-String url = "http://192.168.1.166:5000";
 
 class ResetPassword extends StatefulWidget {
   const ResetPassword({Key? key}) : super(key: key);
@@ -61,7 +61,7 @@ class _ResetPasswordState extends State<ResetPassword> {
   //the reset function
   void reset(BuildContext context) async {
     await http.post(
-        Uri.parse("$url/resetPass" ),
+        Uri.parse("$serverUrl/resetPass" ),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

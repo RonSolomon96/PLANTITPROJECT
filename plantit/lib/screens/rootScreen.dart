@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:plantit/screens/sensorScreen.dart';
 
+import 'homeScreen.dart';
 import 'loginScreen.dart';
 
 class RootScreen extends StatefulWidget {
-  const RootScreen({Key? key}) : super(key: key);
+
+  final String userEmail;
+
+  const RootScreen({
+    Key? key,
+    required this.userEmail,
+  }) : super(key: key);
 
   @override
   State<RootScreen> createState() => _RootScreenState();
@@ -13,12 +20,22 @@ class RootScreen extends StatefulWidget {
 class _RootScreenState extends State<RootScreen> {
   int _selectedIndex = 0;
 
-  final List<Widget> _widgetOptions = <Widget>[
-    const HomePage(), // create a separate screen for each navigation item
-    const SensorScreen(),
-    const FavoritesPage(),
-    const ProfilePage(),
-  ];
+  List<Widget> _widgetOptions = [];
+
+  @override
+  void initState() {
+    super.initState();
+    print(widget.userEmail);
+    _widgetOptions = <Widget>[
+      MyGardenScreen(
+        userEmail: widget.userEmail,
+      ),
+      const SensorScreen(),
+      const FavoritesPage(),
+      const ProfilePage(),
+    ];
+  }
+
 
   void _onItemTapped(int index) {
     setState(() {

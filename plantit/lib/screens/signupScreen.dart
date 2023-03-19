@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:plantit/main.dart';
 import 'package:plantit/reusable/reusableFuncs.dart';
 import '../reusable/reusableWidget.dart';
 import 'dart:convert';
 import 'rootScreen.dart';
 import 'package:http/http.dart' as http;
 
-String url = "http://192.168.1.166:5000";
 
 
 class SignupScreen extends StatefulWidget {
@@ -93,7 +93,7 @@ class _SignupScreenState extends State<SignupScreen> {
     }
     //send data to server in order to create user
     await http.post(
-      Uri.parse("$url/register" ),
+      Uri.parse("$serverUrl/register" ),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -101,16 +101,25 @@ class _SignupScreenState extends State<SignupScreen> {
         "email" : emailTextController.text,
         "password" : passwordTextController.text,
         "username" : userNameTextController.text
-      })).then((value) => {
+      })).then((value) async => {
       if(value.statusCode == 201) {
+        // If the server did return a 201 CREATED response,
+        //then move to home screen
+        await http.post(
+            Uri.parse("$serverUrl/users" ),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: jsonEncode(<String, String>{
+              "email" : emailTextController.text,
+              "password" : passwordTextController.text,
+              "username" : userNameTextController.text
+            })).then((value) => Navigator.push(context,
+            MaterialPageRoute(builder: (context) => RootScreen(userEmail: emailTextController.text)))),
         emailTextController.clear(),
         userNameTextController.clear(),
         passwordTextController.clear(),
         password2TextController.clear(),
-        // If the server did return a 201 CREATED response,
-        //then move to home screen
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const RootScreen()))
       } else {
         // If the server did not return a 201 CREATED response,
         // then show snackbar.
