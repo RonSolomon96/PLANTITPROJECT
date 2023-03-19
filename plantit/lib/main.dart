@@ -22,6 +22,9 @@ class MyApp extends StatelessWidget {
         textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextColor),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
+      routes: {
+        '/login': (context) => const LoginScreen(),
+      },
       home: const LoginScreen(),
       debugShowCheckedModeBanner: false,
     );

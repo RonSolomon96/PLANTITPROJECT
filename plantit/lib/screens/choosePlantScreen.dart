@@ -61,7 +61,6 @@ class ChoosePlantScreen extends StatelessWidget {
                         backgroundColor: Colors.green,
                       child: Text('${index + 1}'),
                     ),
-
                     onTap: () {
                       // Handle plant card tap
                     },

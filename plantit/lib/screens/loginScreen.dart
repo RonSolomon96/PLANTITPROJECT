@@ -37,13 +37,13 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).size.height * 0.13, 20, 0),
+            padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).size.height * 0.10, 20, 0),
             child: Column(
               children: <Widget>[
                 titleWidget("Sign In"),
                 const SizedBox(height: 20),
                 logoWidget("assets/images/logo.png", 240, 240),
-                const SizedBox(height: 30),
+                const Text("PlantIt", style: TextStyle(fontSize: 50, fontFamily: "IndieFlower",color: Colors.white),),
                 reusableTextField("Enter Email", Icons.email_outlined, false, emailTextController),
                 const SizedBox(height: 20),
                 reusableTextField("Enter Password", Icons.lock_outline, true, passwordTextController),

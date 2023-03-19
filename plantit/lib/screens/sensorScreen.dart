@@ -95,7 +95,7 @@ class _SensorScreenState extends State<SensorScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Sensors'),
-        backgroundColor: Colors.green,
+        automaticallyImplyLeading: false,
       ),
       body: Container(
         child: Center(

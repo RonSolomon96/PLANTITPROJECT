@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:plantit/constants.dart';
+import 'package:plantit/screens/infoScreen.dart';
 import 'package:plantit/screens/sensorScreen.dart';
 
 import 'homeScreen.dart';
@@ -25,14 +27,12 @@ class _RootScreenState extends State<RootScreen> {
   @override
   void initState() {
     super.initState();
-    print(widget.userEmail);
     _widgetOptions = <Widget>[
       MyGardenScreen(
         userEmail: widget.userEmail,
       ),
       const SensorScreen(),
-      const FavoritesPage(),
-      const ProfilePage(),
+      const InfoScreen(),
     ];
   }
 
@@ -51,24 +51,20 @@ class _RootScreenState extends State<RootScreen> {
         children: _widgetOptions,
       ),
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.black,
+        selectedItemColor: kPrimaryColor,
         unselectedItemColor: Colors.black54,
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: Icon(Icons.local_florist),
+            label: 'My Plants',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.sensors_outlined),
             label: 'Sensors',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Favorites',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
+            icon: Icon(Icons.info_outline),
+            label: 'information',
           ),
         ],
         currentIndex: _selectedIndex,
