@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:plantit/constants.dart';
+import 'package:plantit/screens/infoCard/details_screen.dart';
+import 'package:plantit/screens/values/constants.dart';
 import 'package:plantit/screens/loginScreen.dart';
 
 String serverUrl = 'http://192.168.1.166:5000';
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login': (context) => const LoginScreen(),
       },
-      home: const LoginScreen(),
+      home: DetailsScreen(),
       debugShowCheckedModeBanner: false,
     );
   }

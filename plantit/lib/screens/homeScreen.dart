@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
-import 'package:plantit/constants.dart';
+import 'package:plantit/screens/values/constants.dart';
 import 'package:plantit/main.dart';
 
 class MyGardenScreen extends StatefulWidget {
@@ -89,16 +89,29 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                               Text(
                                 'Hey $_username,\n  Welcome to PlantIt!',
                                 style: const TextStyle(
-                                  fontFamily: 'IndieFlower',
                                     color: Colors.white,fontSize: 25, fontWeight: FontWeight.bold, letterSpacing: 1
                                 ),
                               ),
                               const Spacer(),
-                              IconButton(
-                                icon: const Icon(Icons.logout, color: Colors.white70,),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
+                              Container(
+                                height: 30,
+                                width: 75,
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.3),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: MaterialButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text(
+                                    'Log Out',
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -127,7 +140,7 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                               controller: _searchController,
                               onChanged: _filterPlants,
                               decoration: const InputDecoration(
-                                hintText: "Search in your garden here...",
+                                hintText: "Search here...",
                                 enabledBorder: InputBorder.none,
                                 focusedBorder: InputBorder.none,
                                 suffixIcon: Icon(
@@ -144,7 +157,7 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                       Padding(
                         padding: const EdgeInsets.only(left: 10) ,
                         child: Text(
-                          "Your Garden :",
+                          "My Garden :",
                           style: TextStyle(
                               color: Colors.green.shade300,
                               fontSize: 15,
@@ -173,16 +186,39 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                         : ListView.builder(
                       itemCount: _filteredPlants!.length,
                       itemBuilder: (context, index) => Card(
+                        elevation: 4,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
                         child: ListTile(
-                          title: Text(_filteredPlants![index]),
-                          subtitle: Text('Description of plant ${index + 1}'),
-                          leading: CircleAvatar(
-                            backgroundColor: Colors.green,
-                            child: Text('${index + 1}'),
+                          contentPadding: const EdgeInsets.all(16),
+                          leading: SizedBox(
+                            width: 60,
+                            height: 60,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: Image.asset(
+                                'assets/images/5.ico',
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
-                          onTap: () {
-                            // Handle plant card tap
-                          },
+                          title: Text(
+                            _filteredPlants![index],
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          subtitle: Text(
+                            'Description of plant ${index + 1}',
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          trailing: IconButton(
+                            onPressed: () {},
+                            icon: const Icon(Icons.arrow_forward_ios),
+                          ),
                         ),
                       ),
                     ),
@@ -193,63 +229,4 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
   }
 }
 
-//
-// _username == null || _userPlants == null
-// ? const Center(child: CircularProgressIndicator())
-// : Column(
-// children: [
-// Padding(
-// padding: const EdgeInsets.all(16.0),
-// child: Column(
-// crossAxisAlignment: CrossAxisAlignment.start,
-// children: [
-// Text(
-// 'Welcome, $_username!',
-// style: const TextStyle(fontSize: 20, color: Colors.green,),
-// ),
-// const SizedBox(height: 16),
-// TextField(
-// controller: _searchController,
-// onChanged: _filterPlants,
-// decoration: const InputDecoration(
-// labelText: 'Search your plants',
-// prefixIcon: Icon(Icons.search),
-// border: OutlineInputBorder(),
-// ),
-// ),
-// ],
-// ),
-// ),
-// Expanded(
-// child: _filteredPlants!.isEmpty
-// ? Center(
-// child: Column(
-// mainAxisAlignment: MainAxisAlignment.center,
-// children: const [
-// Icon(
-// Icons.local_florist,
-// size: 50.0,
-// ),
-// SizedBox(height: 20.0),
-// Text(
-// 'No plants yet',
-// style: TextStyle(fontSize: 20.0),
-// ),
-// ],
-// ),
-// )
-//     : ListView.builder(
-// itemCount: _filteredPlants!.length,
-// itemBuilder: (context, index) => Card(
-// child: ListTile(
-// title: Text(_filteredPlants![index]),
-// onTap: () {
-// // Handle plant card tap
-// },
-// ),
-// ),
-// ),
-// ),
-// ],
-//),
 

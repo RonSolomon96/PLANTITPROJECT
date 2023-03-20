@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:plantit/constants.dart';
+import 'package:plantit/screens/values/constants.dart';
 import 'package:plantit/screens/infoScreen.dart';
 import 'package:plantit/screens/sensorScreen.dart';
 
