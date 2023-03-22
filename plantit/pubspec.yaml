@@ -39,6 +39,7 @@ dependencies:
   awesome_snackbar_content: ^0.1.1
   flutter_svg: ^1.1.6
   favorite_button: ^0.0.4
+  image_picker: ^0.8.7
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:plantit/screens/infoCard/details_screen.dart';
+import 'package:plantit/screens/scanScreen.dart';
 import 'package:plantit/screens/values/constants.dart';
 import 'package:plantit/screens/loginScreen.dart';
 
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login': (context) => const LoginScreen(),
       },
-      home: DetailsScreen(),
+      home: CameraScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
