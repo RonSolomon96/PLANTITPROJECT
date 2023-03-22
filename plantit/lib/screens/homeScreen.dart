@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:plantit/screens/infoCard/details_screen.dart';
 import 'package:plantit/screens/values/constants.dart';
 import 'package:plantit/main.dart';
 
@@ -78,7 +79,7 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                           ),
                           height: size.height * 0.25 - 27,
                           decoration: const BoxDecoration(
-                              color: kPrimaryColor,
+                              color: Color(0xff07a36f),
                               borderRadius: BorderRadius.only(
                                   bottomLeft: Radius.circular(36),
                                   bottomRight: Radius.circular(36)
@@ -216,7 +217,9 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                             overflow: TextOverflow.ellipsis,
                           ),
                           trailing: IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => DetailsScreen()));
+                            },
                             icon: const Icon(Icons.arrow_forward_ios),
                           ),
                         ),

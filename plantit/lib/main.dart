@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login': (context) => const LoginScreen(),
       },
-      home: CameraScreen(),
+      home: const LoginScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
