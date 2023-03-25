@@ -132,8 +132,8 @@ def read_plant(light,temp,moist):
     """
     Retrieve a specific user by ID from Firestore DB.
     """
-    plant = [doc.to_dict() for doc in db.collection('Plants').where("Light","==", light).
-        where("Temperature","==", temp).where("Humidity","==", moist).stream()]
+    plant = [doc.to_dict() for doc in db.collection('Plants').where("Light","array_contains", light).
+        where("Temperature","array_contains", temp).where("Humidity","array_contains", moist).stream()]
     # if plant.exists:
     return jsonify(plant), 200
    # else:

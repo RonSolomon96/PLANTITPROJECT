@@ -50,19 +50,67 @@ class _SensorScreenState extends State<SensorScreen>
           final messageParts = message.split(':');
 
           if (messageParts[0] == 'lightRead') {
-            setState(() {
+
               _light = messageParts[1];
-            });
+              if (_light != '') {
+                int num = int.parse(_light);
+                num = num ~/ 300;
+                if (num == 0) {
+                  setState(() {
+                    _light = '1';
+                  });
+                }
+                else {
+                  setState(() {
+                    _light = num.toString();
+                  });
+                }
+              }
+              print(_light);
           }
           if (messageParts[2] == 'humidity') {
-            setState(() {
-              _temperature = messageParts[3];
-            });
-          }
-          if (messageParts[4] == 'temperature') {
-            setState(() {
+
               _moisture = messageParts[5];
-            });
+              if (_temperature != '') {
+                int num = int.parse(_temperature);
+                if (num < 24) {
+                  setState(() {
+                    _temperature = '1';
+                  });
+                }
+                else  if (num < 50) {
+                  setState(() {
+                    _temperature = '2';
+                  });
+                }
+                else  if (num > 49) {
+                  setState(() {
+                    _temperature = '3';
+                  });
+                }
+              }
+          }
+
+          if (messageParts[4] == 'temperature') {
+            _temperature = messageParts[3];
+            if (_temperature != '') {
+              int num = int.parse(_temperature);
+              if (num < 18) {
+                setState(() {
+                  _temperature = '1';
+                });
+              }
+              else  if (num < 23) {
+                setState(() {
+                  _temperature = '2';
+                });
+              }
+              else  if (num > 23) {
+                setState(() {
+                  _temperature = '3';
+                });
+              }
+            }
           }
         }
       }
@@ -119,7 +167,7 @@ class _SensorScreenState extends State<SensorScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green.shade700,
+        backgroundColor: Colors.teal,
         title: const Text(
           'Sensors',
           style: TextStyle(fontWeight: FontWeight.bold),
@@ -134,7 +182,7 @@ class _SensorScreenState extends State<SensorScreen>
           gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [Color(0xffbcd6c3), Color(0xffa1cfac), Color(0xff72d48a), Color(0xff65d584)]
+              colors: [Color(0xffbfd9cc), Color(0xff8ccaaf), Color(0xff59bf96), Color.fromARGB(255, 7, 163, 111)]
           ),
         ),
         child:Center(

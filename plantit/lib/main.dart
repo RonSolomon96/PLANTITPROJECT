@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login': (context) => const LoginScreen(),
       },
-      home: const SensorScreen(),
+      home: const LoginScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
