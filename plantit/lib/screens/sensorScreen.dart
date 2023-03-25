@@ -1,21 +1,23 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:plantit/main.dart';
-import 'choosePlantScreen.dart';
-import 'rootScreen.dart';
+import 'package:flutter/material.dart';
 
+import '../main.dart';
+import 'choosePlantScreen.dart';
 
 class SensorScreen extends StatefulWidget {
   const SensorScreen({Key? key}) : super(key: key);
 
   @override
-  State<SensorScreen> createState() => _SensorScreenState();
+  _SensorScreenState createState() => _SensorScreenState();
 }
 
-
-class _SensorScreenState extends State<SensorScreen> {
+class _SensorScreenState extends State<SensorScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  bool _isAnimating = false;
+  bool _isComplete = false;
   String _light = '2';
   String _temperature = '2';
   String _moisture = '2';
@@ -25,8 +27,17 @@ class _SensorScreenState extends State<SensorScreen> {
   @override
   void initState() {
     super.initState();
+    _controller = AnimationController(
+      duration: const Duration(seconds: 5),
+      vsync: this,
+    )..addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        setState(() {
+          _isComplete = true;
+        });
+      }
+    });
   }
-
 
   void _setupSocket() async {
     _socket = await RawDatagramSocket.bind(InternetAddress.anyIPv4, 12345);
@@ -91,70 +102,131 @@ class _SensorScreenState extends State<SensorScreen> {
 
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _startAnimation() {
+    setState(() {
+      _isAnimating = true;
+    });
+    _controller.reset();
+    _controller.forward();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sensors'),
-        automaticallyImplyLeading: false,
+        backgroundColor: Colors.green.shade700,
+        title: const Text(
+          'Sensors',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
       ),
-      body: Container(
-        child: Center(
+      body:
+      Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Color(0xffbcd6c3), Color(0xffa1cfac), Color(0xff72d48a), Color(0xff65d584)]
+          ),
+        ),
+        child:Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                'Light: $_light',
-                style: TextStyle(color: Colors.green.shade200, fontSize: 24),
+              GestureDetector(
+                onTap: () {
+                  _startAnimation();
+                  print("hi");
+                  _setupSocket();
+                },
+                child: Container(
+                  height: 150,
+                  width: 150,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(75),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.5),
+                        blurRadius: 10,
+                        offset: Offset(0, 5),
+                      ),
+                    ],
+                  ),
+                  child: Center(
+                    child: _isAnimating
+                        ? _isComplete
+                        ? Icon(
+                      Icons.check_circle,
+                      size: 80,
+                      color: Colors.green.shade600,
+                    )
+                        : SizedBox(
+                      height: 80,
+                      width: 80,
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                            Colors.green.shade600),
+                      ),
+                    )
+                        : Icon(
+                      Icons.play_arrow,
+                      size: 80,
+                      color: Colors.green.shade600,
+                    ),
+                  ),
+                ),
               ),
-              Text(
-                'Temperature: $_temperature',
-                style: TextStyle(color: Colors.green.shade200, fontSize: 24),
-              ),
-              Text(
-                'Moisture: $_moisture',
-                style: TextStyle(color: Colors.green.shade200, fontSize: 24),
-              ),
+              SizedBox(height: 40),
+              _isComplete
+                  ? ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.green.shade700,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                onPressed: ()  async {
+                  var p;
 
-                  FloatingActionButton(
-                    onPressed: () {
-                      print("hi");
-                      _setupSocket();
-                    },
-                    backgroundColor: Colors.green.shade900, // call _setupSocket when the button is pressed
-                    child: const Icon(Icons.play_arrow),
-                  )
+                  if (_light != '') {
+                    p = await fetchPlants2(_light, _temperature, _moisture);
+                  }
+                  else{
+                    p = await fetchPlants();
+                  }
+
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) =>  ChoosePlantScreen(
+                          light: _light,
+                          moisture:_moisture ,
+                          temperature: _temperature, plantCollection: p)));
+                  setState(() {
+                    _isComplete = false;
+                    _isAnimating = false;
+                  });
+                },
+                // Add code here to send the data
+
+                child: const Text(
+                  'Send',
+                  style:
+                  TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+              )
+                  : SizedBox(),
             ],
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-
-        onPressed: () async {
-          var p;
-          if (_light != '') {
-             p = await fetchPlants2(_light, _temperature, _moisture);
-          }
-          else{
-             p = await fetchPlants();
-          }
-
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) =>  ChoosePlantScreen(
-                light: _light,
-                moisture:_moisture ,
-                temperature: _temperature, plantCollection: p)));
-        },
-        backgroundColor: Colors.green.shade900, // call _setupSocket when the button is pressed
-        child: const Text("Send"),
-      ),
     );
-
-  }
-
-
-  @override
-  void dispose() {
-    _socket.close();
-    super.dispose();
   }
 }
