@@ -22,6 +22,8 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailTextController = TextEditingController();
   TextEditingController passwordTextController = TextEditingController();
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,6 +64,22 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  Future<List<dynamic>> fetchPlants() async {
+    final response = await http.get(Uri.parse('$serverUrl/plants'));
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON response
+      return jsonDecode(response.body);
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load plants');
+    }
+  }
+
+
+
   //the sign in function
   void signIn(BuildContext context) async {
     //check that all fields are not empty
@@ -71,6 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     //send data to server in order to login
     String theEmail;
+    var db = await fetchPlants();
     await http.post(
         Uri.parse("$serverUrl/login" ),
         headers: <String, String>{
@@ -81,13 +100,14 @@ class _LoginScreenState extends State<LoginScreen> {
           "password" : passwordTextController.text,
         })).then((value) => {
       if(value.statusCode == 200) {
+
         theEmail = emailTextController.text,
         emailTextController.clear(),
         passwordTextController.clear(),
         // If the server did return a 200 response,
         //then move to home screen
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => RootScreen(userEmail: theEmail))),
+            MaterialPageRoute(builder: (context) => RootScreen(userEmail: theEmail, plantDb: db,))),
       } else {
         // If the server did not return a 200 response,
         // then show snackbar.

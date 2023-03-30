@@ -9,10 +9,12 @@ import 'loginScreen.dart';
 class RootScreen extends StatefulWidget {
 
   final String userEmail;
+  final List plantDb;
 
   const RootScreen({
     Key? key,
     required this.userEmail,
+    required this.plantDb,
   }) : super(key: key);
 
   @override
@@ -32,7 +34,7 @@ class _RootScreenState extends State<RootScreen> {
         userEmail: widget.userEmail,
       ),
       const SensorScreen(),
-      const InfoScreen(),
+       InfoScreen(plantCollection: widget.plantDb,),
     ];
   }
 

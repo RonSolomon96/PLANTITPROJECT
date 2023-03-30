@@ -67,6 +67,21 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
+  Future<List<dynamic>> fetchPlants() async {
+    final response = await http.get(Uri.parse('$serverUrl/plants'));
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON response
+      return jsonDecode(response.body);
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load plants');
+    }
+  }
+
+
   //the sign up function
   void signUp(BuildContext context) async {
     //check that all fields are not empty
@@ -85,12 +100,15 @@ class _SignupScreenState extends State<SignupScreen> {
     //one that contains uppercase letters, lowercase letters, and numbers,
     // and is more than 6 characters
     String password = passwordTextController.text;
+
     bool isStrongPass = RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$').hasMatch(password);
     if (!isStrongPass) {
       showSnackbar(context, "password must be more than 6 characters and contain"
           " at least one numeric digit, one uppercase and one lowercase letter");
       return;
     }
+
+    var db = await fetchPlants();
     //send data to server in order to create user
     await http.post(
       Uri.parse("$serverUrl/register" ),
@@ -115,7 +133,8 @@ class _SignupScreenState extends State<SignupScreen> {
               "password" : passwordTextController.text,
               "username" : userNameTextController.text
             })).then((value) => Navigator.push(context,
-            MaterialPageRoute(builder: (context) => RootScreen(userEmail: emailTextController.text)))),
+            MaterialPageRoute(builder: (context) => RootScreen(userEmail: emailTextController.text, plantDb: db,
+            )))),
         emailTextController.clear(),
         userNameTextController.clear(),
         passwordTextController.clear(),

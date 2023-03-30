@@ -24,7 +24,7 @@ class BuyAndFavoriteButton extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () {},
               child: Text(
-                "add to cart",
+                "add to my garden",
                 style: TextStyle(fontSize: 20),
               ),
               style: ElevatedButton.styleFrom(
@@ -35,13 +35,7 @@ class BuyAndFavoriteButton extends StatelessWidget {
               ),
             ),
           ),
-          FavoriteButton(
-            isFavorite: true,
-            iconColor: Color.fromARGB(255, 7, 163, 111),
-            valueChanged: (_isFavorite) {
-              print('Is Favorite : $_isFavorite');
-            },
-          ),
+         
         ],
       ),
     );

@@ -28,9 +28,9 @@ class TitleAndPrice extends StatelessWidget {
                       color: ColorsPalette.kTextColor,
                       fontWeight: FontWeight.bold),
                 ),
-                TextSpan(
-                  text: country,
-                  style: const TextStyle(
+                const TextSpan(
+                  text: "country",
+                  style: TextStyle(
                     fontSize: 20,
                     color: ColorsPalette.kPrimaryColor,
                     fontWeight: FontWeight.w300,
@@ -39,12 +39,7 @@ class TitleAndPrice extends StatelessWidget {
               ],
             ),
           ),
-          const Spacer(),
-          Text("R\$$price",
-              style: Theme.of(context)
-                  .textTheme
-                  .headline5
-                  ?.copyWith(color: ColorsPalette.kPrimaryColor)),
+
         ],
       ),
     );

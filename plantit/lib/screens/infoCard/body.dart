@@ -10,7 +10,9 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 class Body extends StatefulWidget {
-  const Body({Key? key}) : super(key: key);
+  final String pName;
+  final String des;
+  const Body({Key? key, required this.pName,required this.des}) : super(key: key);
 
   @override
   State<Body> createState() => _BodyState();
@@ -18,6 +20,7 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   File? _image;
+
 
   Future<void> _getImage(ImageSource source) async {
     final image = await ImagePicker().pickImage(source: source);
@@ -31,13 +34,13 @@ class _BodyState extends State<Body> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Select image source"),
+          title: const Text("Select image source"),
           content: SingleChildScrollView(
             child: ListBody(
               children: [
                 GestureDetector(
                   child: Row(
-                    children: [
+                    children: const [
                       Padding(
                         padding: EdgeInsets.all(10.0),
                         child: Icon(Icons.camera_alt),
@@ -50,10 +53,10 @@ class _BodyState extends State<Body> {
                     Navigator.of(context).pop();
                   },
                 ),
-                Padding(padding: EdgeInsets.all(10.0)),
+                const Padding(padding: EdgeInsets.all(10.0)),
                 GestureDetector(
                   child: Row(
-                    children: [
+                    children: const [
                       Padding(
                         padding: EdgeInsets.all(10.0),
                         child: Icon(Icons.image),
@@ -78,21 +81,23 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    String name = widget.pName;
+    String des = widget.des;
     return SingleChildScrollView(
       child: Column(
         children: [
           ImageAndIcons(size: size),
           TitleAndPrice(
-            title: "Angelica",
+            title: name,
             country: "Germany",
             price: 856,
           ),
           BuyAndFavoriteButton(size: size),
-          SizedBox(
+          const SizedBox(
             height: 16,
           ),
-          ProductDescription(size: size),
-          SizedBox(
+          ProductDescription(size: size ,des:des),
+          const SizedBox(
             height: 16,
           ),
           Column(

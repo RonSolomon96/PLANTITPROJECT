@@ -4,11 +4,11 @@ import 'package:plantit/screens/values/colors_palette.dart';
 class ProductDescription extends StatelessWidget {
   const ProductDescription({
     Key? key,
-    required this.size,
+    required this.size, required this.des,
   }) : super(key: key);
 
   final Size size;
-
+  final String des;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -40,8 +40,8 @@ class ProductDescription extends StatelessWidget {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text:
-                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce id turpis et lorem aliquam rhoncus. Donec eu dui tincidunt, ornare lacus sit amet, vestibulum lacus. Aliquam id consequat mi",
+                      text:des
+                      ,
                       style: Theme.of(context).textTheme.headline6?.copyWith(
                           color: const Color.fromARGB(255, 56, 75, 49),
                           fontWeight: FontWeight.w300),
