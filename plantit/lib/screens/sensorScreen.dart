@@ -62,6 +62,7 @@ class _SensorScreenState extends State<SensorScreen>
                 }
                 else {
                   setState(() {
+                    num++;
                     _light = num.toString();
                   });
                 }
@@ -70,31 +71,35 @@ class _SensorScreenState extends State<SensorScreen>
           }
           if (messageParts[2] == 'humidity') {
 
-              _moisture = messageParts[5];
-              if (_temperature != '') {
-                int num = int.parse(_temperature);
+              _moisture = messageParts[3];
+              if (_moisture != '') {
+                double a = double.parse(_moisture);
+                int num = a.round();
+                print("themoistis : ");
+                print(_moisture);
                 if (num < 24) {
                   setState(() {
-                    _temperature = '1';
+                    _moisture = '1';
                   });
                 }
                 else  if (num < 50) {
                   setState(() {
-                    _temperature = '2';
+                    _moisture = '2';
                   });
                 }
                 else  if (num > 49) {
                   setState(() {
-                    _temperature = '3';
+                    _moisture = '3';
                   });
                 }
               }
           }
 
           if (messageParts[4] == 'temperature') {
-            _temperature = messageParts[3];
+            _temperature = messageParts[5];
             if (_temperature != '') {
-              int num = int.parse(_temperature);
+              double a = double.parse(_temperature);
+              int num = a.round();
               if (num < 18) {
                 setState(() {
                   _temperature = '1';
