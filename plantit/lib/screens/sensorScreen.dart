@@ -62,7 +62,7 @@ class _SensorScreenState extends State<SensorScreen>
                 }
                 else {
                   setState(() {
-                    num++;
+                     num++;
                     _light = num.toString();
                   });
                 }
