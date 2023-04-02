@@ -1,3 +1,6 @@
+import base64
+import sys
+
 import pyrebase
 import firebase_admin
 from firebase_admin import credentials
@@ -30,6 +33,10 @@ db = firestore.client()
 
 # Initialize Flask app
 app = Flask(__name__)
+
+with open(sys.argv[1], "rb") as image_file:
+    encoded_string = base64.b64encode(image_file.read())
+
 
 
 # Firebase Authentication

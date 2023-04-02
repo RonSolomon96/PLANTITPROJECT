@@ -5,7 +5,7 @@ import 'package:plantit/screens/sensorScreen.dart';
 import 'package:plantit/screens/values/constants.dart';
 import 'package:plantit/screens/loginScreen.dart';
 
-String serverUrl = 'http://172.20.10.3:5000';
+String serverUrl = 'http://192.168.1.166:5000';
 
 void main() {
   runApp(const MyApp());

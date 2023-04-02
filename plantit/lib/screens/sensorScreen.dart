@@ -62,7 +62,7 @@ class _SensorScreenState extends State<SensorScreen>
                 }
                 else {
                   setState(() {
-                   // num++;
+                    num++;
                     _light = num.toString();
                   });
                 }
@@ -105,12 +105,12 @@ class _SensorScreenState extends State<SensorScreen>
                   _temperature = '1';
                 });
               }
-              else  if (num < 25) {
+              else  if (num < 23) {
                 setState(() {
                   _temperature = '2';
                 });
               }
-              else  if (num > 24) {
+              else  if (num > 23) {
                 setState(() {
                   _temperature = '3';
                 });
