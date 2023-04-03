@@ -32,20 +32,14 @@ class InfoScreen extends StatelessWidget {
               itemBuilder: (BuildContext context, int index) {
                 var name = plantCollection[index]["Common_name"];
                 var des;
+                var currentPlant = plantCollection[index];
                 if(name == "African Violets"){
                  des = plantCollection[index]["Description"];
-                }else{des = "hi";}
+
+                }else{plantCollection[index]["Description"]="hi";}
 
                 return GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DetailsScreen(
-                            plantName: name, description: des,
-                          ),
-                        ),
-                      );
                     },
                     child: Card(
                       elevation: 4,
@@ -79,6 +73,14 @@ class InfoScreen extends StatelessWidget {
                         ),
                         trailing: IconButton(
                           onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DetailsScreen(
+                                  c_plant: currentPlant,
+                                ),
+                              ),
+                            );
 
                           },
                           icon: const Icon(Icons.arrow_forward_ios),

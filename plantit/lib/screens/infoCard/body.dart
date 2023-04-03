@@ -10,9 +10,9 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 class Body extends StatefulWidget {
-  final String pName;
-  final String des;
-  const Body({Key? key, required this.pName,required this.des}) : super(key: key);
+   var cPlant;
+
+   Body({Key? key, required this.cPlant}) : super(key: key);
 
   @override
   State<Body> createState() => _BodyState();
@@ -81,8 +81,8 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    String name = widget.pName;
-    String des = widget.des;
+    String name = widget.cPlant["Common_name"];
+    String des = widget.cPlant["Description"];
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -92,7 +92,7 @@ class _BodyState extends State<Body> {
             country: "Germany",
             price: 856,
           ),
-          BuyAndFavoriteButton(size: size),
+          BuyAndFavoriteButton(size: size, cPlnat: widget.cPlant),
           const SizedBox(
             height: 16,
           ),

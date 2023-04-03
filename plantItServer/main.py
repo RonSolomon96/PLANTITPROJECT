@@ -34,8 +34,8 @@ db = firestore.client()
 # Initialize Flask app
 app = Flask(__name__)
 
-with open(sys.argv[1], "rb") as image_file:
-    encoded_string = base64.b64encode(image_file.read())
+# with open(sys.argv[1], "rb") as image_file:
+  #  encoded_string = base64.b64encode(image_file.read())
 
 
 
@@ -114,7 +114,28 @@ def create_user():
     data['UserPlants'] = []
     user_ref = db.collection('users').document(data['email'])
     user_ref.set(data)
+    # user_ref.collection("User_Plants").add({})
     return jsonify({"message": "User created successfully."}), 201
+
+
+# Define routes for CRUD operations
+@app.route('/addToGarden', methods=['POST'])
+def add_to_garden():
+    """
+    Create a new plant with the given data.
+    """
+    data = request.get_json()
+    p =  db.collection('users').document('aaa@gmail.com')
+    p.collection("User_Plants").add(data)
+    p1 = p.get().to_dict()
+    ort = p1["UserPlants"]
+    ort.append(data['nickname'])
+    #print(ort)
+    p.set({"UserPlants" : ort},merge=True)
+
+
+    return jsonify({"message": "Plant created successfully."}), 201
+
 
 
 @app.route('/users', methods=['GET'])

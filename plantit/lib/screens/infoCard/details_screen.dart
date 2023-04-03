@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:plantit/screens/infoCard/body.dart';
 
 class DetailsScreen extends StatelessWidget {
-   final String plantName;
-   final String description;
+      var c_plant;
 
-   const DetailsScreen({Key? key, required this.plantName, required this.description}) : super(key: key);
+
+    DetailsScreen({Key? key, required this.c_plant}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
+    print("rooooooooooon");
+    print(c_plant);
     return  Scaffold(
       body: Body(
-          pName: plantName, des: description,
+        cPlant: c_plant,
       ),
     );
   }

@@ -54,18 +54,17 @@ class ChoosePlantScreen extends StatelessWidget {
             child: ListView.builder(
               itemCount: plantCollection.length, // Number of plants to display
               itemBuilder: (BuildContext context, int index) {
+                var cPlant = plantCollection[index];
                 var name = plantCollection[index]["Common_name"];
+                var des;
+                if(name == "African Violets"){
+                  des = plantCollection[index]["Description"];
+
+                }else{plantCollection[index]["Description"]="hi";}
 
                  return GestureDetector(
                     onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DetailsScreen(
-                        plantName: name, description: '',
-                      ),
-                    ),
-                  );
+
                 },
                 child: Card(
                   elevation: 4,
@@ -86,7 +85,7 @@ class ChoosePlantScreen extends StatelessWidget {
                       ),
                     ),
                     title: Text(
-                      name,
+                      cPlant["Common_name"],
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
@@ -99,6 +98,14 @@ class ChoosePlantScreen extends StatelessWidget {
                     ),
                     trailing: IconButton(
                       onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailsScreen(
+                              c_plant: cPlant,
+                            ),
+                          ),
+                        );
 
                       },
                       icon: const Icon(Icons.arrow_forward_ios),
