@@ -1,16 +1,14 @@
 import 'dart:convert';
 
-import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:plantit/screens/values/colors_palette.dart';
 import 'package:http/http.dart' as http;
 
 import '../../main.dart';
-class BuyAndFavoriteButton extends StatelessWidget {
+class HistoryButton extends StatelessWidget {
   var cPlnat;
 
-   BuyAndFavoriteButton({
+   HistoryButton({
     Key? key,
     required this.size, required this.cPlnat,
   }) : super(key: key);

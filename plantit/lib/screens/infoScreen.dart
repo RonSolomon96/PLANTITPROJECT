@@ -8,11 +8,13 @@ import 'infoCard/details_screen.dart';
 class InfoScreen extends StatelessWidget {
 
   final List plantCollection ;
+  final String userEmail;
 
 
   const InfoScreen({
     Key? key,
     required this.plantCollection,
+    required this.userEmail,
   }) : super(key: key);
 
 
@@ -20,8 +22,9 @@ class InfoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text('Info Screen'),
-        backgroundColor: Colors.green,
+        backgroundColor: const Color(0xff07a36f),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,7 +80,8 @@ class InfoScreen extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => DetailsScreen(
-                                  c_plant: currentPlant,
+                                    c_plant: currentPlant,
+                                    userEmail: userEmail
                                 ),
                               ),
                             );

@@ -7,12 +7,15 @@ import 'package:plantit/screens/values/colors_palette.dart';
 import 'package:http/http.dart' as http;
 
 import '../../main.dart';
-class BuyAndFavoriteButton extends StatelessWidget {
+class AddToGardenButton extends StatelessWidget {
   var cPlnat;
+  final String userEmail;
 
-   BuyAndFavoriteButton({
-    Key? key,
-    required this.size, required this.cPlnat,
+   AddToGardenButton({
+     Key? key,
+     required this.userEmail,
+     required this.size,
+     required this.cPlnat,
   }) : super(key: key);
 
   final Size size;
@@ -67,7 +70,8 @@ class BuyAndFavoriteButton extends StatelessWidget {
                               Map<String, dynamic> stringMap = cPlnat as Map<String, dynamic>;
                               cPlnat["nickname"]=nickname;
                               // do something with the nickname, e.g. save it to a database
-                              final response = await http.post(Uri.parse("$serverUrl/addToGarden" ),headers: <String, String>{
+                              print(userEmail);
+                              final response = await http.post(Uri.parse("$serverUrl/addToGarden?user=$userEmail" ),headers: <String, String>{
                                 'Content-Type': 'application/json; charset=UTF-8',
                               },
                                   body: jsonEncode(stringMap)

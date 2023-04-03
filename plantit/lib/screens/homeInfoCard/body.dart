@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:plantit/screens/infoCard/buy_and_favorite_button.dart';
-import 'package:plantit/screens/infoCard/image_and_icons.dart';
-import 'package:plantit/screens/infoCard/product_description.dart';
-import 'package:plantit/screens/infoCard/title_and_price.dart';
+import 'package:plantit/screens/homeInfoCard/history_button.dart';
+import 'package:plantit/screens/homeInfoCard/image_and_icons.dart';
+import 'package:plantit/screens/homeInfoCard/product_description.dart';
+import 'package:plantit/screens/homeInfoCard/title_and_price.dart';
 import 'package:plantit/screens/values/colors_palette.dart';
-import 'package:plantit/screens/values/constants.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
@@ -92,7 +90,7 @@ class _BodyState extends State<Body> {
             country: "Germany",
             price: 856,
           ),
-          BuyAndFavoriteButton(size: size, cPlnat: widget.cPlant),
+          HistoryButton(size: size, cPlnat: widget.cPlant),
           const SizedBox(
             height: 16,
           ),

@@ -9,6 +9,7 @@ class ChoosePlantScreen extends StatelessWidget {
   final String moisture;
   final String temperature;
   final List plantCollection ;
+  final String userEmail;
 
 
   const ChoosePlantScreen({
@@ -17,6 +18,7 @@ class ChoosePlantScreen extends StatelessWidget {
     required this.moisture,
     required this.temperature,
     required this.plantCollection,
+    required this.userEmail
   }) : super(key: key);
 
 
@@ -30,26 +32,6 @@ class ChoosePlantScreen extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Light: $light',
-                  style: TextStyle(fontSize: 20.0),
-                ),
-                Text(
-                  'Moisture: $moisture',
-                  style: TextStyle(fontSize: 20.0),
-                ),
-                Text(
-                  'Temperature: $temperature',
-                  style: TextStyle(fontSize: 20.0),
-                ),
-              ],
-            ),
-          ),
           Expanded(
             child: ListView.builder(
               itemCount: plantCollection.length, // Number of plants to display
@@ -103,6 +85,7 @@ class ChoosePlantScreen extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (context) => DetailsScreen(
                               c_plant: cPlant,
+                              userEmail: userEmail,
                             ),
                           ),
                         );

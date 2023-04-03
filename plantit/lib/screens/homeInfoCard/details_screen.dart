@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:plantit/screens/infoCard/body.dart';
+import 'package:plantit/screens/homeInfoCard/body.dart';
 
 class DetailsScreen extends StatelessWidget {
       var c_plant;

@@ -33,8 +33,12 @@ class _RootScreenState extends State<RootScreen> {
       MyGardenScreen(
         userEmail: widget.userEmail,
       ),
-      const SensorScreen(),
-       InfoScreen(plantCollection: widget.plantDb,),
+      SensorScreen(
+          userEmail: widget.userEmail
+      ),
+      InfoScreen(
+          plantCollection: widget.plantDb,
+          userEmail: widget.userEmail),
     ];
   }
 

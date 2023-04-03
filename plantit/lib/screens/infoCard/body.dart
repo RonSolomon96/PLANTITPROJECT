@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:plantit/screens/infoCard/buy_and_favorite_button.dart';
+import 'package:plantit/screens/infoCard/add_to_garden_button.dart';
 import 'package:plantit/screens/infoCard/image_and_icons.dart';
 import 'package:plantit/screens/infoCard/product_description.dart';
 import 'package:plantit/screens/infoCard/title_and_price.dart';
@@ -11,8 +11,9 @@ import 'dart:io';
 
 class Body extends StatefulWidget {
    var cPlant;
+   final String userEmail;
 
-   Body({Key? key, required this.cPlant}) : super(key: key);
+   Body({Key? key, required this.userEmail,required this.cPlant}) : super(key: key);
 
   @override
   State<Body> createState() => _BodyState();
@@ -92,30 +93,11 @@ class _BodyState extends State<Body> {
             country: "Germany",
             price: 856,
           ),
-          BuyAndFavoriteButton(size: size, cPlnat: widget.cPlant),
+          AddToGardenButton(size: size, cPlnat: widget.cPlant,userEmail: widget.userEmail),
           const SizedBox(
             height: 16,
           ),
           ProductDescription(size: size ,des:des),
-          const SizedBox(
-            height: 16,
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton.icon(
-                icon: Icon(Icons.qr_code),
-                label: Text('Scan'),
-                onPressed: _showOptionsDialog,
-                style: ElevatedButton.styleFrom(
-                  primary: ColorsPalette.kPrimaryColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                  ),
-                ),
-              ),
-            ],
-          )
         ],
       ),
     );

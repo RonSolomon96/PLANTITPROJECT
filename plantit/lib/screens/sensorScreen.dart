@@ -7,7 +7,9 @@ import '../main.dart';
 import 'choosePlantScreen.dart';
 
 class SensorScreen extends StatefulWidget {
-  const SensorScreen({Key? key}) : super(key: key);
+  final String userEmail;
+
+  const SensorScreen({Key? key, required this.userEmail}) : super(key: key);
 
   @override
   _SensorScreenState createState() => _SensorScreenState();
@@ -172,12 +174,12 @@ class _SensorScreenState extends State<SensorScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.teal,
+        automaticallyImplyLeading: false,
+        backgroundColor: Color(0xff07a36f),
         title: const Text(
           'Sensors',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        centerTitle: true,
       ),
       body:
       Container(
@@ -261,7 +263,8 @@ class _SensorScreenState extends State<SensorScreen>
                       MaterialPageRoute(builder: (context) =>  ChoosePlantScreen(
                           light: _light,
                           moisture:_moisture ,
-                          temperature: _temperature, plantCollection: p)));
+                          temperature: _temperature,
+                          plantCollection: p, userEmail: widget.userEmail)));
                   setState(() {
                     _isComplete = false;
                     _isAnimating = false;
