@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
-import 'package:plantit/screens/infoCard/details_screen.dart';
+import 'package:plantit/screens/homeInfoCard/details_screen.dart';
 import 'package:plantit/screens/values/constants.dart';
 import 'package:plantit/main.dart';
 
@@ -21,17 +21,19 @@ class MyGardenScreen extends StatefulWidget {
 
 class _MyGardenScreenState extends State<MyGardenScreen> {
   String? _username;
-  List<String>? _userPlants;
-  List<String>? _filteredPlants;
+  List<dynamic>? _userPlants;
+  List<dynamic>? _filteredPlants;
 
   final TextEditingController _searchController = TextEditingController();
 
-  bool _isLoading = true; // Add a boolean to keep track of loading state
+  bool _isLoadingUser = true; // Add a boolean to keep track of loading state
+  bool _isLoadingUserPlants = true;
 
   @override
   void initState() {
     super.initState();
     _fetchUserData();
+    _fetchUserPlantsData();
   }
 
   Future<void> _fetchUserData() async {
@@ -41,19 +43,32 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
       final data = jsonDecode(response.body);
       setState(() {
         _username = data['username'];
-        _userPlants = List<String>.from(data['UserPlants']);
-        _filteredPlants = _userPlants;
-        _isLoading = false; // Set loading state to false when data is fetched
+        _isLoadingUser = false; // Set loading state to false when data is fetched
       });
     } else {
       throw Exception('Failed to load user data');
     }
   }
 
+  Future<void> _fetchUserPlantsData() async {
+    final response =
+    await http.get(Uri.parse('$serverUrl/plants/${widget.userEmail}'));
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      setState(() {
+        _userPlants = data;
+        _filteredPlants = _userPlants;
+        _isLoadingUserPlants = false; // Set loading state to false when data is fetched
+      });
+    } else {
+      throw Exception('Failed to load user plants data');
+    }
+  }
+
   void _filterPlants(String query) {
     setState(() {
       _filteredPlants = _userPlants
-          ?.where((plant) => plant.toLowerCase().contains(query.toLowerCase()))
+          ?.where((plant) => plant["nickname"].toLowerCase().contains(query.toLowerCase()))
           .toList();
     });
   }
@@ -62,7 +77,7 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-        body: _isLoading
+        body: _isLoadingUser || _isLoadingUserPlants
             ? const Center(child: CircularProgressIndicator()) // Show CircularProgressIndicator when loading
             : Column(
                 children: <Widget> [
@@ -186,7 +201,9 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                     )
                         : ListView.builder(
                       itemCount: _filteredPlants!.length,
-                      itemBuilder: (context, index) => Card(
+                      itemBuilder: (context, index) {
+                        _filteredPlants![index]["Description"]="hi";
+                        return Card(
                         elevation: 4,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
@@ -205,25 +222,25 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                             ),
                           ),
                           title: Text(
-                            _filteredPlants![index],
+                            _filteredPlants![index]["nickname"],
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
                           subtitle: Text(
-                            'Description of plant ${index + 1}',
+                            _filteredPlants![index]["Common_name"],
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
                           trailing: IconButton(
                             onPressed: () {
-                             // Navigator.push(context, MaterialPageRoute(builder: (context) =>  const DetailsScreen(plantName: "hi", description: '',)));
+                             Navigator.push(context, MaterialPageRoute(builder: (context) =>  DetailsScreen(cPlant : _filteredPlants![index])));
                             },
                             icon: const Icon(Icons.arrow_forward_ios),
                           ),
                         ),
-                      ),
+                      );},
                     ),
                   ),
                 ]

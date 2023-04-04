@@ -37,7 +37,7 @@ class InfoScreen extends StatelessWidget {
                 var des;
                 var currentPlant = plantCollection[index];
                 if(name == "African Violets"){
-                 des = plantCollection[index]["Description"];
+                  des = plantCollection[index]["Description"];
 
                 }else{plantCollection[index]["Description"]="hi";}
 
