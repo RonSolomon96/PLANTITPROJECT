@@ -117,8 +117,29 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                                   borderRadius: BorderRadius.circular(5),
                                 ),
                                 child: MaterialButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
+                                  onPressed: () async {
+                                    bool shouldLogOut = await showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: const Text("Log Out"),
+                                          content: const Text("Are you sure you want to log out?"),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () => Navigator.pop(context, false),
+                                              child: const Text('No'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () => Navigator.pop(context, true),
+                                              child: const Text('Yes'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                    if (shouldLogOut ?? false) {
+                                      Navigator.pop(context);
+                                    }
                                   },
                                   child: const Text(
                                     'Log Out',

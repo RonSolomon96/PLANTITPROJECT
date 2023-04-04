@@ -7,7 +7,6 @@ import 'homeScreen.dart';
 import 'loginScreen.dart';
 
 class RootScreen extends StatefulWidget {
-
   final String userEmail;
   final List plantDb;
 
@@ -33,15 +32,13 @@ class _RootScreenState extends State<RootScreen> {
       MyGardenScreen(
         userEmail: widget.userEmail,
       ),
-      SensorScreen(
-          userEmail: widget.userEmail
-      ),
+      SensorScreen(userEmail: widget.userEmail),
       InfoScreen(
-          plantCollection: widget.plantDb,
-          userEmail: widget.userEmail),
+        plantCollection: widget.plantDb,
+        userEmail: widget.userEmail,
+      ),
     ];
   }
-
 
   void _onItemTapped(int index) {
     setState(() {
@@ -49,85 +46,64 @@ class _RootScreenState extends State<RootScreen> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: _widgetOptions,
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: kPrimaryColor,
-        unselectedItemColor: Colors.black54,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.local_florist),
-            label: 'My Plants',
+  Future<bool> _onWillPop() async {
+    return (await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Are you sure?'),
+        content: const Text('Do you want to log out?'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('No'),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.sensors_outlined),
-            label: 'Sensors',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.info_outline),
-            label: 'information',
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(true);
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) => const LoginScreen(),
+                ),
+              );
+            },
+            child: const Text('Yes'),
           ),
         ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
       ),
-    );
+    )) ??
+    false;
   }
-}
-
-// create a separate screen for each navigation item
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text('Home Screen'),
-      ),
-    );
-  }
-}
-
-class SearchPage extends StatelessWidget {
-  const SearchPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text('Search Screen'),
-      ),
-    );
-  }
-}
-
-class FavoritesPage extends StatelessWidget {
-  const FavoritesPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text('Favorites Screen'),
-      ),
-    );
-  }
-}
-
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text('Profile Screen'),
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        body: IndexedStack(
+          index: _selectedIndex,
+          children: _widgetOptions,
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          selectedItemColor: kPrimaryColor,
+          unselectedItemColor: Colors.black54,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.local_florist),
+              label: 'My Plants',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.sensors_outlined),
+              label: 'Sensors',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.info_outline),
+              label: 'information',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+        ),
       ),
     );
   }
