@@ -111,31 +111,10 @@ def create_user():
     Create a new user with the given data.
     """
     data = request.get_json()
-    data['UserPlants'] = []
     user_ref = db.collection('users').document(data['email'])
     user_ref.set(data)
     # user_ref.collection("User_Plants").add({})
     return jsonify({"message": "User created successfully."}), 201
-
-
-# Define routes for CRUD operations
-@app.route('/addToGarden', methods=['POST'])
-def add_to_garden():
-    """
-    Create a new plant with the given data.
-    """
-    data = request.get_json()
-    p =  db.collection('users').document('aaa@gmail.com')
-    p.collection("User_Plants").add(data)
-    p1 = p.get().to_dict()
-    ort = p1["UserPlants"]
-    ort.append(data['nickname'])
-    #print(ort)
-    p.set({"UserPlants" : ort},merge=True)
-
-
-    return jsonify({"message": "Plant created successfully."}), 201
-
 
 
 @app.route('/users', methods=['GET'])
@@ -145,27 +124,6 @@ def read_users():
     """
     users = [doc.to_dict() for doc in db.collection('users').stream()]
     return jsonify(users), 200
-
-
-@app.route('/plants', methods=['GET'])
-def read_plants():
-    """
-    Retrieve all users from Firestore DB.
-    """
-    p = [doc.to_dict() for doc in db.collection('Plants').stream()]
-    return jsonify(p), 200
-
-@app.route('/plants/<light>/<temp>/<moist>', methods=['GET'])
-def read_plant(light,temp,moist):
-    """
-    Retrieve a specific user by ID from Firestore DB.
-    """
-    plant = [doc.to_dict() for doc in db.collection('Plants').where("Light","==", light).
-        where("Temperature","==", temp).where("Humidity","==", moist).stream()]
-    # if plant.exists:
-    return jsonify(plant), 200
-   # else:
-     #   return jsonify({"message": "User not found."}), 404
 
 
 @app.route('/users/<user_id>', methods=['GET'])
@@ -199,6 +157,55 @@ def delete_user(user_id):
     user_ref = db.collection('users').document(user_id)
     user_ref.delete()
     return jsonify({"message": "User deleted successfully."}), 200
+
+
+# Define routes for CRUD operations
+@app.route('/addToGarden', methods=['POST'])
+def add_to_garden():
+    """
+    Create a new plant with the given data.
+    """
+    data = request.get_json()
+    print(request.args.get('user'))
+    p = db.collection('users').document(request.args.get('user'))
+    p.collection("User_Plants").add(data)
+    return jsonify({"message": "Plant created successfully."}), 201
+
+
+@app.route('/plants', methods=['GET'])
+def read_plants():
+    """
+    Retrieve all users from Firestore DB.
+    """
+    p = [doc.to_dict() for doc in db.collection('Plants').stream()]
+    return jsonify(p), 200
+
+
+@app.route('/plants/<light>/<temp>/<moist>', methods=['GET'])
+def read_plant(light,temp,moist):
+    """
+    Retrieve a specific user by ID from Firestore DB.
+    """
+    plant = [doc.to_dict() for doc in db.collection('Plants').where("Light","==", light).
+        where("Temperature","==", temp).where("Humidity","==", moist).stream()]
+    # if plant.exists:
+    return jsonify(plant), 200
+   # else:
+     #   return jsonify({"message": "User not found."}), 404
+
+
+@app.route('/plants/<user>', methods=['GET'])
+def get_user_plants(user):
+
+    plants = [doc.to_dict() for doc in db.collection('users').document(user).collection("User_Plants").stream()]
+    return jsonify(plants), 200
+
+@app.route('/plants/<user>/<nickname>', methods=['GET'])
+def get_user_plant(user, nickname):
+
+    plant = [doc.to_dict() for doc in db.collection('users').document(user).collection("User_Plants").
+        where("nickname","==", nickname).stream()]
+    return jsonify(plant[0]), 200
 
 
 # Run Flask app
