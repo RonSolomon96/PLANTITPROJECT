@@ -97,7 +97,7 @@ class AddToGardenButton extends StatelessWidget {
                 ),
               ),
               child: const Text(
-                "add to my garden",
+                "Add to my garden",
                 style: TextStyle(fontSize: 20),
               ),
             ),
