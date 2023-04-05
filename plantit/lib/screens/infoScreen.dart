@@ -5,11 +5,9 @@ import 'package:flutter/material.dart';
 
 import 'infoCard/details_screen.dart';
 
-class InfoScreen extends StatelessWidget {
-
-  final List plantCollection ;
+class InfoScreen extends StatefulWidget {
+  final List plantCollection;
   final String userEmail;
-
 
   const InfoScreen({
     Key? key,
@@ -17,33 +15,73 @@ class InfoScreen extends StatelessWidget {
     required this.userEmail,
   }) : super(key: key);
 
+  @override
+  _InfoScreenState createState() => _InfoScreenState();
+}
+
+class _InfoScreenState extends State<InfoScreen> {
+  late List filteredPlants;
+  TextEditingController searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    filteredPlants = widget.plantCollection;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Text('Info Screen'),
+        title: const Center(child: Text('Search')),
         backgroundColor: const Color(0xff07a36f),
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(16),
+                bottomRight: Radius.circular(16))),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: searchController,
+              decoration: const InputDecoration(
+                labelText: "Search for info...",
+                hintText: "Search plants",
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                ),
+              ),
+              onChanged: (value) {
+                setState(() {
+                  filteredPlants = widget.plantCollection.where((plant) =>
+                      plant["Common_name"]
+                          .toString()
+                          .toLowerCase()
+                          .contains(value.toLowerCase())).toList();
+                });
+              },
+            ),
+          ),
           Expanded(
             child: ListView.builder(
-              itemCount: plantCollection.length, // Number of plants to display
+              itemCount: filteredPlants.length, // Number of plants to display
               itemBuilder: (BuildContext context, int index) {
-                var name = plantCollection[index]["Common_name"];
+                var name = filteredPlants[index]["Common_name"];
                 var des;
-                var currentPlant = plantCollection[index];
-                if(name == "African Violets"){
-                  des = plantCollection[index]["Description"];
-
-                }else{plantCollection[index]["Description"]="hi";}
+                var currentPlant = filteredPlants[index];
+                if (name == "African Violets") {
+                  des = filteredPlants[index]["Description"];
+                } else {
+                  filteredPlants[index]["Description"] = "hi";
+                }
 
                 return GestureDetector(
-                    onTap: () {
-                    },
+                    onTap: () {},
                     child: Card(
                       elevation: 4,
                       shape: RoundedRectangleBorder(
@@ -81,11 +119,9 @@ class InfoScreen extends StatelessWidget {
                               MaterialPageRoute(
                                 builder: (context) => DetailsScreen(
                                     c_plant: currentPlant,
-                                    userEmail: userEmail
-                                ),
+                                    userEmail: widget.userEmail),
                               ),
                             );
-
                           },
                           icon: const Icon(Icons.arrow_forward_ios),
                         ),

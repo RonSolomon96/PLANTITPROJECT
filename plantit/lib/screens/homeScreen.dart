@@ -117,29 +117,30 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                                   borderRadius: BorderRadius.circular(5),
                                 ),
                                 child: MaterialButton(
-                                  onPressed: () async {
-                                    bool shouldLogOut = await showDialog(
+                                  onPressed: () {
+                                    showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
                                         return AlertDialog(
-                                          title: const Text("Log Out"),
-                                          content: const Text("Are you sure you want to log out?"),
+                                          title: const Text('Are you sure you want to log out?'),
                                           actions: <Widget>[
                                             TextButton(
-                                              onPressed: () => Navigator.pop(context, false),
-                                              child: const Text('No'),
+                                              child: Text('No'),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
                                             ),
                                             TextButton(
-                                              onPressed: () => Navigator.pop(context, true),
-                                              child: const Text('Yes'),
+                                              child: Text('Yes'),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                                Navigator.of(context).pop();
+                                              },
                                             ),
                                           ],
                                         );
                                       },
                                     );
-                                    if (shouldLogOut ?? false) {
-                                      Navigator.pop(context);
-                                    }
                                   },
                                   child: const Text(
                                     'Log Out',

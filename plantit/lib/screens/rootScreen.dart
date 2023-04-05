@@ -97,8 +97,8 @@ class _RootScreenState extends State<RootScreen> {
               label: 'Sensors',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.info_outline),
-              label: 'information',
+              icon: Icon(Icons.search_outlined),
+              label: 'Search',
             ),
           ],
           currentIndex: _selectedIndex,

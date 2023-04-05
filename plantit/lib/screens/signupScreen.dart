@@ -130,7 +130,6 @@ class _SignupScreenState extends State<SignupScreen> {
             },
             body: jsonEncode(<String, String>{
               "email" : emailTextController.text,
-              "password" : passwordTextController.text,
               "username" : userNameTextController.text
             })).then((value) => Navigator.push(context,
             MaterialPageRoute(builder: (context) => RootScreen(userEmail: emailTextController.text, plantDb: db,

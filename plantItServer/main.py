@@ -104,6 +104,7 @@ def reset():
     except:
         return jsonify({"message": "Invalid email."}), 400
 
+
 # Define routes for CRUD operations
 @app.route('/users', methods=['POST'])
 def create_user():
