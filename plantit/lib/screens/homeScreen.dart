@@ -224,7 +224,6 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                         : ListView.builder(
                       itemCount: _filteredPlants!.length,
                       itemBuilder: (context, index) {
-                        _filteredPlants![index]["Description"]="hi";
                         return Card(
                         elevation: 4,
                         shape: RoundedRectangleBorder(
@@ -237,8 +236,8 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                             height: 60,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(12),
-                              child: Image.asset(
-                                'assets/images/5.ico',
+                              child: Image.network(
+                                _filteredPlants![index]["Image_url"],
                                 fit: BoxFit.cover,
                               ),
                             ),

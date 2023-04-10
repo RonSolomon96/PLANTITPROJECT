@@ -72,13 +72,12 @@ class _InfoScreenState extends State<InfoScreen> {
               itemCount: filteredPlants.length, // Number of plants to display
               itemBuilder: (BuildContext context, int index) {
                 var name = filteredPlants[index]["Common_name"];
-                var des;
+
                 var currentPlant = filteredPlants[index];
-                if (name == "African Violets") {
-                  des = filteredPlants[index]["Description"];
-                } else {
-                  filteredPlants[index]["Description"] = "hi";
-                }
+                var des = filteredPlants[index]["Description"];
+                var img1  = filteredPlants[index]["Image_url"];
+                img1 ??= 'assets/images/5.ico';
+
 
                 return GestureDetector(
                     onTap: () {},
@@ -94,8 +93,8 @@ class _InfoScreenState extends State<InfoScreen> {
                           height: 60,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(12),
-                            child: Image.asset(
-                              'assets/images/5.ico',
+                            child: Image.network(
+                             img1,
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -108,7 +107,7 @@ class _InfoScreenState extends State<InfoScreen> {
                           ),
                         ),
                         subtitle: Text(
-                          'Description of plant ${index + 1}',
+                          currentPlant["Botanical Name"],
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),

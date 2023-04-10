@@ -21,6 +21,7 @@ config = {
 firebase = pyrebase.initialize_app(config)
 # Use pyrebase to authenticate users
 auth = firebase.auth()
+storage  = firebase.storage()
 
 # Initialize firebase_admin with service account credentials
 cred = credentials.Certificate("plantitdb1-firebase-adminsdk-y2grh-c4930ddb02.json")

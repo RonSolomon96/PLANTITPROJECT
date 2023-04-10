@@ -87,7 +87,7 @@ class _BodyState extends State<Body> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          ImageAndIcons(size: size),
+          ImageAndIcons(size: size ,current: widget.cPlant),
           TitleAndPrice(
             title: name,
             country: "Germany",

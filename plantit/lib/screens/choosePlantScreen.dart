@@ -78,11 +78,9 @@ class _ChoosePlantScreenState extends State<ChoosePlantScreen> {
                 var cPlant = searchResult[index];
                 var name = searchResult[index]["Common_name"];
                 var des;
-                if(name == "African Violets"){
+
                   des = searchResult[index]["Description"];
-                }else{
-                  searchResult[index]["Description"]="hi";
-                }
+
 
                 return GestureDetector(
                     onTap: () {
@@ -99,8 +97,8 @@ class _ChoosePlantScreenState extends State<ChoosePlantScreen> {
                           height: 60,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(12),
-                            child: Image.asset(
-                              'assets/images/5.ico',
+                            child: Image.network(
+                              cPlant["Image_url"],
                               fit: BoxFit.cover,
                             ),
                           ),

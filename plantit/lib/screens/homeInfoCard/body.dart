@@ -6,6 +6,7 @@ import 'package:plantit/screens/homeInfoCard/title_and_price.dart';
 import 'package:plantit/screens/values/colors_palette.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class Body extends StatefulWidget {
    var cPlant;
