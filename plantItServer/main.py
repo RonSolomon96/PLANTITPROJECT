@@ -174,6 +174,22 @@ def add_to_garden():
     return jsonify({"message": "Plant created successfully."}), 201
 
 
+@app.route('/addToHistory', methods=['POST'])
+def add_to_history():
+    data = request.get_json()
+    user = db.collection('users').document(request.args.get('user'))
+    plant_docs = user.collection("User_Plants").where("nickname", "==", request.args.get('plant')).stream()
+    plant_ref = None
+    for doc in plant_docs:
+        plant_ref = doc.reference
+        break
+    if plant_ref is None:
+        return jsonify({"error": "Plant not found"}), 404
+    plant_ref.collection("History").add(data)
+    return jsonify({"message": "Successfully added to history"}), 201
+
+
+
 @app.route('/plants', methods=['GET'])
 def read_plants():
     """

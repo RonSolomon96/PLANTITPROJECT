@@ -8,10 +8,12 @@ import '../../main.dart';
 import '../care_plan_history.dart';
 class HistoryButton extends StatelessWidget {
   var cPlnat;
+  final String userEmail;
 
-   HistoryButton({
-    Key? key,
-    required this.size, required this.cPlnat,
+   HistoryButton({Key? key,
+     required this.userEmail,
+     required this.size,
+     required this.cPlnat,
   }) : super(key: key);
 
   final Size size;
@@ -33,7 +35,7 @@ class HistoryButton extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CarePlanHistoryScreen(),
+                      builder: (context) => CarePlanHistoryScreen(userEmail: userEmail, plant: cPlnat["nickname"]),
                     ),
                   );
                 },

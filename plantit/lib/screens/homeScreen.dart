@@ -256,7 +256,10 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                           ),
                           trailing: IconButton(
                             onPressed: () {
-                             Navigator.push(context, MaterialPageRoute(builder: (context) =>  DetailsScreen(cPlant : _filteredPlants![index])));
+                             Navigator.push(context,
+                                 MaterialPageRoute(builder: (context) => DetailsScreen(
+                                     cPlant : _filteredPlants![index],
+                                     userEmail: widget.userEmail)));
                             },
                             icon: const Icon(Icons.arrow_forward_ios),
                           ),

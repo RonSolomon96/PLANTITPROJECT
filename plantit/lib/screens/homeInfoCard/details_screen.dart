@@ -3,15 +3,17 @@ import 'package:plantit/screens/homeInfoCard/body.dart';
 
 class DetailsScreen extends StatelessWidget {
       dynamic cPlant;
+      final String userEmail;
 
 
-    DetailsScreen({Key? key, required this.cPlant}) : super(key: key);
+    DetailsScreen({Key? key,required this.userEmail, required this.cPlant}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
       body: Body(
-        cPlant: cPlant,
+          cPlant: cPlant,
+          userEmail: userEmail
       ),
     );
   }
