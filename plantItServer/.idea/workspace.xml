@@ -3,14 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="9a7323ea-041c-4f3d-95be-b4c431cd390a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../plantit/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../plantit/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../plantit/lib/screens/homeInfoCard/body.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../plantit/lib/screens/homeInfoCard/body.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../plantit/lib/screens/homeScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../plantit/lib/screens/homeScreen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../plantit/lib/screens/infoScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../plantit/lib/screens/infoScreen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../plantit/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/../plantit/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../plantit/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../plantit/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../plantit/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../plantit/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,6 +32,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../PlantServer" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunManager">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">

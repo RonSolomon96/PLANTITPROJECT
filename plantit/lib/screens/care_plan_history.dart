@@ -1,4 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+import '../main.dart';
+
 
 class CarePlanHistoryScreen extends StatefulWidget {
   final String userEmail;
@@ -25,11 +31,15 @@ class _CarePlanHistoryScreenState extends State<CarePlanHistoryScreen> {
   }
 
   void _loadCarePlans() async {
-    // Code to load care plans goes here
-    await Future.delayed(Duration(seconds: 3)); // Example of an async call that takes 3 seconds
-    setState(() {
-      _carePlans = [        {          "disease": "Heart disease",          "carePlan": "Exercise and diet",          "date": "2022-03-15",          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",          "image": "https://picsum.photos/id/237/200/300",        },        {          "disease": "Diabetes",          "carePlan": "Insulin therapy",          "date": "2022-02-20",          "description": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",          "image": "https://picsum.photos/id/238/200/300",        },      ];
-    });
+    final response = await http.get(Uri.parse('$serverUrl/history/${widget.userEmail}/${widget.plant}'));
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      setState(() {
+        _carePlans = data;
+      });
+    } else {
+      throw Exception('Failed to load user data');
+    }
   }
 
   @override
@@ -39,7 +49,7 @@ class _CarePlanHistoryScreenState extends State<CarePlanHistoryScreen> {
         title: Text(widget.userEmail),
       ),
       body: _carePlans.isEmpty
-          ? Center(
+          ? const Center(
         child: CircularProgressIndicator(),
       )
           : ListView.builder(
@@ -56,61 +66,46 @@ class _CarePlanHistoryScreenState extends State<CarePlanHistoryScreen> {
               children: [
                 Text(
                   _carePlans[index]["date"],
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20.0,
                   ),
                 ),
-                SizedBox(height: 8.0),
+                const SizedBox(height: 8.0),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
-                  child: Image.network(
-                    _carePlans[index]["image"],
+                  child: Image.asset(
+                    'assets/images/5.ico',
                     height: 200,
                     width: double.infinity,
                     fit: BoxFit.cover,
                   ),
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
                 Padding(
-                  padding: EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         "Disease: ${_carePlans[index]["disease"]}",
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16.0,
                         ),
                       ),
-                      SizedBox(height: 8.0),
+                      const SizedBox(height: 8.0),
                       Text(
-                        "Care plan: ${_carePlans[index]["carePlan"]}",
-                        style: TextStyle(
+                        "Care plan: ${_carePlans[index]["care plan"]}",
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16.0,
-                        ),
-                      ),
-                      SizedBox(height: 8.0),
-                      Text(
-                        "Date: ${_carePlans[index]["date"]}",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.0,
-                        ),
-                      ),
-                      SizedBox(height: 16.0),
-                      Text(
-                        _carePlans[index]["description"],
-                        style: TextStyle(
-                            fontSize: 14
                         ),
                       ),
                     ],
                   ),
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
               ],
             ),
           );
