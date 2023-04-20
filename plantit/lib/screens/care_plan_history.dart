@@ -75,11 +75,11 @@ class _CarePlanHistoryScreenState extends State<CarePlanHistoryScreen> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
                   child: Image.asset(
-                  'assets/images/5.ico',
+                    'assets/images/5.ico',
                     height: 200,
                     width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
+                    fit: BoxFit.cover,
+                  ),
                 ),
                 const SizedBox(height: 16.0),
                 Padding(

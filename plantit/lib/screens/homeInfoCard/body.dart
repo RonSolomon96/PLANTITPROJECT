@@ -39,7 +39,7 @@ class _BodyState extends State<Body> {
           body: jsonEncode(<String, String>{
             "image" : "image",
             "disease" : "the disease",
-            "care plane" : "the care plane",
+            "care plan" : "the care plan",
             "date" : DateFormat.yMd().add_jm().format(DateTime.now())
           })
       );
