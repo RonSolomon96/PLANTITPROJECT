@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:plantit/screens/infoCard/add_to_garden_button.dart';
 import 'package:plantit/screens/infoCard/image_and_icons.dart';
 import 'package:plantit/screens/infoCard/product_description.dart';
-import 'package:plantit/screens/infoCard/title_and_price.dart';
+import 'package:plantit/screens/infoCard/title.dart';
 import 'package:plantit/screens/values/colors_palette.dart';
 import 'package:plantit/screens/values/constants.dart';
 import 'package:image_picker/image_picker.dart';
@@ -83,15 +83,15 @@ class _BodyState extends State<Body> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     String name = widget.cPlant["Common_name"];
+    String Bname = widget.cPlant["Botanical Name"];
     String des = widget.cPlant["Description"];
     return SingleChildScrollView(
       child: Column(
         children: [
           ImageAndIcons(size: size ,current: widget.cPlant),
-          TitleAndPrice(
-            title: name,
-            country: "Germany",
-            price: 856,
+          TitleName(
+            name: name,
+            bName: Bname
           ),
           AddToGardenButton(size: size, cPlnat: widget.cPlant,userEmail: widget.userEmail),
           const SizedBox(

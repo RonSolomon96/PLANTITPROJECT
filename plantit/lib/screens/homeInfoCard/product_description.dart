@@ -36,17 +36,19 @@ class ProductDescription extends StatelessWidget {
               height: 16,
             ),
             Expanded(
-              child: RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text:des
-                      ,
-                      style: Theme.of(context).textTheme.headline6?.copyWith(
-                          color: const Color.fromARGB(255, 56, 75, 49),
-                          fontWeight: FontWeight.w300),
-                    ),
-                  ],
+              child: SingleChildScrollView(
+                child: RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text:des
+                        ,
+                        style: Theme.of(context).textTheme.headline6?.copyWith(
+                            color: const Color.fromARGB(255, 56, 75, 49),
+                            fontWeight: FontWeight.w300),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

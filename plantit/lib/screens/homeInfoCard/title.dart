@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:plantit/screens/values/colors_palette.dart';
 import 'package:plantit/screens/values/constants.dart';
 
-class TitleAndPrice extends StatelessWidget {
-  const TitleAndPrice({
+class TitleName extends StatelessWidget {
+  const TitleName({
     Key? key,
-    required this.title,
-    required this.country,
-    required this.price,
+    required this.name,
+    required this.cName,
   }) : super(key: key);
 
-  final String title, country;
-  final int price;
+  final String name;
+  final String cName;
 
   @override
   Widget build(BuildContext context) {
@@ -23,14 +22,14 @@ class TitleAndPrice extends StatelessWidget {
             text: TextSpan(
               children: [
                 TextSpan(
-                  text: "$title\n",
+                  text: "$name\n",
                   style: Theme.of(context).textTheme.headline4?.copyWith(
                       color: ColorsPalette.kTextColor,
                       fontWeight: FontWeight.bold),
                 ),
-                const TextSpan(
-                  text: "country",
-                  style: TextStyle(
+                TextSpan(
+                  text: cName,
+                  style: const TextStyle(
                     fontSize: 20,
                     color: ColorsPalette.kPrimaryColor,
                     fontWeight: FontWeight.w300,
