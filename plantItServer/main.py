@@ -9,19 +9,19 @@ from flask import Flask, request, jsonify
 
 # Initialize pyrebase with user credentials
 config = {
-  'apiKey': "AIzaSyCRaKSS_ANuUa1QibLkWuntJ135EYK9CXY",
-  'authDomain': "plantitdb1.firebaseapp.com",
-  'projectId': "plantitdb1",
-  'storageBucket': "plantitdb1.appspot.com",
-  'messagingSenderId': "959335294179",
-  'appId': "1:959335294179:web:21f768d3aab7a7c5b191d6",
-  'measurementId': "G-JNXM9WXHXZ",
-  'databaseURL': ''}
+    'apiKey': "AIzaSyCRaKSS_ANuUa1QibLkWuntJ135EYK9CXY",
+    'authDomain': "plantitdb1.firebaseapp.com",
+    'projectId': "plantitdb1",
+    'storageBucket': "plantitdb1.appspot.com",
+    'messagingSenderId': "959335294179",
+    'appId': "1:959335294179:web:21f768d3aab7a7c5b191d6",
+    'measurementId': "G-JNXM9WXHXZ",
+    'databaseURL': ''}
 
 firebase = pyrebase.initialize_app(config)
 # Use pyrebase to authenticate users
 auth = firebase.auth()
-storage  = firebase.storage()
+storage = firebase.storage()
 
 # Initialize firebase_admin with service account credentials
 cred = credentials.Certificate("plantitdb1-firebase-adminsdk-y2grh-c4930ddb02.json")
@@ -31,13 +31,12 @@ firebase_admin.initialize_app(cred)
 # database
 db = firestore.client()
 
-
 # Initialize Flask app
 app = Flask(__name__)
 
-# with open(sys.argv[1], "rb") as image_file:
-  #  encoded_string = base64.b64encode(image_file.read())
 
+# with open(sys.argv[1], "rb") as image_file:
+#  encoded_string = base64.b64encode(image_file.read())
 
 
 # Firebase Authentication
@@ -189,7 +188,6 @@ def add_to_history():
     return jsonify({"message": "Successfully added to history"}), 201
 
 
-
 @app.route('/plants', methods=['GET'])
 def read_plants():
     """
@@ -200,34 +198,47 @@ def read_plants():
 
 
 @app.route('/plants/<light>/<temp>/<moist>', methods=['GET'])
-def read_plant(light,temp,moist):
+def read_plant(light, temp, moist):
     """
     Retrieve a specific user by ID from Firestore DB.
     """
-    plant = [doc.to_dict() for doc in db.collection('Plants').where("Light","==", light).
-        where("Temperature","==", temp).where("Humidity","==", moist).stream()]
+    plant = [doc.to_dict() for doc in db.collection('Plants').where("Light", "==", light).
+        where("Temperature", "==", temp).where("Humidity", "==", moist).stream()]
     # if plant.exists:
     return jsonify(plant), 200
-   # else:
-     #   return jsonify({"message": "User not found."}), 404
+
+
+# else:
+#   return jsonify({"message": "User not found."}), 404
 
 
 @app.route('/plants/<user>', methods=['GET'])
 def get_user_plants(user):
-
     plants = [doc.to_dict() for doc in db.collection('users').document(user).collection("User_Plants").stream()]
     return jsonify(plants), 200
 
+
+@app.route('/history/<user>/<plant>', methods=['GET'])
+def get_plant_history(user, plant):
+    plant_docs = db.collection('users').document(user).collection("User_Plants").where("nickname", "==", plant).stream()
+    plant_ref = None
+    for doc in plant_docs:
+        plant_ref = doc.reference
+        break
+    if plant_ref is None:
+        return jsonify({"error": "Plant not found"}), 404
+    history = [doc.to_dict() for doc in plant_ref.collection("History").stream()]
+    return jsonify(history), 200
+
+
+
 @app.route('/plants/<user>/<nickname>', methods=['GET'])
 def get_user_plant(user, nickname):
-
     plant = [doc.to_dict() for doc in db.collection('users').document(user).collection("User_Plants").
-        where("nickname","==", nickname).stream()]
+        where("nickname", "==", nickname).stream()]
     return jsonify(plant[0]), 200
 
 
 # Run Flask app
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
-
-
