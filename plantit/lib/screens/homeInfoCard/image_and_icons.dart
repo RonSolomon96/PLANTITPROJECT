@@ -4,12 +4,14 @@ import 'package:plantit/screens/homeInfoCard/icon_card.dart';
 import 'package:plantit/screens/values/constants.dart';
 
 class ImageAndIcons extends StatelessWidget {
-  const ImageAndIcons({
+  ImageAndIcons({
     Key? key,
     required this.size,
+    required this.current
   }) : super(key: key);
 
   final Size size;
+  var current;
 
   @override
   Widget build(BuildContext context) {
@@ -53,12 +55,14 @@ class ImageAndIcons extends StatelessWidget {
               ),
             ),
             Container(
-              height: size.height * 0.8,
+              height: size.height * 0.45/*0.45*/,
               width: size.width * 0.75,
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(63),
                   bottomLeft: Radius.circular(63),
+                  topRight: Radius.circular(63),
+                  bottomRight: Radius.circular(63),
                 ),
                 boxShadow: [
                   BoxShadow(
@@ -67,10 +71,10 @@ class ImageAndIcons extends StatelessWidget {
                     color: const Color.fromARGB(255, 3, 121, 81).withOpacity(0.29),
                   ),
                 ],
-                image: const DecorationImage(
+                image: DecorationImage(
                   alignment: Alignment.centerLeft,
                   fit: BoxFit.cover,
-                  image: AssetImage("assets/images/img.png"),
+                  image: NetworkImage(current["Image_url"]),
                 ),
               ),
             ),

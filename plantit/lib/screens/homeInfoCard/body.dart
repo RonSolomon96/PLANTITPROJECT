@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:plantit/screens/homeInfoCard/history_button.dart';
 import 'package:plantit/screens/homeInfoCard/image_and_icons.dart';
 import 'package:plantit/screens/homeInfoCard/product_description.dart';
-import 'package:plantit/screens/homeInfoCard/title_and_price.dart';
+import 'package:plantit/screens/homeInfoCard/title.dart';
 import 'package:plantit/screens/values/colors_palette.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -101,17 +101,14 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    String name = widget.cPlant["Common_name"];
+    String name = widget.cPlant["nickname"];
+    String cName = widget.cPlant["Common_name"];
     String des = widget.cPlant["Description"];
     return SingleChildScrollView(
       child: Column(
         children: [
-          ImageAndIcons(size: size),
-          TitleAndPrice(
-            title: name,
-            country: "Germany",
-            price: 856,
-          ),
+          ImageAndIcons(size: size ,current: widget.cPlant),
+          TitleName(name: name, cName : cName),
           HistoryButton(size: size, cPlnat: widget.cPlant,userEmail: widget.userEmail),
           const SizedBox(
             height: 16,
