@@ -116,7 +116,7 @@ class _SignupScreenState extends State<SignupScreen> {
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
-        "email" : emailTextController.text,
+        "email" : emailTextController.text.toLowerCase(),
         "password" : passwordTextController.text,
         "username" : userNameTextController.text
       })).then((value) async => {
@@ -129,10 +129,10 @@ class _SignupScreenState extends State<SignupScreen> {
               'Content-Type': 'application/json; charset=UTF-8',
             },
             body: jsonEncode(<String, String>{
-              "email" : emailTextController.text,
+              "email" : emailTextController.text.toLowerCase(),
               "username" : userNameTextController.text
             })).then((value) => Navigator.push(context,
-            MaterialPageRoute(builder: (context) => RootScreen(userEmail: emailTextController.text, plantDb: db,
+            MaterialPageRoute(builder: (context) => RootScreen(userEmail: emailTextController.text.toLowerCase(), plantDb: db,
             )))),
         emailTextController.clear(),
         userNameTextController.clear(),

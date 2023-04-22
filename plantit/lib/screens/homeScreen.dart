@@ -65,6 +65,7 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
     }
   }
 
+
   void _filterPlants(String query) {
     setState(() {
       _filteredPlants = _userPlants

@@ -42,8 +42,37 @@ class _RootScreenState extends State<RootScreen> {
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      if (_selectedIndex == index) {
+        // If the user taps on the already selected tab, force a rebuild of the screen
+        _widgetOptions[_selectedIndex] = _buildScreen(index);
+      } else {
+        _selectedIndex = index;
+      }
     });
+  }
+
+
+  Widget _buildScreen(int index) {
+    switch (index) {
+      case 0:
+        return MyGardenScreen(
+          key: UniqueKey(), // Add a UniqueKey here
+          userEmail: widget.userEmail,
+        );
+      case 1:
+        return SensorScreen(
+          key: UniqueKey(), // Add a UniqueKey here
+          userEmail: widget.userEmail,
+        );
+      case 2:
+        return InfoScreen(
+          key: UniqueKey(), // Add a UniqueKey here
+          plantCollection: widget.plantDb,
+          userEmail: widget.userEmail,
+        );
+      default:
+        return Container();
+    }
   }
 
   Future<bool> _onWillPop() async {

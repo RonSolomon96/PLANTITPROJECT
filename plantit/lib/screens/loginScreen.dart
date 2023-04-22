@@ -96,12 +96,12 @@ class _LoginScreenState extends State<LoginScreen> {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
-          "email" : emailTextController.text,
+          "email" : emailTextController.text.toLowerCase(),
           "password" : passwordTextController.text,
         })).then((value) => {
       if(value.statusCode == 200) {
 
-        theEmail = emailTextController.text,
+        theEmail = emailTextController.text.toLowerCase(),
         emailTextController.clear(),
         passwordTextController.clear(),
         // If the server did return a 200 response,
