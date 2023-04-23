@@ -22,6 +22,7 @@ class CarePlanHistoryScreen extends StatefulWidget {
 
 class _CarePlanHistoryScreenState extends State<CarePlanHistoryScreen> {
   List<dynamic> _carePlans = [];
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -36,6 +37,7 @@ class _CarePlanHistoryScreenState extends State<CarePlanHistoryScreen> {
       final data = jsonDecode(response.body);
       setState(() {
         _carePlans = data;
+        isLoading = false;
       });
     } else {
       throw Exception('Failed to load user data');
@@ -48,11 +50,21 @@ class _CarePlanHistoryScreenState extends State<CarePlanHistoryScreen> {
       appBar: AppBar(
         title: Text(widget.userEmail),
       ),
-      body: _carePlans.isEmpty
+      body: isLoading
           ? const Center(
         child: CircularProgressIndicator(),
       )
-          : ListView.builder(
+          : _carePlans.isEmpty ?
+      const Center(
+        child: Text(
+          "No history yet...",
+          style: TextStyle(
+            color: Colors.grey,
+            fontSize: 16,
+          ),
+        ),
+      )
+      : ListView.builder(
         padding: EdgeInsets.all(16.0),
         itemCount: _carePlans.length,
         itemBuilder: (BuildContext context, int index) {
