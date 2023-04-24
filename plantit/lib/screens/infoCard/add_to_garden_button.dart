@@ -20,8 +20,27 @@ class AddToGardenButton extends StatelessWidget {
 
   final Size size;
    String? _nickname;
+  var _plantsdata ;
+  var _pnames = [];
+
    final TextEditingController _controller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+
+  Future<void> fetchData() async {
+    final response = await http.get(Uri.parse("$serverUrl/plants/$userEmail" ));
+    if (response.statusCode == 200) {
+      final jsonData = json.decode(response.body);
+      _plantsdata = jsonData;
+      var p;
+      for (p in _plantsdata) {
+        _pnames.add(p["nickname"]);
+      }
+    }else {
+      throw Exception('Failed to load data');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -46,6 +65,12 @@ class AddToGardenButton extends StatelessWidget {
                             if (value == null || value.isEmpty) {
                               return 'Please enter a nickname';
                             }
+                            for(var p1 in _pnames) {
+                              print(p1);
+                              if (value == p1) {
+                                return 'Nickname already taken';
+                              }
+                            }
                             return null;
                           },
                           onSaved: (value) {
@@ -63,10 +88,12 @@ class AddToGardenButton extends StatelessWidget {
                         ElevatedButton(
                           child: Text('SAVE'),
                           onPressed: () async {
-                            print("orttttttt");
+                               await fetchData();
+
                             if (_formKey.currentState != null && _formKey.currentState!.validate()) {
                               _formKey.currentState?.save();
                               final nickname = _nickname;
+
                               Map<String, dynamic> stringMap = cPlnat as Map<String, dynamic>;
                               cPlnat["nickname"]=nickname;
                               // do something with the nickname, e.g. save it to a database

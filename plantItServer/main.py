@@ -173,6 +173,7 @@ def add_to_garden():
     return jsonify({"message": "Plant created successfully."}), 201
 
 
+
 @app.route('/addToHistory', methods=['POST'])
 def add_to_history():
     data = request.get_json()
@@ -191,7 +192,7 @@ def add_to_history():
 @app.route('/plants', methods=['GET'])
 def read_plants():
     """
-    Retrieve all users from Firestore DB.
+    Retrieve all plants from Firestore DB.
     """
     p = [doc.to_dict() for doc in db.collection('Plants').stream()]
     return jsonify(p), 200
