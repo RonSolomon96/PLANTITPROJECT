@@ -6,6 +6,7 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 from flask import Flask, request, jsonify
+import uuid
 
 # Initialize pyrebase with user credentials
 config = {
@@ -176,17 +177,36 @@ def add_to_garden():
 
 @app.route('/addToHistory', methods=['POST'])
 def add_to_history():
-    data = request.get_json()
-    user = db.collection('users').document(request.args.get('user'))
-    plant_docs = user.collection("User_Plants").where("nickname", "==", request.args.get('plant')).stream()
+    user1 = request.args.get('user')
+    plant = request.args.get('plant')
+    user = db.collection('users').document(user1)
+    plant_docs = user.collection("User_Plants").where("nickname", "==", plant).stream()
     plant_ref = None
     for doc in plant_docs:
         plant_ref = doc.reference
         break
     if plant_ref is None:
         return jsonify({"error": "Plant not found"}), 404
-    plant_ref.collection("History").add(data)
+
+    # Get the uploaded file
+    file = request.files['image']
+    # Generate a unique filename for the file
+    filename = f'users/{user1}/{plant}/{uuid.uuid4().hex}.jpg'
+
+    # Upload the file to Firebase Storage
+    storage.child(filename).put(file)
+
+    # Add the other form data to Firestore
+    plant_ref.collection('History').add({
+        'image': storage.child(filename).get_url(None),
+        'disease': request.form['disease'],
+        'care plan': request.form['care plan'],
+        'date': request.form['date']
+    })
+
     return jsonify({"message": "Successfully added to history"}), 201
+
+
 
 
 @app.route('/plants', methods=['GET'])

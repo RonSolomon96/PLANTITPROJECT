@@ -27,27 +27,37 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   File? _image;
 
-
   Future<void> _getImage(ImageSource source) async {
     final image = await ImagePicker().pickImage(source: source);
-    // (here we will call function for ml algorithm...)
-    //add the info to history
-    if(image != null) {
-      await http.post(Uri.parse("$serverUrl/addToHistory?user=${widget.userEmail}&plant=${widget.cPlant["nickname"]}" ),headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-          body: jsonEncode(<String, String>{
-            "image" : "image",
-            "disease" : "the disease",
-            "care plan" : "the care plan",
-            "date" : DateFormat.yMd().add_jm().format(DateTime.now())
-          })
+
+    if (image != null) {
+      // Create a multipart request using http.MultipartRequest
+      var request = http.MultipartRequest(
+          'POST',
+          Uri.parse('$serverUrl/addToHistory?user=${widget.userEmail}&plant=${widget.cPlant["nickname"]}')
       );
+
+      // Add the image file to the request
+      var imageFile = await http.MultipartFile.fromPath('image', image.path);
+      request.files.add(imageFile);
+
+      // Add the other form data to the request
+      request.fields['disease'] = 'the disease';
+      request.fields['care plan'] = 'the care plan';
+      request.fields['date'] = DateFormat.yMd().add_jm().format(DateTime.now());
+
+      // Send the request and wait for the response
+      var response = await request.send();
+      if (response.statusCode == 200) {
+        // Do something with the response
+      }
     }
+
     setState(() {
       _image = File(image!.path);
     });
   }
+
 
   Future<void> _showOptionsDialog() async {
     await showDialog(

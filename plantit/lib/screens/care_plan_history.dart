@@ -86,8 +86,8 @@ class _CarePlanHistoryScreenState extends State<CarePlanHistoryScreen> {
                 const SizedBox(height: 8.0),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
-                  child: Image.asset(
-                    'assets/images/5.ico',
+                  child: Image.network(
+                    _carePlans[index]["image"],
                     height: 200,
                     width: double.infinity,
                     fit: BoxFit.cover,
