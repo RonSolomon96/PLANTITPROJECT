@@ -80,195 +80,203 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
     return Scaffold(
         body: _isLoadingUser || _isLoadingUserPlants
             ? const Center(child: CircularProgressIndicator()) // Show CircularProgressIndicator when loading
-            : Column(
-                children: <Widget> [
-                  Container(
-                    margin: const EdgeInsets.only(bottom: kDefaultPadding),
-                    height: size.height * 0.25,
-                    child: Stack(
-                      children: <Widget>[
-                        Container(
-                          padding: const EdgeInsets.only(
-                            left: kDefaultPadding,
-                            right: kDefaultPadding,
-                            bottom: kDefaultPadding,
-                          ),
-                          height: size.height * 0.25 - 27,
-                          decoration: const BoxDecoration(
-                              color: Color(0xff07a36f),
-                              borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(36),
-                                  bottomRight: Radius.circular(36)
-                              )
-                          ),
-                          child: Row(
-                            children: <Widget>[
-                              Text(
-                                'Hey $_username,\n  Welcome to PlantIt!',
-                                style: const TextStyle(
-                                    color: Colors.white,fontSize: 25, fontWeight: FontWeight.bold, letterSpacing: 1
+            : Container(
+          decoration:  const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/background.jpg"),
+              fit: BoxFit.cover,
+            ),
+          ),
+              child: Column(
+                  children: <Widget> [
+                    Container(
+                      margin: const EdgeInsets.only(bottom: kDefaultPadding),
+                      height: size.height * 0.25,
+                      child: Stack(
+                        children: <Widget>[
+                          Container(
+                            padding: const EdgeInsets.only(
+                              left: kDefaultPadding,
+                              right: kDefaultPadding,
+                              bottom: kDefaultPadding,
+                            ),
+                            height: size.height * 0.25 - 27,
+                            decoration: const BoxDecoration(
+                                color: Color(0xff07a36f),
+                                borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(36),
+                                    bottomRight: Radius.circular(36)
+                                )
+                            ),
+                            child: Row(
+                              children: <Widget>[
+                                Text(
+                                  'Hey $_username,\n  Welcome to PlantIt!',
+                                  style: const TextStyle(
+                                      color: Colors.white,fontSize: 25, fontWeight: FontWeight.bold, letterSpacing: 1
+                                  ),
                                 ),
-                              ),
-                              const Spacer(),
-                              Container(
-                                height: 30,
-                                width: 75,
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.3),
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                child: MaterialButton(
-                                  onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Are you sure you want to log out?'),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              child: Text('No'),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-                                            TextButton(
-                                              child: Text('Yes'),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: const Text(
-                                    'Log Out',
-                                    style: TextStyle(
-                                      fontSize: 11,
-                                      color: Colors.white,
+                                const Spacer(),
+                                Container(
+                                  height: 30,
+                                  width: 75,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(0.3),
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: MaterialButton(
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: const Text('Are you sure you want to log out?'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                child: Text('No'),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                              ),
+                                              TextButton(
+                                                child: Text('Yes'),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                  Navigator.of(context).pop();
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+                                    child: const Text(
+                                      'Log Out',
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                        color: Colors.white,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          child: Container(
-                            alignment: Alignment.center,
-                            margin: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                            padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                            height: 54,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20),
-                                boxShadow: [
-                                  BoxShadow(
-                                    offset: Offset(0,10),
-                                    blurRadius: 50,
-                                    color: kPrimaryColor.withOpacity(0.23),
-                                  ),
-                                ]
-                            ),
-                            child: TextField(
-                              controller: _searchController,
-                              onChanged: _filterPlants,
-                              decoration: const InputDecoration(
-                                hintText: "Search here...",
-                                enabledBorder: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                                suffixIcon: Icon(
-                                  Icons.search_outlined,),
-                              ),
+                              ],
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10) ,
-                        child: Text(
-                          "My Garden :",
-                          style: TextStyle(
-                              color: Colors.green.shade300,
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold),),
-                      ),
-                    ],
-                  ),
-                  Expanded(
-                    child: _userPlants!.isEmpty
-                        ? Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Icon(
-                            Icons.local_florist,
-                            size: 50.0,
-                          ),
-                          SizedBox(height: 20.0),
-                          Text(
-                            'No plants yet',
-                            style: TextStyle(fontSize: 20.0),
+                          Positioned(
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            child: Container(
+                              alignment: Alignment.center,
+                              margin: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                              padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                              height: 54,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(20),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      offset: Offset(0,10),
+                                      blurRadius: 50,
+                                      color: kPrimaryColor.withOpacity(0.23),
+                                    ),
+                                  ]
+                              ),
+                              child: TextField(
+                                controller: _searchController,
+                                onChanged: _filterPlants,
+                                decoration: const InputDecoration(
+                                  hintText: "Search here...",
+                                  enabledBorder: InputBorder.none,
+                                  focusedBorder: InputBorder.none,
+                                  suffixIcon: Icon(
+                                    Icons.search_outlined,),
+                                ),
+                              ),
+                            ),
                           ),
                         ],
                       ),
-                    )
-                        : ListView.builder(
-                      itemCount: _filteredPlants!.length,
-                      itemBuilder: (context, index) {
-                        return Card(
-                        elevation: 4,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                    ),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10) ,
+                          child: Text(
+                            "My Garden :",
+                            style: TextStyle(
+                                color: Colors.green.shade300,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),),
                         ),
-                        child: ListTile(
-                          contentPadding: const EdgeInsets.all(16),
-                          leading: SizedBox(
-                            width: 60,
-                            height: 60,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(12),
-                              child: Image.network(
-                                _filteredPlants![index]["Image_url"],
-                                fit: BoxFit.cover,
+                      ],
+                    ),
+                    Expanded(
+                      child: _userPlants!.isEmpty
+                          ? Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(
+                              Icons.local_florist,
+                              size: 50.0,
+                            ),
+                            SizedBox(height: 20.0),
+                            Text(
+                              'No plants yet',
+                              style: TextStyle(fontSize: 20.0),
+                            ),
+                          ],
+                        ),
+                      )
+                          : ListView.builder(
+                        itemCount: _filteredPlants!.length,
+                        itemBuilder: (context, index) {
+                          return Card(
+                          elevation: 4,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.all(16),
+                            leading: SizedBox(
+                              width: 60,
+                              height: 60,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: Image.network(
+                                  _filteredPlants![index]["Image_url"],
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
-                          ),
-                          title: Text(
-                            _filteredPlants![index]["nickname"],
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
+                            title: Text(
+                              _filteredPlants![index]["nickname"],
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            subtitle: Text(
+                              _filteredPlants![index]["Common_name"],
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            trailing: IconButton(
+                              onPressed: () {
+                               Navigator.push(context,
+                                   MaterialPageRoute(builder: (context) => DetailsScreen(
+                                       cPlant : _filteredPlants![index],
+                                       userEmail: widget.userEmail)));
+                              },
+                              icon: const Icon(Icons.arrow_forward_ios),
                             ),
                           ),
-                          subtitle: Text(
-                            _filteredPlants![index]["Common_name"],
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          trailing: IconButton(
-                            onPressed: () {
-                             Navigator.push(context,
-                                 MaterialPageRoute(builder: (context) => DetailsScreen(
-                                     cPlant : _filteredPlants![index],
-                                     userEmail: widget.userEmail)));
-                            },
-                            icon: const Icon(Icons.arrow_forward_ios),
-                          ),
-                        ),
-                      );},
+                        );},
+                      ),
                     ),
-                  ),
-                ]
+                  ]
+              ),
             ),
     );
   }

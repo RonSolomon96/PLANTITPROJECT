@@ -41,95 +41,103 @@ class _InfoScreenState extends State<InfoScreen> {
                 bottomLeft: Radius.circular(16),
                 bottomRight: Radius.circular(16))),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: searchController,
-              decoration: const InputDecoration(
-                labelText: "Search for info...",
-                hintText: "Search plants",
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(25.0)),
-                ),
-              ),
-              onChanged: (value) {
-                setState(() {
-                  filteredPlants = widget.plantCollection.where((plant) =>
-                      plant["Common_name"]
-                          .toString()
-                          .toLowerCase()
-                          .contains(value.toLowerCase())).toList();
-                });
-              },
-            ),
+      body: Container(
+        decoration:  const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/background.jpg"),
+            fit: BoxFit.cover,
           ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: filteredPlants.length, // Number of plants to display
-              itemBuilder: (BuildContext context, int index) {
-                var name = filteredPlants[index]["Common_name"];
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: searchController,
+                decoration: const InputDecoration(
+                  labelText: "Search for info...",
+                  hintText: "Search plants",
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                  ),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    filteredPlants = widget.plantCollection.where((plant) =>
+                        plant["Common_name"]
+                            .toString()
+                            .toLowerCase()
+                            .contains(value.toLowerCase())).toList();
+                  });
+                },
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: filteredPlants.length, // Number of plants to display
+                itemBuilder: (BuildContext context, int index) {
+                  var name = filteredPlants[index]["Common_name"];
 
-                var currentPlant = filteredPlants[index];
-                var des = filteredPlants[index]["Description"];
-                var img1  = filteredPlants[index]["Image_url"];
-                img1 ??= 'assets/images/5.ico';
+                  var currentPlant = filteredPlants[index];
+                  var des = filteredPlants[index]["Description"];
+                  var img1  = filteredPlants[index]["Image_url"];
+                  img1 ??= 'assets/images/5.ico';
 
 
-                return GestureDetector(
-                    onTap: () {},
-                    child: Card(
-                      elevation: 4,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.all(16),
-                        leading: SizedBox(
-                          width: 60,
-                          height: 60,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: Image.network(
-                             img1,
-                              fit: BoxFit.cover,
+                  return GestureDetector(
+                      onTap: () {},
+                      child: Card(
+                        elevation: 4,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: ListTile(
+                          contentPadding: const EdgeInsets.all(16),
+                          leading: SizedBox(
+                            width: 60,
+                            height: 60,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: Image.network(
+                               img1,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
-                        ),
-                        title: Text(
-                          name,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
+                          title: Text(
+                            name,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          subtitle: Text(
+                            currentPlant["Botanical Name"],
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          trailing: IconButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => DetailsScreen(
+                                      c_plant: currentPlant,
+                                      userEmail: widget.userEmail),
+                                ),
+                              );
+                            },
+                            icon: const Icon(Icons.arrow_forward_ios),
                           ),
                         ),
-                        subtitle: Text(
-                          currentPlant["Botanical Name"],
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        trailing: IconButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DetailsScreen(
-                                    c_plant: currentPlant,
-                                    userEmail: widget.userEmail),
-                              ),
-                            );
-                          },
-                          icon: const Icon(Icons.arrow_forward_ios),
-                        ),
-                      ),
-                    ));
-              },
+                      ));
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

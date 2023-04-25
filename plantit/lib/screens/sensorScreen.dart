@@ -175,21 +175,20 @@ class _SensorScreenState extends State<SensorScreen>
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Color(0xff07a36f),
-        title: const Text(
-          'Sensors',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
+        title: const Center(child: Text('Sensors')),
+        backgroundColor: const Color(0xff07a36f),
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(16),
+                bottomRight: Radius.circular(16))),
       ),
-      body:
-      Container(
+      body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [Color(0xffbfd9cc), Color(0xff8ccaaf), Color(0xff59bf96), Color.fromARGB(255, 7, 163, 111)]
+        decoration:  const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/background.jpg"),
+            fit: BoxFit.cover,
           ),
         ),
         child:Center(
