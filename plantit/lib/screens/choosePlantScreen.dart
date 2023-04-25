@@ -111,7 +111,7 @@ class _ChoosePlantScreenState extends State<ChoosePlantScreen> {
                           ),
                         ),
                         subtitle: Text(
-                          'Description of plant ${index + 1}',
+                          cPlant["Botanical Name"],
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
