@@ -4,14 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:plantit/screens/homeInfoCard/details_screen.dart';
+import 'package:plantit/screens/infoScreen.dart';
 import 'package:plantit/screens/values/constants.dart';
 import 'package:plantit/main.dart';
 
 class MyGardenScreen extends StatefulWidget {
   final String userEmail;
+  final List plantCollection;
 
   const MyGardenScreen({
     Key? key,
+    required this.plantCollection,
     required this.userEmail,
   }) : super(key: key);
 
@@ -278,6 +281,20 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                   ]
               ),
             ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) =>
+                  InfoScreen(title: "Choose plant to add",
+                    text: "Search for plant to add...",
+                    hinttext: "Search",
+                    userEmail: widget.userEmail,
+                    plantCollection: widget.plantCollection,)));
+        },
+        backgroundColor: Color.fromARGB(255, 7, 163, 111),
+        child: Icon(Icons.add),
+      ),
+
     );
   }
 }

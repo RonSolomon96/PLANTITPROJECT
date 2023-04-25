@@ -30,10 +30,14 @@ class _RootScreenState extends State<RootScreen> {
     super.initState();
     _widgetOptions = <Widget>[
       MyGardenScreen(
+        plantCollection: widget.plantDb,
         userEmail: widget.userEmail,
       ),
       SensorScreen(userEmail: widget.userEmail),
       InfoScreen(
+        title: "Search",
+        text: "Search for info...",
+        hinttext: "Search plants",
         plantCollection: widget.plantDb,
         userEmail: widget.userEmail,
       ),
@@ -56,7 +60,8 @@ class _RootScreenState extends State<RootScreen> {
     switch (index) {
       case 0:
         return MyGardenScreen(
-          key: UniqueKey(), // Add a UniqueKey here
+          key: UniqueKey(),
+          plantCollection: widget.plantDb,
           userEmail: widget.userEmail,
         );
       case 1:
@@ -66,7 +71,10 @@ class _RootScreenState extends State<RootScreen> {
         );
       case 2:
         return InfoScreen(
-          key: UniqueKey(), // Add a UniqueKey here
+          key: UniqueKey(),
+          title: "Search",
+          text: "Search for info...",
+          hinttext: "Search plants",// Add a UniqueKey here
           plantCollection: widget.plantDb,
           userEmail: widget.userEmail,
         );

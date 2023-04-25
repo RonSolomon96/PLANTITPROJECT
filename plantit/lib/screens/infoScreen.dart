@@ -8,11 +8,17 @@ import 'infoCard/details_screen.dart';
 class InfoScreen extends StatefulWidget {
   final List plantCollection;
   final String userEmail;
+  final String title;
+  final String text;
+  final String hinttext;
 
   const InfoScreen({
     Key? key,
     required this.plantCollection,
     required this.userEmail,
+    required this.title,
+    required this.text,
+    required this.hinttext,
   }) : super(key: key);
 
   @override
@@ -34,7 +40,7 @@ class _InfoScreenState extends State<InfoScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Center(child: Text('Search')),
+        title:  Center(child: Text(widget.title)),
         backgroundColor: const Color(0xff07a36f),
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
@@ -55,9 +61,9 @@ class _InfoScreenState extends State<InfoScreen> {
               padding: const EdgeInsets.all(8.0),
               child: TextField(
                 controller: searchController,
-                decoration: const InputDecoration(
-                  labelText: "Search for info...",
-                  hintText: "Search plants",
+                decoration: InputDecoration(
+                  labelText: widget.text,
+                  hintText: widget.hinttext,
                   prefixIcon: Icon(Icons.search),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(25.0)),

@@ -58,6 +58,29 @@ class _BodyState extends State<Body> {
     });
   }
 
+  Future<bool> _showTrashDialog() async {
+    return (await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Are you sure?'),
+        content: const Text('Do you want to delete this plant?'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('No'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(true);
+              Navigator.of(context).pop(true);
+            },
+            child: const Text('Yes'),
+          ),
+        ],
+      ),
+    )) ??
+        false;
+  }
 
   Future<void> _showOptionsDialog() async {
     await showDialog(
@@ -134,6 +157,17 @@ class _BodyState extends State<Body> {
                 icon: Icon(Icons.qr_code),
                 label: Text('Scan'),
                 onPressed: _showOptionsDialog,
+                style: ElevatedButton.styleFrom(
+                  primary: ColorsPalette.kPrimaryColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                  ),
+                ),
+              ),
+              ElevatedButton.icon(
+                icon: Icon(Icons.delete_outlined),
+                label: Text('Delete Plant'),
+                onPressed: _showTrashDialog,
                 style: ElevatedButton.styleFrom(
                   primary: ColorsPalette.kPrimaryColor,
                   shape: RoundedRectangleBorder(
