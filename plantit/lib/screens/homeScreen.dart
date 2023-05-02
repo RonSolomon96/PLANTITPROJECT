@@ -35,9 +35,20 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
   @override
   void initState() {
     super.initState();
+    print("object");
     _fetchUserData();
     _fetchUserPlantsData();
   }
+
+  void updateScreen() {
+    setState(() {
+      _isLoadingUser = true;
+      _isLoadingUserPlants = true;
+      _fetchUserData();
+      _fetchUserPlantsData();
+    });
+  }
+
 
   Future<void> _fetchUserData() async {
     final response =
@@ -270,7 +281,7 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                                Navigator.push(context,
                                    MaterialPageRoute(builder: (context) => DetailsScreen(
                                        cPlant : _filteredPlants![index],
-                                       userEmail: widget.userEmail)));
+                                       userEmail: widget.userEmail, render: updateScreen)));
                               },
                               icon: const Icon(Icons.arrow_forward_ios),
                             ),

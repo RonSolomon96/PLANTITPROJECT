@@ -17,8 +17,9 @@ import '../../main.dart';
 class Body extends StatefulWidget {
    var cPlant;
    final String userEmail;
+   Function render;
 
-   Body({Key? key,required this.userEmail, required this.cPlant}) : super(key: key);
+   Body({Key? key,required this.userEmail, required this.cPlant, required this.render}) : super(key: key);
 
   @override
   State<Body> createState() => _BodyState();
@@ -58,6 +59,7 @@ class _BodyState extends State<Body> {
     });
   }
 
+
   Future<bool> _showTrashDialog() async {
     return (await showDialog(
       context: context,
@@ -70,9 +72,11 @@ class _BodyState extends State<Body> {
             child: const Text('No'),
           ),
           TextButton(
-            onPressed: () {
+            onPressed: () async {
+              await delete();
               Navigator.of(context).pop(true);
               Navigator.of(context).pop(true);
+              widget.render();
             },
             child: const Text('Yes'),
           ),
@@ -80,6 +84,10 @@ class _BodyState extends State<Body> {
       ),
     )) ??
         false;
+  }
+
+  Future<void> delete() async {
+    final response = await http.delete(Uri.parse('$serverUrl/deletPlant?user=${widget.userEmail}&plant=${widget.cPlant["nickname"]}'));
   }
 
   Future<void> _showOptionsDialog() async {

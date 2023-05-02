@@ -161,6 +161,22 @@ def delete_user(user_id):
     return jsonify({"message": "User deleted successfully."}), 200
 
 
+@app.route('/deletPlant', methods=['DELETE'])
+def delete_plant():
+    user1 = request.args.get('user')
+    plant = request.args.get('plant')
+    user = db.collection('users').document(user1)
+    plant_docs = user.collection("User_Plants").where("nickname", "==", plant).stream()
+    plant_ref = None
+    for doc in plant_docs:
+        plant_ref = doc.reference
+        break
+    if plant_ref is None:
+        return jsonify({"error": "Plant not found"}), 404
+    plant_ref.delete()
+    return jsonify({"message": "Successfully deleted"}), 201
+
+
 # Define routes for CRUD operations
 @app.route('/addToGarden', methods=['POST'])
 def add_to_garden():
@@ -172,7 +188,6 @@ def add_to_garden():
     p = db.collection('users').document(request.args.get('user'))
     p.collection("User_Plants").add(data)
     return jsonify({"message": "Plant created successfully."}), 201
-
 
 
 @app.route('/addToHistory', methods=['POST'])
