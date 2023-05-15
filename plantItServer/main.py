@@ -241,12 +241,10 @@ def read_plant(light, temp, moist):
     # Define your functionality as a lambda function
     func = lambda obj: light in obj['Light'] and temp in obj['Temperature'] and moist in obj['Humidity']
 
-    # Define the input array of objects
-    plants_arr = [doc.to_dict() for doc in db.collection('Plants').stream()]
-
-    # Filter the array based on the functionality
-    filtered_plants_arr = list(filter(func, plants_arr))
-    return jsonify(filtered_plants_arr), 200
+    plant = [doc.to_dict() for doc in db.collection('Plants').where("Light", "==", light).
+        where("Temperature", "==", temp).where("Humidity", "==", moist).stream()]
+    # if plant.exists:
+    return jsonify(plant), 200
 
 
 # else:
