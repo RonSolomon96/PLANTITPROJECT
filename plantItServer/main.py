@@ -174,6 +174,15 @@ def delete_plant():
     if plant_ref is None:
         return jsonify({"error": "Plant not found"}), 404
     plant_ref.delete()
+
+    sensor_docs = db.collection("Sensors").where("user", "==", user1).where("plant", "==", plant).stream()
+    sensor_ref = None
+    for doc in sensor_docs:
+        sensor_ref = doc.reference
+        break
+    if sensor_ref is None:
+        return jsonify({"error": "sensor not found"}), 404
+    sensor_ref.delete()
     return jsonify({"message": "Successfully deleted"}), 201
 
 
@@ -187,6 +196,9 @@ def add_to_garden():
     print(request.args.get('user'))
     p = db.collection('users').document(request.args.get('user'))
     p.collection("User_Plants").add(data)
+
+    user_ref = db.collection('Sensors').document(request.args.get('sensornum'))
+    user_ref.set({"user" : request.args.get('user'), "plant" : data["nickname"], "sensornumber" : request.args.get('sensornum')})
     return jsonify({"message": "Plant created successfully."}), 201
 
 
@@ -255,6 +267,12 @@ def read_plant(light, temp, moist):
 def get_user_plants(user):
     plants = [doc.to_dict() for doc in db.collection('users').document(user).collection("User_Plants").stream()]
     return jsonify(plants), 200
+
+
+@app.route('/sensors', methods=['GET'])
+def get_sensors():
+    sensors = [doc.to_dict() for doc in db.collection('Sensors').stream()]
+    return jsonify(sensors), 200
 
 
 @app.route('/history/<user>/<plant>', methods=['GET'])
