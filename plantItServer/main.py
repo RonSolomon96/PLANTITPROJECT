@@ -232,7 +232,6 @@ def add_to_garden():
     return jsonify({"message": "Plant created successfully."}), 201
 
 
-
 @app.route('/addToHistory', methods=['POST'])
 def add_to_history():
     user1 = request.args.get('user')
@@ -253,18 +252,16 @@ def add_to_history():
 
     # Upload the file to Firebase Storage
     storage.child(filename).put(file)
+    temp = len(plant_ref.collection('History').get())
 
     # Add the other form data to Firestore
     plant_ref.collection('History').add({
         'image': storage.child(filename).get_url(None),
-        'disease': request.form['disease'],
-        'care plan': request.form['care plan'],
+        'serial': temp + 1,
         'date': request.form['date']
     })
 
     return jsonify({"message": "Successfully added to history"}), 201
-
-
 
 
 @app.route('/plants', methods=['GET'])
@@ -281,8 +278,6 @@ def read_plant(light, temp, moist):
     """
     Retrieve a specific user by ID from Firestore DB.
     """
-    # Define your functionality as a lambda function
-    func = lambda obj: light in obj['Light'] and temp in obj['Temperature'] and moist in obj['Humidity']
 
     plant = [doc.to_dict() for doc in db.collection('Plants').where("Light", "==", light).
         where("Temperature", "==", temp).where("Humidity", "==", moist).stream()]
@@ -316,8 +311,10 @@ def get_plant_history(user, plant):
     if plant_ref is None:
         return jsonify({"error": "Plant not found"}), 404
     history = [doc.to_dict() for doc in plant_ref.collection("History").stream()]
-    return jsonify(history), 200
+    print(history)
+    sorted_history = sorted(history, key=lambda h: h["serial"])
 
+    return jsonify(sorted_history[::-1]), 200
 
 
 @app.route('/plants/<user>/<nickname>', methods=['GET'])
@@ -369,7 +366,6 @@ def udp_listener():
             else:
                 # Document does not exist
                 print("prob...")
-
 
 
 # Run Flask app
