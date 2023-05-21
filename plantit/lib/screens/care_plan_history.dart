@@ -109,7 +109,7 @@ class _CarePlanHistoryScreenState extends State<CarePlanHistoryScreen> {
                     borderRadius: BorderRadius.circular(8.0),
                     child: Image.network(
                       _carePlans[index]["image"],
-                      height: 200,
+                      height: 300,
                       width: double.infinity,
                       fit: BoxFit.cover,
                       loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
@@ -138,30 +138,7 @@ class _CarePlanHistoryScreenState extends State<CarePlanHistoryScreen> {
                     ),
                   ),
                   const SizedBox(height: 16.0),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Disease: ${_carePlans[index]["disease"]}",
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16.0,
-                          ),
-                        ),
-                        const SizedBox(height: 8.0),
-                        Text(
-                          "Care plan: ${_carePlans[index]["care plan"]}",
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16.0,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 16.0),
+
                 ],
               ),
             );

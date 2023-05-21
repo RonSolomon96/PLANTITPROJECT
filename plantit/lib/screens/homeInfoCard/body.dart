@@ -43,8 +43,6 @@ class _BodyState extends State<Body> {
       request.files.add(imageFile);
 
       // Add the other form data to the request
-      request.fields['disease'] = 'the disease';
-      request.fields['care plan'] = 'the care plan';
       request.fields['date'] = DateFormat.yMd().add_jm().format(DateTime.now());
 
       // Send the request and wait for the response
