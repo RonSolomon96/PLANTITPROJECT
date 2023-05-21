@@ -1,8 +1,9 @@
-import base64
-import sys
+import datetime
 
 import pyrebase
 import firebase_admin
+import threading
+import socket
 from firebase_admin import credentials
 from firebase_admin import firestore
 from flask import Flask, request, jsonify
@@ -161,11 +162,13 @@ def delete_user(user_id):
     return jsonify({"message": "User deleted successfully."}), 200
 
 
-@app.route('/deletPlant', methods=['DELETE'])
+@app.route('/deletePlant', methods=['DELETE'])
 def delete_plant():
     user1 = request.args.get('user')
     plant = request.args.get('plant')
     user = db.collection('users').document(user1)
+
+    # Delete the specific plant from User_Plants collection
     plant_docs = user.collection("User_Plants").where("nickname", "==", plant).stream()
     plant_ref = None
     for doc in plant_docs:
@@ -175,31 +178,59 @@ def delete_plant():
         return jsonify({"error": "Plant not found"}), 404
     plant_ref.delete()
 
-    sensor_docs = db.collection("Sensors").where("user", "==", user1).where("plant", "==", plant).stream()
+    # Check if the 'plants' array is empty
+    sensor_docs = db.collection("Sensors").where("user", "==", user1).stream()
     sensor_ref = None
+    plants_arr = []  # Initialize the variable with an empty list
     for doc in sensor_docs:
-        sensor_ref = doc.reference
-        break
-    if sensor_ref is None:
-        return jsonify({"error": "sensor not found"}), 404
-    sensor_ref.delete()
+        sensor_data = doc.to_dict()
+        plants_arr = sensor_data.get('plants', [])
+        if plant in plants_arr:
+            # Remove the specific plant from the 'plants' array
+            plants_arr.remove(plant)
+            sensor_data['plants'] = plants_arr
+            sensor_ref = doc.reference
+            sensor_ref.set(sensor_data)
+            break
+
+    # Delete the entire document if 'plants' array is empty
+    if sensor_ref is not None and len(plants_arr) == 0:
+        sensor_ref.delete()
+
     return jsonify({"message": "Successfully deleted"}), 201
 
 
-# Define routes for CRUD operations
+
 @app.route('/addToGarden', methods=['POST'])
 def add_to_garden():
     """
     Create a new plant with the given data.
     """
     data = request.get_json()
+    data["Water level"] = ""
     print(request.args.get('user'))
+
     p = db.collection('users').document(request.args.get('user'))
     p.collection("User_Plants").add(data)
 
-    user_ref = db.collection('Sensors').document(request.args.get('sensornum'))
-    user_ref.set({"user" : request.args.get('user'), "plant" : data["nickname"], "sensornumber" : request.args.get('sensornum')})
+    sensor_ref = db.collection('Sensors').document(request.args.get('sensornum'))
+    sensor_data = sensor_ref.get().to_dict()
+
+    if sensor_data and 'plants' in sensor_data:
+        plants_arr = sensor_data['plants']
+    else:
+        plants_arr = []
+
+    plants_arr.append(data["nickname"])
+
+    sensor_ref.set({
+        "user": request.args.get('user'),
+        "plants": plants_arr,
+        "sensornumber": request.args.get('sensornum')
+    })
+
     return jsonify({"message": "Plant created successfully."}), 201
+
 
 
 @app.route('/addToHistory', methods=['POST'])
@@ -296,6 +327,54 @@ def get_user_plant(user, nickname):
     return jsonify(plant[0]), 200
 
 
+def udp_listener():
+    server_ip = '0.0.0.0'  # Listen on all available network interfaces
+    server_port = 5002
+
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    server_address = (server_ip, server_port)
+    sock.bind(server_address)
+
+    while True:
+        data, address = sock.recvfrom(1024)
+        message = data.decode()
+        pairs = message.split(":")
+
+        current_time = datetime.datetime.now().time()
+        hour = current_time.hour
+        minute = current_time.minute
+        second = current_time.second
+
+        if (hour == 8 and minute == 0 and 0 <= second <= 2) or (hour == 19 and minute == 0 and 0 <= second <= 2):
+            print("hey")
+            sensor_doc = db.collection("Sensors").document(pairs[3])
+            doc = sensor_doc.get()
+
+            if doc.exists:
+                # Document found
+                sensor_data = doc.to_dict()
+                user1 = sensor_data["user"]
+                for p in sensor_data["plants"] :
+                    user = db.collection('users').document(user1)
+                    plant_docs = user.collection("User_Plants").where("nickname", "==", p).stream()
+                    plant_ref = None
+                    for doc in plant_docs:
+                        plant_ref = doc.reference
+                        break
+                    plant_data = plant_ref.get().to_dict()
+                    plant_data["Water level"] = pairs[1]
+                    plant_ref.set(plant_data)
+
+                print("doc.to_dict()")
+            else:
+                # Document does not exist
+                print("prob...")
+
+
+
 # Run Flask app
 if __name__ == '__main__':
+    # Start the UDP listener thread
+    udp_thread = threading.Thread(target=udp_listener)
+    udp_thread.start()
     app.run(debug=True, host='0.0.0.0')

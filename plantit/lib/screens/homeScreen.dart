@@ -246,6 +246,22 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                           : ListView.builder(
                         itemCount: _filteredPlants!.length,
                         itemBuilder: (context, index) {
+                          String wl = "Current water level: not checked yet";
+                          Color c = Colors.indigo;
+                          if(_filteredPlants![index]["Water level"] != ""){
+                            int waterLevel = int.parse(_filteredPlants![index]["Water level"]);
+                            int waterLevelNedded = int.parse(_filteredPlants![index]["Water"]);
+                            if(waterLevel > waterLevelNedded) {
+                              wl = "Current water level: High";
+                              c = Colors.red;
+                            } else if (waterLevel < waterLevelNedded) {
+                              wl = "Current water level: Perfect";
+                              c = Colors.green;
+                            } else {
+                              wl = "Current water level: Low";
+                              c = Colors.orange;
+                            }
+                          }
                           return Card(
                           elevation: 4,
                           shape: RoundedRectangleBorder(
@@ -271,10 +287,21 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            subtitle: Text(
-                              _filteredPlants![index]["Common_name"],
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  _filteredPlants![index]["Common_name"],
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                Text(
+                                  wl,
+                                  style: TextStyle(color: c),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
                             ),
                             trailing: IconButton(
                               onPressed: () {

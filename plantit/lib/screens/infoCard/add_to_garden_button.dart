@@ -24,7 +24,6 @@ class AddToGardenButton extends StatelessWidget {
   var _plantsdata ;
   var _pnames = [];
   var _sensorsdata ;
-  var _snames = [];
 
   final TextEditingController _controller = TextEditingController();
   final _formKey1 = GlobalKey<FormState>();
@@ -50,10 +49,6 @@ class AddToGardenButton extends StatelessWidget {
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
       _sensorsdata = jsonData;
-      var s;
-      for (s in _sensorsdata) {
-        _snames.add(s["sensornumber"]);
-      }
     }else {
       throw Exception('Failed to load data');
     }
@@ -83,7 +78,7 @@ class AddToGardenButton extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
+                                const Text(
                                   "Choose a nickname for your plant",
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
@@ -113,7 +108,7 @@ class AddToGardenButton extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
+                                const Text(
                                   "Enter the sensor serial number",
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
@@ -123,12 +118,11 @@ class AddToGardenButton extends StatelessWidget {
                                       return 'Please enter the sensor serial number';
                                     }
                                     if (int.tryParse(value) == null) {
-                                      return 'Sensor serial number must be a valid integer';
+                                      return 'Invalid sensor serial number';
                                     }
                                     print(_sensorsdata);
-                                    print(_snames);
-                                    for(var s1 in _snames) {
-                                      if (value == s1) {
+                                    for(var s in _sensorsdata) {
+                                      if (value == s['sensornumber'] && s['user'] != userEmail) {
                                         return 'Sensor already in use';
                                       }
                                     }

@@ -87,7 +87,7 @@ class _BodyState extends State<Body> {
   }
 
   Future<void> delete() async {
-    final response = await http.delete(Uri.parse('$serverUrl/deletPlant?user=${widget.userEmail}&plant=${widget.cPlant["nickname"]}'));
+    final response = await http.delete(Uri.parse('$serverUrl/deletePlant?user=${widget.userEmail}&plant=${widget.cPlant["nickname"]}'));
   }
 
   Future<void> _showOptionsDialog() async {
@@ -145,10 +145,43 @@ class _BodyState extends State<Body> {
     String name = widget.cPlant["nickname"];
     String cName = widget.cPlant["Common_name"];
     String des = widget.cPlant["Description"];
+    String wl = "Current water level: not checked yet";
+    String treat = "";
+    Color c = Colors.indigo;
+    if(widget.cPlant["Water level"] != "") {
+      int waterLevel = int.parse(widget.cPlant["Water level"]);
+      int waterLevelNedded = int.parse(widget.cPlant["Water"]);
+      if (waterLevel > waterLevelNedded) {
+        wl = "Current water level: High";
+        treat =
+        "Put ${widget.cPlant["nickname"]} under the sun, let it dry a little";
+        c = Colors.red;
+      } else if (waterLevel < waterLevelNedded) {
+        wl = "Current water level: Perfect";
+        treat = "Keep going!";
+        c = Colors.green;
+      } else {
+        wl = "Current water level: Low";
+        treat = "Add 1 cup of water to ${widget.cPlant["nickname"]}";
+        c = Colors.orange;
+      }
+    }
     return SingleChildScrollView(
       child: Column(
         children: [
           ImageAndIcons(size: size ,current: widget.cPlant),
+          Text(
+            wl,
+            style: TextStyle(color: c, fontSize: 25),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+          Text(
+            treat,
+            style: TextStyle(color: c, fontSize: 20),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
           TitleName(name: name, cName : cName),
           HistoryButton(size: size, cPlnat: widget.cPlant,userEmail: widget.userEmail),
           const SizedBox(
