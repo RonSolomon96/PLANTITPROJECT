@@ -336,13 +336,13 @@ def udp_listener():
         data, address = sock.recvfrom(1024)
         message = data.decode()
         pairs = message.split(":")
-
+        print(message)
         current_time = datetime.datetime.now().time()
         hour = current_time.hour
         minute = current_time.minute
         second = current_time.second
 
-        if (hour == 8 and minute == 0 and 0 <= second <= 2) or (hour == 19 and minute == 0 and 0 <= second <= 2):
+        if (hour == 8 and minute == 0 and 0 <= second <= 2) or (hour == 00 and minute == 29 and 0 <= second <= 2):
             print("hey")
             sensor_doc = db.collection("Sensors").document(pairs[3])
             doc = sensor_doc.get()
@@ -351,7 +351,7 @@ def udp_listener():
                 # Document found
                 sensor_data = doc.to_dict()
                 user1 = sensor_data["user"]
-                for p in sensor_data["plants"] :
+                for p in sensor_data["plants"]:
                     user = db.collection('users').document(user1)
                     plant_docs = user.collection("User_Plants").where("nickname", "==", p).stream()
                     plant_ref = None
@@ -359,7 +359,12 @@ def udp_listener():
                         plant_ref = doc.reference
                         break
                     plant_data = plant_ref.get().to_dict()
-                    plant_data["Water level"] = pairs[1]
+                    if int(pairs[1]) < 90:
+                        plant_data["Water level"] = "1"
+                    elif int(pairs[1]) < 180:
+                        plant_data["Water level"] = "2"
+                    else:
+                        plant_data["Water level"] = "3"
                     plant_ref.set(plant_data)
 
                 print("doc.to_dict()")

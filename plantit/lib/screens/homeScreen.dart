@@ -254,7 +254,7 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                             if(waterLevel > waterLevelNedded) {
                               wl = "Current water level: High";
                               c = Colors.red;
-                            } else if (waterLevel < waterLevelNedded) {
+                            } else if (waterLevel == waterLevelNedded) {
                               wl = "Current water level: Perfect";
                               c = Colors.green;
                             } else {
