@@ -200,7 +200,6 @@ def delete_plant():
     return jsonify({"message": "Successfully deleted"}), 201
 
 
-
 @app.route('/addToGarden', methods=['POST'])
 def add_to_garden():
     """
