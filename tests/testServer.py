@@ -27,7 +27,7 @@ def check_sign_in(url):
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: python3 server_test.py [url]")
+        print("Usage: python3 testServer.py [url]")
         exit(1)
     print("Checking sign in")
     check_sign_in(sys.argv[1] + '/login')
