@@ -58,7 +58,7 @@ def register():
             user['idToken'],
             display_name=username
         )
-        return jsonify({"message": "User created successfully."}), 201
+        return jsonify(user), 201
     except Exception as e:
         error_message = str(e)
         print(error_message)
@@ -152,13 +152,16 @@ def update_user(user_id):
     return jsonify({"message": "User updated successfully."}), 200
 
 
-@app.route('/users/<user_id>', methods=['DELETE'])
-def delete_user(user_id):
+@app.route('/users', methods=['DELETE'])
+def delete_user():
     """
     Delete a specific user by ID from Firestore DB.
     """
+    user_id = request.args.get('user_id')
+    token = request.args.get('token')
     user_ref = db.collection('users').document(user_id)
     user_ref.delete()
+    auth.delete_user_account(token)
     return jsonify({"message": "User deleted successfully."}), 200
 
 
@@ -176,8 +179,13 @@ def delete_plant():
         break
     if plant_ref is None:
         return jsonify({"error": "Plant not found"}), 404
-    plant_ref.delete()
 
+    # Delete subcollection
+    subcollection_ref = plant_ref.collection("History")
+    docs = subcollection_ref.stream()
+    for doc in docs:
+        doc.reference.delete()
+    plant_ref.delete()
     # Check if the 'plants' array is empty
     sensor_docs = db.collection("Sensors").where("user", "==", user1).stream()
     sensor_ref = None
