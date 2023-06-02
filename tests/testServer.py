@@ -5,7 +5,7 @@ import pytest
 
 def check_sign_in(url):
     """
-    Function purpose - check if the sign in function works in server side at /sign_in
+    Function purpose - check if the sign in function works in server side at /login
     """
     # negative tests - user does not exist
     users = [("Ron@gmail.com", "1234"), ("ort", "aaaa"), ("abc@gmail.com", "Ra123456"), ("rsalo@gmail.com", "Ra123456")]
