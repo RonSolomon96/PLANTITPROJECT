@@ -10,6 +10,7 @@ class ChoosePlantScreen extends StatefulWidget {
   final String temperature;
   final List plantCollection ;
   final String userEmail;
+  final Function render;
 
   const ChoosePlantScreen({
     Key? key,
@@ -17,7 +18,8 @@ class ChoosePlantScreen extends StatefulWidget {
     required this.moisture,
     required this.temperature,
     required this.plantCollection,
-    required this.userEmail
+    required this.userEmail,
+    required this.render
   }) : super(key: key);
 
   @override
@@ -131,6 +133,7 @@ class _ChoosePlantScreenState extends State<ChoosePlantScreen> {
                                   builder: (context) => DetailsScreen(
                                     c_plant: cPlant,
                                 userEmail: widget.userEmail,
+                                    render: widget.render,
                               ),
                             ),
                           );

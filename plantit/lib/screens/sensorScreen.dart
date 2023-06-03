@@ -8,8 +8,9 @@ import 'choosePlantScreen.dart';
 
 class SensorScreen extends StatefulWidget {
   final String userEmail;
+  final Function render;
 
-  const SensorScreen({Key? key, required this.userEmail}) : super(key: key);
+  const SensorScreen({Key? key, required this.userEmail, required this.render}) : super(key: key);
 
   @override
   _SensorScreenState createState() => _SensorScreenState();
@@ -263,7 +264,7 @@ class _SensorScreenState extends State<SensorScreen>
                           light: _light,
                           moisture:_moisture ,
                           temperature: _temperature,
-                          plantCollection: p, userEmail: widget.userEmail)));
+                          plantCollection: p, userEmail: widget.userEmail, render: widget.render)));
                   setState(() {
                     _isComplete = false;
                     _isAnimating = false;

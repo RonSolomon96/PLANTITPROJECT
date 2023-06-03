@@ -4,18 +4,18 @@ import 'package:plantit/screens/infoCard/body.dart';
 class DetailsScreen extends StatelessWidget {
       var c_plant;
       final String userEmail;
+      final Function render;
 
 
-      DetailsScreen({Key? key, required this.userEmail, required this.c_plant}) : super(key: key);
+      DetailsScreen({Key? key, required this.userEmail, required this.c_plant, required this.render}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    print("rooooooooooon");
-    print(c_plant);
     return  Scaffold(
       body: Body(
           cPlant: c_plant,
-          userEmail: userEmail
+          userEmail: userEmail,
+          render: render,
       ),
     );
   }

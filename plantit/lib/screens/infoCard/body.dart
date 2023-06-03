@@ -12,8 +12,9 @@ import 'dart:io';
 class Body extends StatefulWidget {
    var cPlant;
    final String userEmail;
+   final Function render;
 
-   Body({Key? key, required this.userEmail,required this.cPlant}) : super(key: key);
+   Body({Key? key, required this.userEmail,required this.cPlant, required this.render}) : super(key: key);
 
   @override
   State<Body> createState() => _BodyState();
@@ -93,7 +94,7 @@ class _BodyState extends State<Body> {
             name: name,
             bName: Bname
           ),
-          AddToGardenButton(size: size, cPlnat: widget.cPlant,userEmail: widget.userEmail),
+          AddToGardenButton(size: size, cPlnat: widget.cPlant,userEmail: widget.userEmail, render: widget.render,),
           const SizedBox(
             height: 16,
           ),

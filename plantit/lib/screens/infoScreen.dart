@@ -11,6 +11,7 @@ class InfoScreen extends StatefulWidget {
   final String title;
   final String text;
   final String hinttext;
+  final Function render;
 
   const InfoScreen({
     Key? key,
@@ -19,6 +20,7 @@ class InfoScreen extends StatefulWidget {
     required this.title,
     required this.text,
     required this.hinttext,
+    required this.render
   }) : super(key: key);
 
   @override
@@ -131,7 +133,7 @@ class _InfoScreenState extends State<InfoScreen> {
                                 MaterialPageRoute(
                                   builder: (context) => DetailsScreen(
                                       c_plant: currentPlant,
-                                      userEmail: widget.userEmail),
+                                      userEmail: widget.userEmail, render: widget.render,),
                                 ),
                               );
                             },

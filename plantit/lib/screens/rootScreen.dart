@@ -32,16 +32,26 @@ class _RootScreenState extends State<RootScreen> {
       MyGardenScreen(
         plantCollection: widget.plantDb,
         userEmail: widget.userEmail,
+        render: updateScreen,
       ),
-      SensorScreen(userEmail: widget.userEmail),
+      SensorScreen(userEmail: widget.userEmail, render: updateScreen,),
       InfoScreen(
         title: "Search",
         text: "Search for info...",
         hinttext: "Search plants",
         plantCollection: widget.plantDb,
         userEmail: widget.userEmail,
+        render: updateScreen,
       ),
     ];
+  }
+
+  void updateScreen() {
+    setState(() {
+      _selectedIndex = 0; // Set the desired index you want to simulate the press for
+      _onItemTapped(_selectedIndex);
+      print("object");
+    });
   }
 
   void _onItemTapped(int index) {
@@ -63,11 +73,13 @@ class _RootScreenState extends State<RootScreen> {
           key: UniqueKey(),
           plantCollection: widget.plantDb,
           userEmail: widget.userEmail,
+          render: updateScreen,
         );
       case 1:
         return SensorScreen(
           key: UniqueKey(), // Add a UniqueKey here
           userEmail: widget.userEmail,
+          render: updateScreen,
         );
       case 2:
         return InfoScreen(
@@ -77,6 +89,7 @@ class _RootScreenState extends State<RootScreen> {
           hinttext: "Search plants",// Add a UniqueKey here
           plantCollection: widget.plantDb,
           userEmail: widget.userEmail,
+          render: updateScreen,
         );
       default:
         return Container();

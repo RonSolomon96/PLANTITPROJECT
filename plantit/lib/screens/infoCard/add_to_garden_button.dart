@@ -10,12 +10,14 @@ import '../../main.dart';
 class AddToGardenButton extends StatelessWidget {
   var cPlnat;
   final String userEmail;
+  final Function render;
 
   AddToGardenButton({
     Key? key,
     required this.userEmail,
     required this.size,
     required this.cPlnat,
+    required this.render,
   }) : super(key: key);
 
   final Size size;
@@ -173,7 +175,9 @@ class AddToGardenButton extends StatelessWidget {
                               } else {
                                 // Failed to save nickname to database
                               }
+                              render();
                               Navigator.of(context).pop();
+
                             }
                           },
                         ),

@@ -11,11 +11,13 @@ import 'package:plantit/main.dart';
 class MyGardenScreen extends StatefulWidget {
   final String userEmail;
   final List plantCollection;
+  final Function render;
 
   const MyGardenScreen({
     Key? key,
     required this.plantCollection,
     required this.userEmail,
+    required this.render
   }) : super(key: key);
 
   @override
@@ -333,7 +335,8 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                     text: "Search for plant to add...",
                     hinttext: "Search",
                     userEmail: widget.userEmail,
-                    plantCollection: widget.plantCollection,)));
+                    plantCollection: widget.plantCollection,
+                    render: widget.render,)));
         },
         backgroundColor: Color.fromARGB(255, 7, 163, 111),
         child: Icon(Icons.add),
