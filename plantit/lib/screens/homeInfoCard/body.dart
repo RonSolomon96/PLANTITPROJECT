@@ -27,6 +27,7 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   File? _image;
+  bool waterBtn = false;
 
   Future<void> _getImage(ImageSource source) async {
     final image = await ImagePicker().pickImage(source: source);
@@ -82,6 +83,16 @@ class _BodyState extends State<Body> {
       ),
     )) ??
         false;
+  }
+
+  Future<void> handleWaterLevel() async {
+    waterBtn = false;
+    await http.post(Uri.parse('$serverUrl/updateWaterLevel?user=${widget.userEmail}&plant=${widget.cPlant["nickname"]}'));
+    //render home screen
+    widget.render();
+    setState(() {
+      widget.cPlant["Water level"] = "handled";
+    });
   }
 
   Future<void> delete() async {
@@ -146,22 +157,31 @@ class _BodyState extends State<Body> {
     String wl = "Current water level: not checked yet";
     String treat = "";
     Color c = Colors.indigo;
+    waterBtn = false;
     if(widget.cPlant["Water level"] != "") {
-      int waterLevel = int.parse(widget.cPlant["Water level"]);
-      int waterLevelNedded = int.parse(widget.cPlant["Water"]);
-      if (waterLevel > waterLevelNedded) {
-        wl = "Current water level: High";
-        treat =
-        "Put ${widget.cPlant["nickname"]} under the sun, let it dry a little";
-        c = Colors.red;
-      } else if (waterLevel < waterLevelNedded) {
-        wl = "Current water level: Perfect";
-        treat = "Keep going!";
-        c = Colors.green;
-      } else {
-        wl = "Current water level: Low";
-        treat = "Add 1 cup of water to ${widget.cPlant["nickname"]}";
-        c = Colors.orange;
+      if(widget.cPlant["Water level"] == "handled") {
+        wl = "Water level was handled";
+        c = Colors.lightGreen;
+      }
+      else {
+        int waterLevel = int.parse(widget.cPlant["Water level"]);
+        int waterLevelNedded = int.parse(widget.cPlant["Water"]);
+        if (waterLevel > waterLevelNedded) {
+          wl = "Current water level: High";
+          treat =
+          "Put ${widget.cPlant["nickname"]} under the sun, let it dry a little";
+          c = Colors.red;
+          waterBtn = true;
+        } else if (waterLevel == waterLevelNedded) {
+          wl = "Current water level: Perfect";
+          treat = "Keep going!";
+          c = Colors.green;
+        } else {
+          wl = "Current water level: Low";
+          treat = "Add 1 cup of water to ${widget.cPlant["nickname"]}";
+          c = Colors.orange;
+          waterBtn = true;
+        }
       }
     }
     return SingleChildScrollView(
@@ -179,6 +199,17 @@ class _BodyState extends State<Body> {
             style: TextStyle(color: c, fontSize: 20),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
+          ),
+          if(waterBtn)
+            ElevatedButton(
+            child: const Text('Handled? press here'),
+            onPressed: handleWaterLevel,
+            style: ElevatedButton.styleFrom(
+              primary: ColorsPalette.kPrimaryColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+              ),
+            ),
           ),
           TitleName(name: name, cName : cName),
           HistoryButton(size: size, cPlnat: widget.cPlant,userEmail: widget.userEmail),

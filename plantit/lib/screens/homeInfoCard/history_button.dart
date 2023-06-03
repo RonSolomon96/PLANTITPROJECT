@@ -46,7 +46,7 @@ class HistoryButton extends StatelessWidget {
                 ),
               ),
               child: const Text(
-                "Care plan history",
+                "History",
                 style: TextStyle(fontSize: 20),
               ),
             ),

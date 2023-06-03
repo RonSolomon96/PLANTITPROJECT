@@ -331,6 +331,28 @@ def get_user_plant(user, nickname):
     return jsonify(plant[0]), 200
 
 
+@app.route('/updateWaterLevel', methods=['POST'])
+def update_water_level():
+    user1 = request.args.get('user')
+    plant = request.args.get('plant')
+    user = db.collection('users').document(user1)
+
+    # Delete the specific plant from User_Plants collection
+    plant_docs = user.collection("User_Plants").where("nickname", "==", plant).stream()
+    plant_ref = None
+    for doc in plant_docs:
+        plant_ref = doc.reference
+        break
+    if plant_ref is None:
+        return jsonify({"error": "Plant not found"}), 404
+
+    str = "Water level"
+    # Update the "WaterLevel" field to "handled"
+    plant_ref.set({str: "handled"}, merge=True)
+
+    return jsonify({"message": "Water level updated"}), 200
+
+
 def udp_listener():
     server_ip = '0.0.0.0'  # Listen on all available network interfaces
     server_port = 5002
@@ -349,7 +371,7 @@ def udp_listener():
         minute = current_time.minute
         second = current_time.second
 
-        if (hour == 8 and minute == 0 and 0 <= second <= 2) or (hour == 00 and minute == 29 and 0 <= second <= 2):
+        if (hour == 8 and minute == 0 and 0 <= second <= 2) or (hour == 19 and minute == 00 and 0 <= second <= 2):
             print("hey")
             sensor_doc = db.collection("Sensors").document(pairs[3])
             doc = sensor_doc.get()

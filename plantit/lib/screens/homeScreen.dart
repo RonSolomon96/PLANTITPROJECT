@@ -249,17 +249,23 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                           String wl = "Current water level: not checked yet";
                           Color c = Colors.indigo;
                           if(_filteredPlants![index]["Water level"] != ""){
-                            int waterLevel = int.parse(_filteredPlants![index]["Water level"]);
-                            int waterLevelNedded = int.parse(_filteredPlants![index]["Water"]);
-                            if(waterLevel > waterLevelNedded) {
-                              wl = "Current water level: High";
-                              c = Colors.red;
-                            } else if (waterLevel == waterLevelNedded) {
-                              wl = "Current water level: Perfect";
-                              c = Colors.green;
-                            } else {
-                              wl = "Current water level: Low";
-                              c = Colors.orange;
+                            if(_filteredPlants![index]["Water level"] == "handled") {
+                              wl = "Water level was handled";
+                              c = Colors.lightGreen;
+                            }
+                            else {
+                              int waterLevel = int.parse(_filteredPlants![index]["Water level"]);
+                              int waterLevelNedded = int.parse(_filteredPlants![index]["Water"]);
+                              if(waterLevel > waterLevelNedded) {
+                                wl = "Current water level: High";
+                                c = Colors.red;
+                              } else if (waterLevel == waterLevelNedded) {
+                                wl = "Current water level: Perfect";
+                                c = Colors.green;
+                              } else {
+                                wl = "Current water level: Low";
+                                c = Colors.orange;
+                              }
                             }
                           }
                           return Card(
