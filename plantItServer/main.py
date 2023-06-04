@@ -98,7 +98,7 @@ def reset():
     except:
         return jsonify({"message": "Invalid email."}), 400
 
-
+ 
 @app.route('/users', methods=['GET'])
 def read_users():
     """
