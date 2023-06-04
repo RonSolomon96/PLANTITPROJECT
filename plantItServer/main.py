@@ -58,6 +58,11 @@ def register():
             user['idToken'],
             display_name=username
         )
+        data1 = {}
+        user_ref = db.collection('users').document(data['email'])
+        data1['email'] = data['email']
+        data1['username'] = data['username']
+        user_ref.set(data1)
         return jsonify(user), 201
     except Exception as e:
         error_message = str(e)
@@ -80,19 +85,6 @@ def login():
         return jsonify({"message": "Invalid email or password."}), 400
 
 
-# @app.route('/logout', methods=['POST'])
-# def logout():
-#     """
-#     Log out the current user.
-#     """
-#     data = request.get_json()
-#     id_token = data['id_token']
-#     try:
-#         auth.revoke_refresh_tokens(id_token)
-#         return jsonify({"message": "Logout successful."}), 200
-#     except:
-#         return jsonify({"message": "Unable to logout."}), 400
-
 @app.route('/resetPass', methods=['POST'])
 def reset():
     """
@@ -105,19 +97,6 @@ def reset():
         return jsonify({"message": "reset successful."}), 201
     except:
         return jsonify({"message": "Invalid email."}), 400
-
-
-# Define routes for CRUD operations
-@app.route('/users', methods=['POST'])
-def create_user():
-    """
-    Create a new user with the given data.
-    """
-    data = request.get_json()
-    user_ref = db.collection('users').document(data['email'])
-    user_ref.set(data)
-    # user_ref.collection("User_Plants").add({})
-    return jsonify({"message": "User created successfully."}), 201
 
 
 @app.route('/users', methods=['GET'])

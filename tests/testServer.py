@@ -10,7 +10,6 @@ def check_sign_up(url):
     global user_token
     """
     Function purpose - check if the sign up of function works in server side at /register
-                       and if user added to database when request for /users (post)
     """
     # user already exist
     payload = {"username": "ron", "password": "Rs123456", "email": "rsalomon230@gmail.com"}
@@ -24,10 +23,6 @@ def check_sign_up(url):
     assert res.status_code == 201
     user_token = res.json().get('idToken')
 
-    # user added to DB (firestore)
-    payload = {"username": "testUsername", "email": "testEmail@gmail.com"}
-    res = requests.post(url + "/users", json=payload, headers=headers)
-    assert res.status_code == 201
 
 
 def check_sign_in(url):
@@ -58,7 +53,7 @@ def check_sign_in(url):
 
 
 def check_add_plant(url):
-    url = url + "/addToGarden?user=testEmail@gmail.com&&sensornum=7"
+    url = url + "/addToGarden?user=testEmail@gmail.com&&sensornum=100"
     """
     Function purpose - check for adding plant to user on server side at /addToGarden
     """

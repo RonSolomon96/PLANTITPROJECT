@@ -123,17 +123,8 @@ class _SignupScreenState extends State<SignupScreen> {
       if(value.statusCode == 201) {
         // If the server did return a 201 CREATED response,
         //then move to home screen
-        await http.post(
-            Uri.parse("$serverUrl/users" ),
-            headers: <String, String>{
-              'Content-Type': 'application/json; charset=UTF-8',
-            },
-            body: jsonEncode(<String, String>{
-              "email" : emailTextController.text.toLowerCase(),
-              "username" : userNameTextController.text
-            })).then((value) => Navigator.push(context,
-            MaterialPageRoute(builder: (context) => RootScreen(userEmail: emailTextController.text.toLowerCase(), plantDb: db,
-            )))),
+        await Navigator.push(context,
+        MaterialPageRoute(builder: (context) => RootScreen(userEmail: emailTextController.text.toLowerCase(), plantDb: db))),
         emailTextController.clear(),
         userNameTextController.clear(),
         passwordTextController.clear(),
