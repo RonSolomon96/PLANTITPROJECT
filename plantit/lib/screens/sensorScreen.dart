@@ -125,12 +125,15 @@ class _SensorScreenState extends State<SensorScreen>
     });
 
   }
+
   Future<List<dynamic>> fetchPlants() async {
+    print("noall");
     final response = await http.get(Uri.parse('$serverUrl/plants'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON response
+      print(response.body);
       return jsonDecode(response.body);
     } else {
       // If the server did not return a 200 OK response,
@@ -142,19 +145,21 @@ class _SensorScreenState extends State<SensorScreen>
 
   //send data to server in order to login
   Future<List<dynamic>> fetchPlants2(String l,String t,String m) async {
-    final response = await http.get(Uri.parse('$serverUrl/plants'
-        '/$l/$t/$m'));
+    print("noa");
+    final response = await http.get(Uri.parse('$serverUrl/plants/$l/$t/$m'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON response
-      return jsonDecode(response.body);
+      final data = jsonDecode(response.body);
+      return List<dynamic>.from(data);
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
       throw Exception('Failed to load plants');
     }
   }
+
 
 
   @override
@@ -251,7 +256,7 @@ class _SensorScreenState extends State<SensorScreen>
                 ),
                 onPressed: ()  async {
                   var p;
-
+                  _socket.close();
                   if (_light != '') {
                     p = await fetchPlants2(_light, _temperature, _moisture);
                   }

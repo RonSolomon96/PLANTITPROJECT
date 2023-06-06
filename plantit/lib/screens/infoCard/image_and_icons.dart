@@ -36,7 +36,7 @@ class ImageAndIcons extends StatelessWidget {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        icon: SvgPicture.network("assets/icons/back_arrow.svg"),
+                        icon: SvgPicture.asset("assets/icons/back_arrow.svg"),
                       ),
                     ),
                     IconCard(
