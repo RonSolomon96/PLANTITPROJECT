@@ -4,14 +4,14 @@ import 'package:plantit/screens/infoCard/icon_card.dart';
 import 'package:plantit/screens/values/constants.dart';
 
 class ImageAndIcons extends StatelessWidget {
+  Size size;
+  var current;
 
    ImageAndIcons({
     Key? key,
     required this.size, required this.current,
   }) : super(key: key);
 
-   Size size;
-   var current;
 
 
   @override

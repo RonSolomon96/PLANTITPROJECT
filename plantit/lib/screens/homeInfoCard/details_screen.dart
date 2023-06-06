@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:plantit/screens/homeInfoCard/body.dart';
 
+/// this is the DetailsScreen screen - info screen about a user's plant
+
 class DetailsScreen extends StatelessWidget {
       dynamic cPlant;
       final String userEmail;

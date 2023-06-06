@@ -1,42 +1,44 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import '../main.dart';
 
-
-class CarePlanHistoryScreen extends StatefulWidget {
+/// this is the history screen - shows the growth progress
+class HistoryScreen extends StatefulWidget {
   final String userEmail;
   final String plant;
 
-  const CarePlanHistoryScreen({
+  const HistoryScreen({
     Key? key,
     required this.plant,
     required this.userEmail,
   }) : super(key: key);
 
   @override
-  _CarePlanHistoryScreenState createState() => _CarePlanHistoryScreenState();
+  _HistoryScreenState createState() => _HistoryScreenState();
 }
 
-class _CarePlanHistoryScreenState extends State<CarePlanHistoryScreen> {
-  List<dynamic> _carePlans = [];
+class _HistoryScreenState extends State<HistoryScreen> {
+  List<dynamic> _plantHistory = [];
+  //indication for us to know if the loading of the history is done or not
   bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    // Load data from database or API
-    _loadCarePlans();
+    // Load data from database
+    _loadPlantHistory();
   }
 
-  void _loadCarePlans() async {
+  //get from server the plant history
+  void _loadPlantHistory() async {
     final response = await http.get(Uri.parse('$serverUrl/history/${widget.userEmail}/${widget.plant}'));
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       setState(() {
-        _carePlans = data;
+        _plantHistory = data;
+        //loading data is done
         isLoading = false;
       });
     } else {
@@ -56,11 +58,13 @@ class _CarePlanHistoryScreenState extends State<CarePlanHistoryScreen> {
                 bottomLeft: Radius.circular(16),
                 bottomRight: Radius.circular(16))),
       ),
+      //if loading data - show progress indicator.
       body: isLoading
           ? const Center(
         child: CircularProgressIndicator(),
       )
-          : _carePlans.isEmpty ?
+            //if history empty -
+          : _plantHistory.isEmpty ?
       Container(
         decoration:  const BoxDecoration(
           image: DecorationImage(
@@ -78,6 +82,7 @@ class _CarePlanHistoryScreenState extends State<CarePlanHistoryScreen> {
           ),
         ),
       )
+      // else - if data finished loading and also there is history to show :
       : Container(
         decoration:  const BoxDecoration(
           image: DecorationImage(
@@ -87,7 +92,7 @@ class _CarePlanHistoryScreenState extends State<CarePlanHistoryScreen> {
         ),
         child: ListView.builder(
           padding: EdgeInsets.all(16.0),
-          itemCount: _carePlans.length,
+          itemCount: _plantHistory.length,
           itemBuilder: (BuildContext context, int index) {
             return Card(
               shape: RoundedRectangleBorder(
@@ -98,7 +103,7 @@ class _CarePlanHistoryScreenState extends State<CarePlanHistoryScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    _carePlans[index]["date"],
+                    _plantHistory[index]["date"],
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20.0,
@@ -108,7 +113,7 @@ class _CarePlanHistoryScreenState extends State<CarePlanHistoryScreen> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
                     child: Image.network(
-                      _carePlans[index]["image"],
+                      _plantHistory[index]["image"],
                       height: 300,
                       width: double.infinity,
                       fit: BoxFit.cover,

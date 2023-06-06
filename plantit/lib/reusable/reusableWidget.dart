@@ -1,8 +1,7 @@
-
 import 'package:flutter/material.dart';
-
 import '../screens/signupScreen.dart';
 
+///the application logo
 Image logoWidget(String imagePath, double width, double height) {
   return Image.asset(
     imagePath,
@@ -24,6 +23,7 @@ Text titleWidget(String title) {
     ),
   );
 }
+
 
 TextField reusableTextField(String text, IconData icon, bool isPassword, TextEditingController controller) {
   return TextField(
@@ -48,6 +48,7 @@ TextField reusableTextField(String text, IconData icon, bool isPassword, TextEdi
   );
 }
 
+///for login, register or reset password
 Container senToServerButton(BuildContext context, String title, Function onPress) {
   return Container(
     width: MediaQuery.of(context).size.width,
@@ -83,6 +84,7 @@ Container senToServerButton(BuildContext context, String title, Function onPress
   );
 }
 
+/// back to login or move to register
 Row loginSignupOption(BuildContext context,bool forLogin, String first, String second, Function cleanFields) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,

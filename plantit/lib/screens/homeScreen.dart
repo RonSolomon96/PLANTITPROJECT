@@ -1,12 +1,13 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:plantit/screens/homeInfoCard/details_screen.dart';
 import 'package:plantit/screens/infoScreen.dart';
 import 'package:plantit/screens/values/constants.dart';
 import 'package:plantit/main.dart';
+
+
+/// this is the home screen - shows the user's garden (all plants)
 
 class MyGardenScreen extends StatefulWidget {
   final String userEmail;
@@ -28,20 +29,20 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
   String? _username;
   List<dynamic>? _userPlants;
   List<dynamic>? _filteredPlants;
-
   final TextEditingController _searchController = TextEditingController();
-
-  bool _isLoadingUser = true; // Add a boolean to keep track of loading state
+  // Add a boolean to keep track of user data loading state
+  bool _isLoadingUser = true;
+  // Add a boolean to keep track of user plants loading state
   bool _isLoadingUserPlants = true;
 
   @override
   void initState() {
     super.initState();
-    print("object");
     _fetchUserData();
     _fetchUserPlantsData();
   }
 
+  //function to "reload" the home screen when a plant being added to user
   void updateScreen() {
     setState(() {
       _isLoadingUser = true;
@@ -51,7 +52,7 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
     });
   }
 
-
+  //get the user data (mail and nickname)
   Future<void> _fetchUserData() async {
     final response =
     await http.get(Uri.parse('$serverUrl/users/${widget.userEmail}'));
@@ -66,6 +67,7 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
     }
   }
 
+  //get the user plants
   Future<void> _fetchUserPlantsData() async {
     final response =
     await http.get(Uri.parse('$serverUrl/plants/${widget.userEmail}'));
@@ -82,6 +84,7 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
   }
 
 
+  //this func filter the plants according to the query
   void _filterPlants(String query) {
     setState(() {
       _filteredPlants = _userPlants
@@ -94,6 +97,7 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+        // shoe the screen only if loading finished
         body: _isLoadingUser || _isLoadingUserPlants
             ? const Center(child: CircularProgressIndicator()) // Show CircularProgressIndicator when loading
             : Container(
@@ -141,6 +145,7 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                                     borderRadius: BorderRadius.circular(5),
                                   ),
                                   child: MaterialButton(
+                                    //log out button
                                     onPressed: () {
                                       showDialog(
                                         context: context,
@@ -228,6 +233,7 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                       ],
                     ),
                     Expanded(
+                      //show user's plants if there are.
                       child: _userPlants!.isEmpty
                           ? Center(
                         child: Column(
@@ -248,6 +254,7 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                           : ListView.builder(
                         itemCount: _filteredPlants!.length,
                         itemBuilder: (context, index) {
+                          ///check current water level
                           String wl = "Current water level: not checked yet";
                           Color c = Colors.indigo;
                           if(_filteredPlants![index]["Water level"] != ""){
@@ -312,6 +319,7 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                               ],
                             ),
                             trailing: IconButton(
+                              //on press - navigate to DetailsScreen (plant card info)
                               onPressed: () {
                                Navigator.push(context,
                                    MaterialPageRoute(builder: (context) => DetailsScreen(
@@ -327,6 +335,7 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                   ]
               ),
             ),
+      // "add" button
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(context,

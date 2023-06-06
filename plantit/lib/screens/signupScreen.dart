@@ -6,7 +6,7 @@ import 'dart:convert';
 import 'rootScreen.dart';
 import 'package:http/http.dart' as http;
 
-
+/// this is the SignupScreen screen - sign up to the app
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -16,8 +16,6 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-
-
   TextEditingController emailTextController = TextEditingController();
   TextEditingController passwordTextController = TextEditingController();
   TextEditingController userNameTextController = TextEditingController();
@@ -67,6 +65,7 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
+  // fetch all the plants in db
   Future<List<dynamic>> fetchPlants() async {
     final response = await http.get(Uri.parse('$serverUrl/plants'));
 

@@ -3,9 +3,9 @@ import 'package:plantit/main.dart';
 import 'package:plantit/reusable/reusableFuncs.dart';
 import '../reusable/reusableWidget.dart';
 import 'dart:convert';
-import 'rootScreen.dart';
 import 'package:http/http.dart' as http;
 
+/// this is the ResetPassword screen - reset the password - send email
 
 class ResetPassword extends StatefulWidget {
   const ResetPassword({Key? key}) : super(key: key);
@@ -15,8 +15,6 @@ class ResetPassword extends StatefulWidget {
 }
 
 class _ResetPasswordState extends State<ResetPassword> {
-
-
   TextEditingController emailTextController = TextEditingController();
 
   @override

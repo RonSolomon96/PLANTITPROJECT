@@ -2,9 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-
 import '../main.dart';
 import 'choosePlantScreen.dart';
+
+/// this is the SensorScreen screen - scan the environment using the sensors
 
 class SensorScreen extends StatefulWidget {
   final String userEmail;
@@ -30,21 +31,25 @@ class _SensorScreenState extends State<SensorScreen>
   @override
   void initState() {
     super.initState();
+    // a 5 seconds animation - the time for the sensors to sample
     _controller = AnimationController(
       duration: const Duration(seconds: 5),
       vsync: this,
     )..addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         setState(() {
+          //when done the sample - it is complete
           _isComplete = true;
         });
       }
     });
   }
 
+  //open socket to get info from sensors
   void _setupSocket() async {
     _socket = await RawDatagramSocket.bind(InternetAddress.anyIPv4, 12345);
     print('Socket is open and bound to ${_socket.address.address}:${_socket.port}');
+    //on event (when data comes from sensors) - pars it and use it
     _socket.listen((event) {
       if (event == RawSocketEvent.read) {
         final datagram = _socket.receive();
@@ -53,7 +58,6 @@ class _SensorScreenState extends State<SensorScreen>
           final messageParts = message.split(':');
 
           if (messageParts[0] == 'lightRead') {
-
               _light = messageParts[1];
               if (_light != '') {
                 int num = int.parse(_light);
@@ -73,7 +77,6 @@ class _SensorScreenState extends State<SensorScreen>
               print(_light);
           }
           if (messageParts[2] == 'humidity') {
-
               _moisture = messageParts[3];
               if (_moisture != '') {
                 double a = double.parse(_moisture);
@@ -123,11 +126,10 @@ class _SensorScreenState extends State<SensorScreen>
         }
       }
     });
-
   }
 
+  //get all the plants
   Future<List<dynamic>> fetchPlants() async {
-    print("noall");
     final response = await http.get(Uri.parse('$serverUrl/plants'));
 
     if (response.statusCode == 200) {
@@ -143,9 +145,8 @@ class _SensorScreenState extends State<SensorScreen>
   }
 
 
-  //send data to server in order to login
+  //get only plant that matches the values that came from sensors
   Future<List<dynamic>> fetchPlants2(String l,String t,String m) async {
-    print("noa");
     final response = await http.get(Uri.parse('$serverUrl/plants/$l/$t/$m'));
 
     if (response.statusCode == 200) {
@@ -202,9 +203,9 @@ class _SensorScreenState extends State<SensorScreen>
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
+                // on tap - start sample
                 onTap: () {
                   _startAnimation();
-                  print("hi");
                   _setupSocket();
                 },
                 child: Container(
@@ -263,7 +264,6 @@ class _SensorScreenState extends State<SensorScreen>
                   else{
                     p = await fetchPlants();
                   }
-
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) =>  ChoosePlantScreen(
                           light: _light,

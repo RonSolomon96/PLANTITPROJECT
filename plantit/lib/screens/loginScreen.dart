@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:plantit/main.dart';
 import 'package:plantit/screens/resetPssword.dart';
-import 'package:plantit/screens/signupScreen.dart';
 import '../reusable/reusableWidget.dart';
 import '../reusable/reusableFuncs.dart';
 import 'dart:convert';
 import 'rootScreen.dart';
 import 'package:http/http.dart' as http;
 
-
+/// this is the LoginScreen screen - log in to the app
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -21,8 +20,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   TextEditingController emailTextController = TextEditingController();
   TextEditingController passwordTextController = TextEditingController();
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  // fetch all the plants in db
   Future<List<dynamic>> fetchPlants() async {
     final response = await http.get(Uri.parse('$serverUrl/plants'));
 

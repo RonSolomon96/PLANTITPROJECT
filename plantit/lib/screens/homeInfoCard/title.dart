@@ -3,14 +3,14 @@ import 'package:plantit/screens/values/colors_palette.dart';
 import 'package:plantit/screens/values/constants.dart';
 
 class TitleName extends StatelessWidget {
+  final String name;
+  final String cName;
+
   const TitleName({
     Key? key,
     required this.name,
     required this.cName,
   }) : super(key: key);
-
-  final String name;
-  final String cName;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,6 @@ class TitleName extends StatelessWidget {
               ],
             ),
           ),
-
         ],
       ),
     );

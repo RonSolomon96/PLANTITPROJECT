@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:plantit/screens/infoCard/details_screen.dart';
-import 'package:plantit/screens/scanScreen.dart';
-import 'package:plantit/screens/sensorScreen.dart';
 import 'package:plantit/screens/values/constants.dart';
 import 'package:plantit/screens/loginScreen.dart';
 
@@ -11,10 +8,11 @@ void main() {
   runApp(const MyApp());
 }
 
+/// This widget is the root of the application.
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
 
@@ -29,6 +27,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login': (context) => const LoginScreen(),
       },
+      //start with login screen
       home: const LoginScreen(),
       debugShowCheckedModeBanner: false,
     );

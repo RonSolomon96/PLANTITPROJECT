@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:plantit/screens/homeInfoCard/history_button.dart';
 import 'package:plantit/screens/homeInfoCard/image_and_icons.dart';
@@ -10,8 +8,6 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-
 import '../../main.dart';
 
 class Body extends StatefulWidget {
@@ -29,6 +25,7 @@ class _BodyState extends State<Body> {
   File? _image;
   bool waterBtn = false;
 
+  // add image to history
   Future<void> _getImage(ImageSource source) async {
     final image = await ImagePicker().pickImage(source: source);
 
@@ -85,8 +82,10 @@ class _BodyState extends State<Body> {
         false;
   }
 
+  // the functionality for handling the water level
   Future<void> handleWaterLevel() async {
     waterBtn = false;
+    //update the db that the user handled the water level
     await http.post(Uri.parse('$serverUrl/updateWaterLevel?user=${widget.userEmail}&plant=${widget.cPlant["nickname"]}'));
     //render home screen
     widget.render();
@@ -95,10 +94,12 @@ class _BodyState extends State<Body> {
     });
   }
 
+  //delete plant
   Future<void> delete() async {
-    final response = await http.delete(Uri.parse('$serverUrl/deletePlant?user=${widget.userEmail}&plant=${widget.cPlant["nickname"]}'));
+    await http.delete(Uri.parse('$serverUrl/deletePlant?user=${widget.userEmail}&plant=${widget.cPlant["nickname"]}'));
   }
 
+  // popup screen to choose photo. take a photo or choose from gallery
   Future<void> _showOptionsDialog() async {
     await showDialog(
       context: context,

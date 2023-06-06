@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:plantit/screens/values/colors_palette.dart';
 
 class ProductDescription extends StatelessWidget {
+  final Size size;
+  final String des;
+
   const ProductDescription({
     Key? key,
     required this.size, required this.des,
   }) : super(key: key);
 
-  final Size size;
-  final String des;
   @override
   Widget build(BuildContext context) {
     return Padding(

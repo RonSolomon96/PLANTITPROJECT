@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:plantit/screens/values/constants.dart';
 import 'package:plantit/screens/infoScreen.dart';
 import 'package:plantit/screens/sensorScreen.dart';
-
 import 'homeScreen.dart';
 import 'loginScreen.dart';
+
+/// this is the RootScreen screen - this is the main screen
+/// it enable us to navigate between different screen using bottom bar navigation
 
 class RootScreen extends StatefulWidget {
   final String userEmail;
@@ -22,12 +24,12 @@ class RootScreen extends StatefulWidget {
 
 class _RootScreenState extends State<RootScreen> {
   int _selectedIndex = 0;
-
   List<Widget> _widgetOptions = [];
 
   @override
   void initState() {
     super.initState();
+    // setup the different option for screens
     _widgetOptions = <Widget>[
       MyGardenScreen(
         plantCollection: widget.plantDb,
@@ -46,14 +48,15 @@ class _RootScreenState extends State<RootScreen> {
     ];
   }
 
+  // this func help us refresh this screen when changes occur
   void updateScreen() {
     setState(() {
-      _selectedIndex = 0; // Set the desired index you want to simulate the press for
+      _selectedIndex = 0;
       _onItemTapped(_selectedIndex);
-      print("object");
     });
   }
 
+  // this func navigate to the tapped screen
   void _onItemTapped(int index) {
     setState(() {
       if (_selectedIndex == index) {
@@ -66,6 +69,7 @@ class _RootScreenState extends State<RootScreen> {
   }
 
 
+  // return the tapped screen
   Widget _buildScreen(int index) {
     switch (index) {
       case 0:
@@ -96,6 +100,7 @@ class _RootScreenState extends State<RootScreen> {
     }
   }
 
+  //warning widget before logging out
   Future<bool> _onWillPop() async {
     return (await showDialog(
       context: context,
@@ -127,7 +132,7 @@ class _RootScreenState extends State<RootScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
+    return WillPopScope( // if root screen being popped - show the trash dialog (to make sure user want log out)
       onWillPop: _onWillPop,
       child: Scaffold(
         body: IndexedStack(

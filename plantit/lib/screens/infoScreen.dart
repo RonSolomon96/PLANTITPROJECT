@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
-
 import 'infoCard/details_screen.dart';
+
+/// this is the infoScreen screen - shows all the plants in the DB
 
 class InfoScreen extends StatefulWidget {
   final List plantCollection;
@@ -71,15 +69,15 @@ class _InfoScreenState extends State<InfoScreen> {
                     borderRadius: BorderRadius.all(Radius.circular(25.0)),
                   ),
                 ),
+                // this func run each time the text in the search bar changes
                 onChanged: (value) {
                   setState(() {
                     filteredPlants = widget.plantCollection.where((plant) =>
                         plant["Common_name"]
                             .toString()
                             .toLowerCase()
-                            .contains(value.toLowerCase())).toList();
-                  });
-                },
+                            .contains(value.toLowerCase())).toList();});
+                  },
               ),
             ),
             Expanded(
@@ -87,15 +85,11 @@ class _InfoScreenState extends State<InfoScreen> {
                 itemCount: filteredPlants.length, // Number of plants to display
                 itemBuilder: (BuildContext context, int index) {
                   var name = filteredPlants[index]["Common_name"];
-
                   var currentPlant = filteredPlants[index];
-                  var des = filteredPlants[index]["Description"];
                   var img1  = filteredPlants[index]["Image_url"];
+                  // default val
                   img1 ??= 'assets/images/5.ico';
-
-
                   return GestureDetector(
-                      onTap: () {},
                       child: Card(
                         elevation: 4,
                         shape: RoundedRectangleBorder(
@@ -140,7 +134,8 @@ class _InfoScreenState extends State<InfoScreen> {
                             icon: const Icon(Icons.arrow_forward_ios),
                           ),
                         ),
-                      ));
+                      )
+                  );
                 },
               ),
             ),

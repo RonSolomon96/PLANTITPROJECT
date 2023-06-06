@@ -4,12 +4,14 @@ import 'package:plantit/screens/values/colors_palette.dart';
 import 'package:plantit/screens/values/constants.dart';
 
 class IconCard extends StatelessWidget {
+  final String icon;
+
   const IconCard({
     Key? key,
     required this.icon,
   }) : super(key: key);
 
-  final String icon;
+
 
   @override
   Widget build(BuildContext context) {

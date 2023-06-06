@@ -12,6 +12,7 @@ class CameraScreen extends StatefulWidget {
 class _CameraScreenState extends State<CameraScreen> {
   File? _image;
 
+  //opens the camera and saves the image
   Future<void> _getImage(ImageSource source) async {
     final image = await ImagePicker().pickImage(source: source);
     setState(() {
@@ -19,18 +20,19 @@ class _CameraScreenState extends State<CameraScreen> {
     });
   }
 
+  // popup screen to choose photo. take a photo or choose from gallery
   Future<void> _showOptionsDialog() async {
     await showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Select image source"),
+          title: const Text("Select image source"),
           content: SingleChildScrollView(
             child: ListBody(
               children: [
                 GestureDetector(
                   child: Row(
-                    children: [
+                    children: const [
                       Padding(
                         padding: EdgeInsets.all(10.0),
                         child: Icon(Icons.camera_alt),
@@ -43,10 +45,10 @@ class _CameraScreenState extends State<CameraScreen> {
                     Navigator.of(context).pop();
                   },
                 ),
-                Padding(padding: EdgeInsets.all(10.0)),
+                const Padding(padding: EdgeInsets.all(10.0)),
                 GestureDetector(
                   child: Row(
-                    children: [
+                    children: const [
                       Padding(
                         padding: EdgeInsets.all(10.0),
                         child: Icon(Icons.image),

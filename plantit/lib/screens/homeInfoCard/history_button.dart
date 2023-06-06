@@ -1,11 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:plantit/screens/values/colors_palette.dart';
-import 'package:http/http.dart' as http;
-
-import '../../main.dart';
 import '../care_plan_history.dart';
+
 class HistoryButton extends StatelessWidget {
   var cPlnat;
   final String userEmail;
@@ -35,7 +31,7 @@ class HistoryButton extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CarePlanHistoryScreen(userEmail: userEmail, plant: cPlnat["nickname"]),
+                      builder: (context) => HistoryScreen(userEmail: userEmail, plant: cPlnat["nickname"]),
                     ),
                   );
                 },

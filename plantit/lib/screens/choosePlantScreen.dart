@@ -1,8 +1,7 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-
 import 'infoCard/details_screen.dart';
+
+/// this is the ChoosePlantScreen screen - shows the filtered plants according to the info from sensors
 
 class ChoosePlantScreen extends StatefulWidget {
   final String light;
@@ -28,15 +27,18 @@ class ChoosePlantScreen extends StatefulWidget {
 
 class _ChoosePlantScreenState extends State<ChoosePlantScreen> {
   TextEditingController searchController = TextEditingController();
+  //list of plants that matches the search
   late List searchResult;
 
   @override
   void initState() {
     super.initState();
     searchResult = widget.plantCollection;
+    //this func run every time the text in search bar is being changed
     searchController.addListener(() {
       setState(() {
         String query = searchController.text.toLowerCase();
+        //return only plants that matches the search
         searchResult = widget.plantCollection.where((plant) {
           String plantName = plant['Common_name'].toLowerCase();
           return plantName.contains(query);
@@ -86,15 +88,7 @@ class _ChoosePlantScreenState extends State<ChoosePlantScreen> {
                 itemCount: searchResult.length, // Number of plants to display
                 itemBuilder: (BuildContext context, int index) {
                   var cPlant = searchResult[index];
-                  var name = searchResult[index]["Common_name"];
-                  var des;
-
-                    des = searchResult[index]["Description"];
-
-
                   return GestureDetector(
-                      onTap: () {
-                      },
                       child: Card(
                         elevation: 4,
                         shape: RoundedRectangleBorder(
@@ -129,16 +123,10 @@ class _ChoosePlantScreenState extends State<ChoosePlantScreen> {
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(
-                                  builder: (context) => DetailsScreen(
-                                    c_plant: cPlant,
-                                userEmail: widget.userEmail,
-                                    render: widget.render,
-                              ),
-                            ),
-                          );
-
-                        },
+                                MaterialPageRoute(builder: (context) =>
+                                    DetailsScreen(c_plant: cPlant,
+                                      userEmail: widget.userEmail,
+                                      render: widget.render,),),);},
                         icon: const Icon(Icons.arrow_forward_ios),
                       ),
                     ),

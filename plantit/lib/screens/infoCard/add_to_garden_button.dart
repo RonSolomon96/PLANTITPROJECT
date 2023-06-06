@@ -1,12 +1,9 @@
 import 'dart:convert';
-
-import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:plantit/screens/values/colors_palette.dart';
 import 'package:http/http.dart' as http;
-
 import '../../main.dart';
+
 class AddToGardenButton extends StatelessWidget {
   var cPlnat;
   final String userEmail;
@@ -27,11 +24,11 @@ class AddToGardenButton extends StatelessWidget {
   var _pnames = [];
   var _sensorsdata ;
 
-  final TextEditingController _controller = TextEditingController();
   final _formKey1 = GlobalKey<FormState>();
   final _formKey2 = GlobalKey<FormState>();
 
 
+  // get the user plants (in order to have a list of all plants nicknames - this way we know which nickname is valid)
   Future<void> fetchData() async {
     final response = await http.get(Uri.parse("$serverUrl/plants/$userEmail" ));
     if (response.statusCode == 200) {
@@ -46,6 +43,7 @@ class AddToGardenButton extends StatelessWidget {
     }
   }
 
+  // get the water sensors (in order to check which sensor number is valid)
   Future<void> fetchSensors() async {
     final response = await http.get(Uri.parse("$serverUrl/sensors" ));
     if (response.statusCode == 200) {
@@ -151,33 +149,23 @@ class AddToGardenButton extends StatelessWidget {
                           onPressed: () async {
                             await fetchData();
                             await fetchSensors();
-
-
+                            // if validations pass
                             if (_formKey1.currentState != null && _formKey2.currentState != null &&
                                 _formKey1.currentState!.validate() && _formKey2.currentState!.validate()) {
                               _formKey1.currentState?.save();
                               _formKey2.currentState?.save();
                               final nickname = _nickname;
                               final sensornumber = _sensornumber;
-                              print(sensornumber);
 
                               Map<String, dynamic> stringMap = cPlnat as Map<String, dynamic>;
                               cPlnat["nickname"]=nickname;
-                              // do something with the nickname, e.g. save it to a database
-                              print(userEmail);
-                              final response = await http.post(Uri.parse("$serverUrl/addToGarden?user=$userEmail&&sensornum=$sensornumber" ),headers: <String, String>{
+                              await http.post(Uri.parse("$serverUrl/addToGarden?user=$userEmail&&sensornum=$sensornumber" ),headers: <String, String>{
                                 'Content-Type': 'application/json; charset=UTF-8',
                               },
                                   body: jsonEncode(stringMap)
                               );
-                              if (response.statusCode == 200) {
-                                // Successfully saved nickname to database
-                              } else {
-                                // Failed to save nickname to database
-                              }
                               render();
                               Navigator.of(context).pop();
-
                             }
                           },
                         ),
@@ -198,7 +186,6 @@ class AddToGardenButton extends StatelessWidget {
               ),
             ),
           ),
-
         ],
       ),
     );
