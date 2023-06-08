@@ -133,7 +133,7 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                                 Text(
                                   'Hey $_username,\n  Welcome to PlantIt!',
                                   style: const TextStyle(
-                                      color: Colors.white,fontSize: 25, fontWeight: FontWeight.bold, letterSpacing: 1
+                                      color: Colors.white,fontSize: 23, fontWeight: FontWeight.bold, letterSpacing: 1
                                   ),
                                 ),
                                 const Spacer(),
