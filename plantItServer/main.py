@@ -360,7 +360,7 @@ def udp_listener():
         minute = current_time.minute
         second = current_time.second
         # send a response to the data base at 8 am and 19 pm
-        if (hour == 8 and minute == 0 and 0 <= second <= 2) or (hour == 15 and minute == 58 and 0 <= second <= 2):
+        if (hour == 8 and minute == 0 and 0 <= second <= 2) or (hour == 17 and minute == 00 and 0 <= second <= 2):
             print("update sensors data")
             sensor_doc = db.collection("Sensors").document(pairs[3])
             doc = sensor_doc.get()

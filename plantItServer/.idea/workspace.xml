@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9a7323ea-041c-4f3d-95be-b4c431cd390a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -126,7 +125,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686219426516</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="email feature">
+      <created>1686315612614</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1686315612614</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -147,7 +153,8 @@
     <MESSAGE value="history fix" />
     <MESSAGE value="small" />
     <MESSAGE value="home screen resize" />
-    <option name="LAST_COMMIT_MESSAGE" value="home screen resize" />
+    <MESSAGE value="email feature" />
+    <option name="LAST_COMMIT_MESSAGE" value="email feature" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
