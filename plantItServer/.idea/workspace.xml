@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9a7323ea-041c-4f3d-95be-b4c431cd390a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-    </list>
+    <list default="true" id="9a7323ea-041c-4f3d-95be-b4c431cd390a" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -132,7 +130,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686315612614</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="time update">
+      <created>1686315974920</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1686315974920</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -154,7 +159,8 @@
     <MESSAGE value="small" />
     <MESSAGE value="home screen resize" />
     <MESSAGE value="email feature" />
-    <option name="LAST_COMMIT_MESSAGE" value="email feature" />
+    <MESSAGE value="time update" />
+    <option name="LAST_COMMIT_MESSAGE" value="time update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
