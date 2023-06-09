@@ -1,5 +1,5 @@
 import datetime
-
+from email.message import EmailMessage
 import pyrebase
 import firebase_admin
 import threading
@@ -8,6 +8,9 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 from flask import Flask, request, jsonify
 import uuid
+import smtplib
+import ssl
+
 
 # Initialize pyrebase with user credentials
 config = {
@@ -33,12 +36,17 @@ firebase_admin.initialize_app(cred)
 # database
 db = firestore.client()
 
+email_sender = 'plantit2023biu@gmail.com'
+email_password = 'wcdcglpbprvlzaey'
+em = EmailMessage()
+em['From'] = email_sender
+em["Subject"] = "Water level update!"
+context = ssl.create_default_context()
+smtp = smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context)
+smtp.login(email_sender, email_password)
+
 # Initialize Flask app
 app = Flask(__name__)
-
-
-# with open(sys.argv[1], "rb") as image_file:
-#  encoded_string = base64.b64encode(image_file.read())
 
 
 # Firebase Authentication
@@ -52,12 +60,14 @@ def register():
     password = data['password']
     username = data['username']
     try:
+        # get user
         user = auth.create_user_with_email_and_password(email=email, password=password)
         print(user)
         auth.update_profile(
             user['idToken'],
             display_name=username
         )
+        # insert data to db
         data1 = {}
         user_ref = db.collection('users').document(data['email'])
         data1['email'] = data['email']
@@ -98,7 +108,7 @@ def reset():
     except:
         return jsonify({"message": "Invalid email."}), 400
 
- 
+
 @app.route('/users', methods=['GET'])
 def read_users():
     """
@@ -190,7 +200,7 @@ def delete_plant():
 @app.route('/addToGarden', methods=['POST'])
 def add_to_garden():
     """
-    Create a new plant with the given data.
+    add a new plant with the given data.
     """
     data = request.get_json()
     data["Water level"] = ""
@@ -198,7 +208,7 @@ def add_to_garden():
 
     p = db.collection('users').document(request.args.get('user'))
     p.collection("User_Plants").add(data)
-
+    # get the sensor needed
     sensor_ref = db.collection('Sensors').document(request.args.get('sensornum'))
     sensor_data = sensor_ref.get().to_dict()
 
@@ -262,17 +272,13 @@ def read_plants():
 @app.route('/plants/<light>/<temp>/<moist>', methods=['GET'])
 def read_plant(light, temp, moist):
     """
-    Retrieve a specific user by ID from Firestore DB.
+    Get specific plants from Firestore DB according to sensors data.
     """
 
     plant = [doc.to_dict() for doc in db.collection('Plants').where("Light", "==", light).
         where("Temperature", "==", temp).where("Humidity", "==", moist).stream()]
     # if plant.exists:
     return jsonify(plant), 200
-
-
-# else:
-#   return jsonify({"message": "User not found."}), 404
 
 
 @app.route('/plants/<user>', methods=['GET'])
@@ -289,6 +295,7 @@ def get_sensors():
 
 @app.route('/history/<user>/<plant>', methods=['GET'])
 def get_plant_history(user, plant):
+    # get specific plant form a user
     plant_docs = db.collection('users').document(user).collection("User_Plants").where("nickname", "==", plant).stream()
     plant_ref = None
     for doc in plant_docs:
@@ -298,6 +305,7 @@ def get_plant_history(user, plant):
         return jsonify({"error": "Plant not found"}), 404
     history = [doc.to_dict() for doc in plant_ref.collection("History").stream()]
     print(history)
+    # return history list sorted by serial number
     sorted_history = sorted(history, key=lambda h: h["serial"])
 
     return jsonify(sorted_history[::-1]), 200
@@ -305,6 +313,7 @@ def get_plant_history(user, plant):
 
 @app.route('/plants/<user>/<nickname>', methods=['GET'])
 def get_user_plant(user, nickname):
+    # get all user plants
     plant = [doc.to_dict() for doc in db.collection('users').document(user).collection("User_Plants").
         where("nickname", "==", nickname).stream()]
     return jsonify(plant[0]), 200
@@ -316,7 +325,7 @@ def update_water_level():
     plant = request.args.get('plant')
     user = db.collection('users').document(user1)
 
-    # Delete the specific plant from User_Plants collection
+    # get the specific plant from User_Plants collection
     plant_docs = user.collection("User_Plants").where("nickname", "==", plant).stream()
     plant_ref = None
     for doc in plant_docs:
@@ -335,12 +344,13 @@ def update_water_level():
 def udp_listener():
     server_ip = '0.0.0.0'  # Listen on all available network interfaces
     server_port = 5002
-
+    # init socket
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     server_address = (server_ip, server_port)
     sock.bind(server_address)
 
     while True:
+        # get the messege from the sensors
         data, address = sock.recvfrom(1024)
         message = data.decode()
         pairs = message.split(":")
@@ -349,9 +359,9 @@ def udp_listener():
         hour = current_time.hour
         minute = current_time.minute
         second = current_time.second
-
-        if (hour == 8 and minute == 0 and 0 <= second <= 2) or (hour == 19 and minute == 00 and 0 <= second <= 2):
-            print("hey")
+        # send a response to the data base at 8 am and 19 pm
+        if (hour == 8 and minute == 0 and 0 <= second <= 2) or (hour == 15 and minute == 58 and 0 <= second <= 2):
+            print("update sensors data")
             sensor_doc = db.collection("Sensors").document(pairs[3])
             doc = sensor_doc.get()
 
@@ -366,16 +376,25 @@ def udp_listener():
                     for doc in plant_docs:
                         plant_ref = doc.reference
                         break
+                    # check for water level in the ground and update in db
                     plant_data = plant_ref.get().to_dict()
+
                     if int(pairs[1]) < 90:
                         plant_data["Water level"] = "1"
                     elif int(pairs[1]) < 180:
                         plant_data["Water level"] = "2"
                     else:
                         plant_data["Water level"] = "3"
-                    plant_ref.set(plant_data)
 
-                print("doc.to_dict()")
+                    plant_ref.set(plant_data)
+                    if plant_data["Water level"] != plant_data["Water"]:
+
+                        email = user.get().to_dict()['email']
+                        em['To'] = email
+                        body1 = f'You have a water level update in {plant_data["nickname"]}!\nplease check PlantIt App'
+                        em.set_content(body1)
+                        smtp.sendmail(email_sender, email, em.as_string())
+
             else:
                 # Document does not exist
                 print("prob...")

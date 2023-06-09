@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="9a7323ea-041c-4f3d-95be-b4c431cd390a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -118,7 +119,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685631095187</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="home screen resize">
+      <created>1686219426516</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1686219426516</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -138,7 +146,8 @@
     <MESSAGE value="12" />
     <MESSAGE value="history fix" />
     <MESSAGE value="small" />
-    <option name="LAST_COMMIT_MESSAGE" value="small" />
+    <MESSAGE value="home screen resize" />
+    <option name="LAST_COMMIT_MESSAGE" value="home screen resize" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
