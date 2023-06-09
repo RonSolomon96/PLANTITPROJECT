@@ -59,6 +59,8 @@ class _SensorScreenState extends State<SensorScreen>
 
           if (messageParts[0] == 'lightRead') {
               _light = messageParts[1];
+              print("light : ");
+              print(_light);
               if (_light != '') {
                 int num = int.parse(_light);
                 num = num ~/ 300;
@@ -103,6 +105,8 @@ class _SensorScreenState extends State<SensorScreen>
 
           if (messageParts[4] == 'temperature') {
             _temperature = messageParts[5];
+            print("temperature : ");
+            print(_temperature);
             if (_temperature != '') {
               double a = double.parse(_temperature);
               int num = a.round();

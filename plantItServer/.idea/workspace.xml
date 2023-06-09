@@ -137,7 +137,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686315974920</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="add sensors code">
+      <created>1686316483866</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1686316483866</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -160,7 +167,8 @@
     <MESSAGE value="home screen resize" />
     <MESSAGE value="email feature" />
     <MESSAGE value="time update" />
-    <option name="LAST_COMMIT_MESSAGE" value="time update" />
+    <MESSAGE value="add sensors code" />
+    <option name="LAST_COMMIT_MESSAGE" value="add sensors code" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
